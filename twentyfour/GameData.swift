@@ -12,14 +12,20 @@ class GameData: ObservableObject {
     private init() {
         // Pre-generated dataset - you can expand this later
         let dataset: [(numbers: [Int], solution: String)] = [
-            ([2, 4, 4, 7], "4 * 2 * (7 - 4) = 24"),
-            ([3, 3, 8, 8], "(8 / 3 + 8) * 3 = 24"),
-            ([5, 5, 5, 5], "5 * 5 - (5 + 5) = 24"),
-            ([2, 3, 10, 13], "(13 - 10) * 2 * 3 = 24"),
-            ([1, 4, 8, 8], "8 * 4 * (1 - 8) = 24")
+            ([2, 4, 4, 7], "4 * 2 * (7 - 4)"),
+            ([12, 12, 12, 12], "(12 + 12) * (12 / 12)"),
+            ([2, 3, 10, 13], "(13 - 10) * 2 * 3"),
+            ([1, 4, 8, 8], "8 * 4 * (1 - 8)")
         ]
         
         hands = dataset.map { Hand(numbers: $0.numbers, solution: $0.solution) }
+    }
+    
+    var formattedSolution: String {
+        guard let solution = currentHand?.solution else { return "" }
+        return solution
+            .replacingOccurrences(of: "*", with: "×")
+            .replacingOccurrences(of: "/", with: "÷")
     }
     
     func getRandomHand() {

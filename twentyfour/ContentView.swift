@@ -3,6 +3,30 @@ import SwiftUI
 import AppKit
 #endif
 
+// Custom view modifier to calculate optimal font size
+struct DynamicFontSize: ViewModifier {
+    let text: String
+    let containerWidth: CGFloat
+    
+    func body(content: Content) -> some View {
+        let baseSize: CGFloat = 60
+        let horizontalPadding: CGFloat = 32 * 2 // Total horizontal padding
+        let availableWidth = containerWidth - horizontalPadding
+        let safetyMargin: CGFloat = 4 // Small safety margin to prevent any truncation
+        
+        // Approximate width per character (Menlo is monospace)
+        let charWidth = baseSize * 0.6 // Approximate character width ratio for Menlo
+        let totalWidth = charWidth * CGFloat(text.count)
+        
+        // Calculate scale factor to fit text in container
+        let scale = (availableWidth - safetyMargin) / totalWidth
+        let finalSize = baseSize * scale
+        
+        content
+            .font(.custom("Menlo-Bold", size: max(finalSize, 20))) // Ensure minimum readable size
+    }
+}
+
 struct SolutionOverlay: View {
     let solution: String
     let onDismiss: () -> Void
@@ -24,12 +48,16 @@ struct SolutionOverlay: View {
                     // White background
                     Color.white.opacity(0.95)
                     
-                    // Solution text centered
-                    Text(solution)
-                        .font(.system(size: 24))
-                        .foregroundColor(.black)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 20)
+                    GeometryReader { geometry in
+                        // Solution text centered
+                        Text(solution)
+                            .modifier(DynamicFontSize(text: solution, containerWidth: geometry.size.width))
+                            .foregroundColor(.black)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: geometry.size.height)
+                            .padding(.horizontal, 32)
+                    }
                     
                     // Dismiss button overlay
                     VStack {
@@ -52,7 +80,7 @@ struct SolutionOverlay: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 200)
+                .frame(height: 160)
                 
                 Spacer()
             }
@@ -154,7 +182,7 @@ struct ContentView: View {
             // Solution overlay
             if showingSolution {
                 SolutionOverlay(
-                    solution: gameData.currentHand?.solution ?? "",
+                    solution: gameData.formattedSolution,
                     onDismiss: { showingSolution = false }
                 )
                 .transition(.opacity)

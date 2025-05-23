@@ -1,11 +1,18 @@
 import Foundation
 
+enum Difficulty {
+    case easy
+    case medium
+    case hard
+}
+
 struct Hand: Equatable, Identifiable {
     let id = UUID()
     let cards: [Card]
     let solution: String
+    let difficulty: Difficulty
     
-    init(numbers: [Int], solution: String) {
+    init(numbers: [Int], solution: String, difficulty: Difficulty) {
         // Randomly assign suits ensuring no duplicates for same values
         var availableSuits = Array(repeating: Suit.allCases, count: 4)
         
@@ -22,6 +29,7 @@ struct Hand: Equatable, Identifiable {
         }
         
         self.solution = solution
+        self.difficulty = difficulty
     }
     
     static func == (lhs: Hand, rhs: Hand) -> Bool {

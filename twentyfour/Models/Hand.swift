@@ -4,6 +4,7 @@ enum Difficulty {
     case easy
     case medium
     case hard
+    case hardest
 }
 
 struct Hand: Equatable, Identifiable {

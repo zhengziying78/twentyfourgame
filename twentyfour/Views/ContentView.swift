@@ -94,6 +94,7 @@ struct ContentView: View {
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
     @State private var exportPath: String = ""
+    @State private var showingExportAlert = false
     
     private let columns = [
         GridItem(.flexible()),
@@ -116,17 +117,29 @@ struct ContentView: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical)
                 
-                HStack(spacing: 20) {
-                    Button(action: {
-                        // If we already have cards, flip them face down first
-                        if gameManager.currentHand != nil {
-                            isFlipping = true
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isCardsFaceUp = false
-                            }
-                            
-                            // After cards are face down, get new hand and flip them up
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                VStack(spacing: 16) {
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            // If we already have cards, flip them face down first
+                            if gameManager.currentHand != nil {
+                                isFlipping = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    isCardsFaceUp = false
+                                }
+                                
+                                // After cards are face down, get new hand and flip them up
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                    gameManager.getRandomHand()
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        isCardsFaceUp = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                        isFlipping = false
+                                    }
+                                }
+                            } else {
+                                // If no cards yet, just get new hand and show them
+                                isFlipping = true
                                 gameManager.getRandomHand()
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     isCardsFaceUp = true
@@ -135,46 +148,58 @@ struct ContentView: View {
                                     isFlipping = false
                                 }
                             }
-                        } else {
-                            // If no cards yet, just get new hand and show them
-                            isFlipping = true
-                            gameManager.getRandomHand()
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isCardsFaceUp = true
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                isFlipping = false
+                        }) {
+                            Text("Play")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.black)
+                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                )
+                        }
+                        .disabled(isFlipping)
+                        
+                        Button(action: {
+                            showingSolution = true
+                        }) {
+                            Text("Solve")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
+                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                )
+                        }
+                        .disabled(gameManager.currentHand == nil || isFlipping)
+                    }
+                    
+                    Button(action: {
+                        Task {
+                            await IconExporter.exportIcon()
+                            if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                                exportPath = docURL.path
+                                showingExportAlert = true
                             }
                         }
                     }) {
-                        Text("Play")
-                            .font(.system(size: 20, weight: .medium))
+                        Text("Export App Icon")
+                            .font(.system(size: 18, weight: .medium))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
-                            .frame(height: 50)
+                            .frame(height: 44)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.black)
+                                    .fill(Color.blue.opacity(0.9))
                                     .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                             )
                     }
-                    .disabled(isFlipping)
-                    
-                    Button(action: {
-                        showingSolution = true
-                    }) {
-                        Text("Solve")
-                            .font(.system(size: 20, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
-                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                            )
-                    }
-                    .disabled(gameManager.currentHand == nil || isFlipping)
+                    .hidden()
                 }
                 .padding(.horizontal, 32)
             }
@@ -191,6 +216,11 @@ struct ContentView: View {
         .onAppear {
             // Start with cards face down
             isCardsFaceUp = false
+        }
+        .alert("Icon Exported", isPresented: $showingExportAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("The app icon has been exported to:\n\(exportPath)")
         }
     }
 }

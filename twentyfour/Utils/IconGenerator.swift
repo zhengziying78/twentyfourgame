@@ -5,8 +5,8 @@ import UIKit
 
 // MARK: - Icon Theme
 struct IconTheme {
-    let softRed = Color(red: 0.75, green: 0.2, blue: 0.2)
-    let softBlack = Color(white: 0.2)
+    let softRed = Color(red: 0.87, green: 0.27, blue: 0.27)
+    let softBlack = Color(red: 0.2, green: 0.2, blue: 0.2)
     let textColor = Color.white
     
     static let `default` = IconTheme()
@@ -23,13 +23,15 @@ struct SuitConfig {
 struct IconGenerator: View {
     private let theme = IconTheme.default
     private let cornerRadius: CGFloat = 220
-    private let suitPadding: CGFloat = 80
-    private let fontSize: CGFloat = 300
+    private let suitPadding: CGFloat = 140
+    private let fontSize: CGFloat = 800
     
     var body: some View {
         ZStack {
-            GridBackground(backgroundColor: theme.softBlack)
+            // Just the colored grid background without suits
             SuitGrid(theme: theme)
+            
+            // The "24" text with color flipping
             CenterText(theme: theme, fontSize: fontSize)
         }
         .frame(width: 1024, height: 1024)
@@ -122,15 +124,36 @@ struct SuitCell: View {
     
     var body: some View {
         ZStack {
+            // Background color
             Rectangle()
                 .fill(config.background)
+            
+            // Suit symbol
             Image(systemName: config.suitImage)
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(config.suitColor)
+                .frame(width: config.suitImage == "suit.diamond.fill" ? 160 : 200)
                 .padding(80)
+                .offset(x: symbolOffset.width, y: symbolOffset.height)
         }
         .frame(width: 512, height: 512)
+    }
+    
+    // Calculate offset based on suit image
+    private var symbolOffset: CGSize {
+        switch config.suitImage {
+        case "suit.spade.fill":    // Top-left
+            return CGSize(width: -80, height: -80)
+        case "suit.heart.fill":    // Top-right
+            return CGSize(width: 80, height: -80)
+        case "suit.diamond.fill":  // Bottom-left
+            return CGSize(width: -80, height: 80)
+        case "suit.club.fill":     // Bottom-right
+            return CGSize(width: 80, height: 80)
+        default:
+            return CGSize.zero
+        }
     }
 }
 
@@ -141,8 +164,55 @@ struct CenterText: View {
     
     var body: some View {
         Text("24")
-            .font(.custom("KohinoorDevanagari-Light", size: fontSize))
-            .foregroundColor(theme.textColor)
+            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+            .foregroundStyle(.clear)
+            .overlay {
+                GeometryReader { geometry in
+                    ZStack {
+                        // Black text (appears over red areas)
+                        Text("24")
+                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+                            .foregroundStyle(theme.softBlack)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        // Top-left: Red bg
+                                        Rectangle().fill(theme.softRed)
+                                        // Top-right: Empty (black bg)
+                                        Rectangle().fill(.clear)
+                                    }
+                                    HStack(spacing: 0) {
+                                        // Bottom-left: Empty (black bg)
+                                        Rectangle().fill(.clear)
+                                        // Bottom-right: Red bg
+                                        Rectangle().fill(theme.softRed)
+                                    }
+                                }
+                            }
+                        
+                        // Red text (appears over black areas)
+                        Text("24")
+                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+                            .foregroundStyle(theme.softRed)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        // Top-left: Empty (red bg)
+                                        Rectangle().fill(.clear)
+                                        // Top-right: Black bg
+                                        Rectangle().fill(theme.softBlack)
+                                    }
+                                    HStack(spacing: 0) {
+                                        // Bottom-left: Black bg
+                                        Rectangle().fill(theme.softBlack)
+                                        // Bottom-right: Empty (red bg)
+                                        Rectangle().fill(.clear)
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
     }
 }
 

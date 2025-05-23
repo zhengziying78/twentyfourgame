@@ -141,7 +141,7 @@ struct CenterText: View {
     
     var body: some View {
         Text("24")
-            .font(.system(size: fontSize, weight: .semibold, design: .default))
+            .font(.custom("KohinoorDevanagari-Light", size: fontSize))
             .foregroundColor(theme.textColor)
     }
 }

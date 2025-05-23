@@ -59,6 +59,7 @@ struct ContentView: View {
             }
             .padding(.horizontal, 32)
             
+            /* Commented out: Icon Export functionality
             #if DEBUG
             // Temporary icon export button for testing
             VStack(spacing: 8) {
@@ -100,6 +101,7 @@ struct ContentView: View {
                 }
             }
             #endif
+            */
         }
         .alert("Solution", isPresented: $showingSolution) {
             Button("OK", role: .cancel) { }

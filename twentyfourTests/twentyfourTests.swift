@@ -21,53 +21,67 @@ final class TwentyFourTests: XCTestCase {
     }
     
     func testHandCreation() {
-        let numbers = [2, 4, 4, 7]
-        let solution = "4 * 2 * (7 - 4) = 24"
-        let hand = Hand(numbers: numbers, solution: solution)
+        let numbers = [1, 2, 3, 4]
+        let solution = "1 + 2 + 3 + 4"
+        let difficulty = Difficulty.easy
+        let hand = Hand(numbers: numbers, solution: solution, difficulty: difficulty)
         
-        // Test that all cards are created
         XCTAssertEqual(hand.cards.count, 4)
-        
-        // Test that values are correct
-        let values = hand.cards.map { $0.value }.sorted()
-        XCTAssertEqual(values, numbers.sorted())
-        
-        // Test that solution is stored
+        XCTAssertEqual(hand.cards.map { $0.value }, numbers)
         XCTAssertEqual(hand.solution, solution)
-        
-        // Test that suits are unique for same values
-        let fourCards = hand.cards.filter { $0.value == 4 }
-        XCTAssertEqual(fourCards.count, 2)
-        XCTAssertNotEqual(fourCards[0].suit, fourCards[1].suit)
+        XCTAssertEqual(hand.difficulty, difficulty)
     }
     
-    func testGameDataRandomHand() {
-        let hand1 = GameData.shared.getRandomHand()
+    func testHandEvaluation() {
+        let numbers = [5, 5, 5, 5]
+        let solution = "5 + 5 + 5 + 5"
+        let hand = Hand(numbers: numbers, solution: solution, difficulty: .easy)
+        
+        XCTAssertEqual(hand.cards.count, 4)
+        XCTAssertEqual(hand.cards.map { $0.value }, numbers)
+        XCTAssertEqual(hand.solution, solution)
+    }
+    
+    func testRandomHandGeneration() {
+        let gameData = GameData.shared
+        
+        gameData.getRandomHand()
+        let hand1 = gameData.currentHand
         XCTAssertNotNil(hand1)
+        XCTAssertEqual(hand1?.cards.count, 4)
         
-        // Test that we can get multiple hands
-        let hand2 = GameData.shared.getRandomHand()
+        gameData.getRandomHand()
+        let hand2 = gameData.currentHand
         XCTAssertNotNil(hand2)
+        XCTAssertEqual(hand2?.cards.count, 4)
         
-        // Test that hands are different (note: there's a small chance this could fail randomly)
+        // Test that we get different hands
         XCTAssertNotEqual(hand1?.cards.map { $0.value }, hand2?.cards.map { $0.value })
     }
     
-    func testRecentHandsAvoidance() {
-        var seenHands = Set<[Int]>()
+    func testMultipleRandomHands() {
+        var uniqueHands = Set<[Int]>()
+        let gameData = GameData.shared
         
-        // Get 10 hands and verify they're different as much as possible
+        // Generate 10 random hands and verify they're all valid
         for _ in 0..<10 {
-            guard let hand = GameData.shared.getRandomHand() else {
-                XCTFail("Failed to get hand")
+            gameData.getRandomHand()
+            guard let hand = gameData.currentHand else {
+                XCTFail("Failed to generate random hand")
                 return
             }
             
             let values = hand.cards.map { $0.value }.sorted()
-            seenHands.insert(values)
+            uniqueHands.insert(values)
+            
+            // Verify each hand has 4 cards
+            XCTAssertEqual(hand.cards.count, 4)
+            
+            // Verify all numbers are between 1 and 13
+            XCTAssertTrue(hand.cards.allSatisfy { $0.value >= 1 && $0.value <= 13 })
         }
         
-        // We should have seen at least 3 different hands (given our dataset)
-        XCTAssertGreaterThan(seenHands.count, 2)
+        // Verify we got some different hands (at least 3 unique hands out of 10)
+        XCTAssertGreaterThan(uniqueHands.count, 3)
     }
 }

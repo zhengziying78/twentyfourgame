@@ -80,7 +80,7 @@ struct SolutionOverlay: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 160)
+                .frame(height: 240)
                 
                 Spacer()
             }

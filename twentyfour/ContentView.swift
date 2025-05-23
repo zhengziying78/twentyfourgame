@@ -7,6 +7,7 @@ struct ContentView: View {
     @StateObject private var gameData = GameData.shared
     @State private var showingSolution = false
     @State private var isCardsFaceUp = false
+    @State private var isFlipping = false
     @State private var exportPath: String = ""
     
     private let columns = [
@@ -33,6 +34,7 @@ struct ContentView: View {
                 Button(action: {
                     // If we already have cards, flip them face down first
                     if gameData.currentHand != nil {
+                        isFlipping = true
                         withAnimation(.easeInOut(duration: 0.3)) {
                             isCardsFaceUp = false
                         }
@@ -43,12 +45,19 @@ struct ContentView: View {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isCardsFaceUp = true
                             }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                isFlipping = false
+                            }
                         }
                     } else {
                         // If no cards yet, just get new hand and show them
+                        isFlipping = true
                         gameData.getRandomHand()
                         withAnimation(.easeInOut(duration: 0.3)) {
                             isCardsFaceUp = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            isFlipping = false
                         }
                     }
                 }) {
@@ -63,6 +72,7 @@ struct ContentView: View {
                                 .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                         )
                 }
+                .disabled(isFlipping)
                 
                 Button(action: {
                     showingSolution = true
@@ -74,11 +84,11 @@ struct ContentView: View {
                         .frame(height: 50)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(gameData.currentHand != nil ? Color.red.opacity(0.9) : Color.gray)
+                                .fill(gameData.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
                                 .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                         )
                 }
-                .disabled(gameData.currentHand == nil)
+                .disabled(gameData.currentHand == nil || isFlipping)
             }
             .padding(.horizontal, 32)
             

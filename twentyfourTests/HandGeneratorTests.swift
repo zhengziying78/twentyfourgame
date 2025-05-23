@@ -31,27 +31,87 @@ class HandGeneratorTests: XCTestCase {
         // Try all permutations of the numbers
         let permutations = generatePermutations(nums)
         
+        // Helper function to count unique operators
+        func countOperators(_ expr: String) -> (total: Int, divideCount: Int, minusCount: Int) {
+            let divCount = expr.components(separatedBy: "÷").count - 1
+            let minCount = expr.components(separatedBy: "-").count - 1
+            let uniqueOps = Set(expr.filter { "+-×÷".contains($0) }).count
+            return (uniqueOps, divCount, minCount)
+        }
+        
+        // Helper function to score an expression (lower is better)
+        func scoreExpression(_ expr: String) -> Int {
+            let bracketCount = expr.components(separatedBy: "(").count - 1
+            let (uniqueOps, divCount, minCount) = countOperators(expr)
+            
+            // Scoring weights:
+            // - Each bracket: 2 points
+            // - Each unique operator type: 3 points
+            // - Each division: 4 points
+            // - Each subtraction: 3 points
+            return bracketCount * 2 + uniqueOps * 3 + divCount * 4 + minCount * 3
+        }
+        
+        var bestSolution: String? = nil
+        var bestScore = Int.max
+        
         // Try all operator combinations
         for n1 in permutations {
-            for op1 in operators {
-                for op2 in operators {
-                    for op3 in operators {
-                        // Try different parentheses placements
-                        let expressions = [
-                            "(\(n1[0]) \(op1) \(n1[1])) \(op2) (\(n1[2]) \(op3) \(n1[3]))",
-                            "((\(n1[0]) \(op1) \(n1[1])) \(op2) \(n1[2])) \(op3) \(n1[3])",
-                            "(\(n1[0]) \(op1) (\(n1[1]) \(op2) \(n1[2]))) \(op3) \(n1[3])",
-                            "\(n1[0]) \(op1) ((\(n1[1]) \(op2) \(n1[2])) \(op3) \(n1[3]))",
-                            "\(n1[0]) \(op1) (\(n1[1]) \(op2) (\(n1[2]) \(op3) \(n1[3])))",
-                            // Add more patterns to catch all possibilities
-                            "\(n1[0]) \(op1) \(n1[1]) \(op2) \(n1[2]) \(op3) \(n1[3])",
-                            "(\(n1[0]) \(op1) \(n1[1]) \(op2) \(n1[2])) \(op3) \(n1[3])",
-                            "\(n1[0]) \(op1) (\(n1[1]) \(op2) \(n1[2]) \(op3) \(n1[3]))"
-                        ]
-                        
-                        for expr in expressions {
-                            if solutionTester.testSolution(expr) {
-                                return expr
+            // Try simpler operations first
+            let operatorSets: [[String]] = [
+                // Level 1: Single operator type
+                ["×"], ["+"], ["-"], ["÷"],  // all possible single operators
+                
+                // Level 2: Two operator types (prioritize simpler combinations)
+                ["+", "-"],  // addition and subtraction
+                ["×", "+"],  // multiplication and addition
+                ["×", "-"],  // multiplication and subtraction
+                ["×", "÷"],  // multiplication and division
+                ["+", "÷"],  // addition and division
+                ["-", "÷"],  // subtraction and division
+                
+                // Level 3: Three operator types
+                ["×", "+", "-"],  // no division
+                ["+", "-", "÷"],  // no multiplication
+                ["×", "+", "÷"],  // no subtraction
+                ["×", "-", "÷"],  // no addition
+                
+                // Level 4: All operators
+                ["+", "-", "×", "÷"]
+            ]
+            
+            for operators in operatorSets {
+                for op1 in operators {
+                    for op2 in operators {
+                        for op3 in operators {
+                            // Try expressions in order of complexity
+                            let expressions = [
+                                // Level 1: No brackets
+                                "\(n1[0]) \(op1) \(n1[1]) \(op2) \(n1[2]) \(op3) \(n1[3])",
+                                
+                                // Level 2: One pair of brackets
+                                "(\(n1[0]) \(op1) \(n1[1])) \(op2) \(n1[2]) \(op3) \(n1[3])",
+                                "\(n1[0]) \(op1) (\(n1[1]) \(op2) \(n1[2])) \(op3) \(n1[3])",
+                                "\(n1[0]) \(op1) \(n1[1]) \(op2) (\(n1[2]) \(op3) \(n1[3]))",
+                                
+                                // Level 3: Two pairs of brackets
+                                "(\(n1[0]) \(op1) \(n1[1])) \(op2) (\(n1[2]) \(op3) \(n1[3]))",
+                                
+                                // Level 4: Nested brackets
+                                "((\(n1[0]) \(op1) \(n1[1])) \(op2) \(n1[2])) \(op3) \(n1[3])",
+                                "(\(n1[0]) \(op1) (\(n1[1]) \(op2) \(n1[2]))) \(op3) \(n1[3])",
+                                "\(n1[0]) \(op1) ((\(n1[1]) \(op2) \(n1[2])) \(op3) \(n1[3]))",
+                                "\(n1[0]) \(op1) (\(n1[1]) \(op2) (\(n1[2]) \(op3) \(n1[3])))"
+                            ]
+                            
+                            for expr in expressions {
+                                if solutionTester.testSolution(expr) {
+                                    let score = scoreExpression(expr)
+                                    if score < bestScore {
+                                        bestScore = score
+                                        bestSolution = expr
+                                    }
+                                }
                             }
                         }
                     }
@@ -59,7 +119,7 @@ class HandGeneratorTests: XCTestCase {
             }
         }
         
-        return nil
+        return bestSolution
     }
     
     // Generate all permutations of an array
@@ -92,22 +152,78 @@ class HandGeneratorTests: XCTestCase {
         // Count unique numbers
         let uniqueCount = Set(numbers).count
         
-        // Check for division operations
+        // Check for operations
         let hasDivision = solution.contains("÷")
+        let hasMultiplication = solution.contains("×")
+        let hasAddition = solution.contains("+")
+        let hasSubtraction = solution.contains("-")
+        
+        // Count number of each operation
+        let divisionCount = solution.components(separatedBy: "÷").count - 1
+        
+        // Count number of brackets
+        let bracketCount = solution.components(separatedBy: "(").count - 1
         
         // Check for nested parentheses
-        let nestedParentheses = solution.components(separatedBy: "(").count > 2
+        let nestedParentheses = bracketCount > 1
         
-        // Check for negative intermediates (rough heuristic)
+        // Check for repeated numbers
+        let hasRepeatedNumbers = uniqueCount < 4
+        
+        // Check for negative intermediates
         let potentialNegative = solution.contains(") -") || solution.contains("- (")
         
-        if hasDivision && nestedParentheses && potentialNegative {
+        // Check for simple patterns that make 0 or 1
+        let hasSimplification = solution.contains(" - ") && numbers.contains { n in
+            solution.contains("\(n) - \(n)")
+        } || solution.contains(" ÷ ") && numbers.contains { n in
+            solution.contains("\(n) ÷ \(n)")
+        }
+        
+        // Check for simple operation combinations
+        let onlyPlusAndMultiply = hasAddition && hasMultiplication && !hasSubtraction && !hasDivision
+        let onlyPlusAndMinus = hasAddition && hasSubtraction && !hasMultiplication && !hasDivision
+        
+        // Check for large intermediate results
+        func hasLargeIntermediate() -> Bool {
+            // Look for multiplication patterns that would result in large numbers
+            let parts = solution.components(separatedBy: CharacterSet(charactersIn: "+-×÷()"))
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { !$0.isEmpty }
+                .compactMap { Int($0) }
+            
+            // Check direct multiplications
+            if hasMultiplication {
+                for i in 0..<parts.count-1 {
+                    for j in i+1..<parts.count {
+                        if parts[i] * parts[j] > 30 {
+                            return true
+                        }
+                    }
+                }
+            }
+            
+            return false
+        }
+        
+        // Factors that make it hard
+        if (nestedParentheses && (hasDivision || potentialNegative)) ||
+           (divisionCount > 1) ||
+           (hasDivision && hasSubtraction && bracketCount > 1) ||
+           (hasRepeatedNumbers && (hasDivision || nestedParentheses)) ||
+           hasLargeIntermediate() {
             return .hard
-        } else if hasDivision || nestedParentheses || uniqueCount < 3 {
-            return .medium
-        } else {
+        }
+        
+        // Factors that make it easy
+        if (onlyPlusAndMultiply || onlyPlusAndMinus || hasSimplification || !hasDivision) &&
+           bracketCount == 0 &&
+           !hasRepeatedNumbers {
             return .easy
         }
+        
+        // Medium for everything else
+        return .medium
     }
     
     // Test to generate and verify all possible hands

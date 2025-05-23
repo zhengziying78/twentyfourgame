@@ -43,15 +43,15 @@ final class TwentyFourTests: XCTestCase {
     }
     
     func testRandomHandGeneration() {
-        let gameData = GameData.shared
+        let gameManager = GameManager.shared
         
-        gameData.getRandomHand()
-        let hand1 = gameData.currentHand
+        gameManager.getRandomHand()
+        let hand1 = gameManager.currentHand
         XCTAssertNotNil(hand1)
         XCTAssertEqual(hand1?.cards.count, 4)
         
-        gameData.getRandomHand()
-        let hand2 = gameData.currentHand
+        gameManager.getRandomHand()
+        let hand2 = gameManager.currentHand
         XCTAssertNotNil(hand2)
         XCTAssertEqual(hand2?.cards.count, 4)
         
@@ -61,12 +61,12 @@ final class TwentyFourTests: XCTestCase {
     
     func testMultipleRandomHands() {
         var uniqueHands = Set<[Int]>()
-        let gameData = GameData.shared
+        let gameManager = GameManager.shared
         
         // Generate 10 random hands and verify they're all valid
         for _ in 0..<10 {
-            gameData.getRandomHand()
-            guard let hand = gameData.currentHand else {
+            gameManager.getRandomHand()
+            guard let hand = gameManager.currentHand else {
                 XCTFail("Failed to generate random hand")
                 return
             }
@@ -84,4 +84,4 @@ final class TwentyFourTests: XCTestCase {
         // Verify we got some different hands (at least 3 unique hands out of 10)
         XCTAssertGreaterThan(uniqueHands.count, 3)
     }
-}
+} 

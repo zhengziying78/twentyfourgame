@@ -111,7 +111,7 @@ class HandSolutionTests: XCTestCase {
     }
     
     func testAllHandSolutions() {
-        for hand in GameData.shared.hands {
+        for hand in HandDataset.shared.hands {
             XCTAssertTrue(
                 testSolution(hand.solution),
                 "Solution '\(hand.solution)' for hand \(hand.cards.map { String($0.value) }.joined(separator: ",")) does not evaluate to 24"

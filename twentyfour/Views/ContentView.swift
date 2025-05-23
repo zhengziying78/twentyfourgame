@@ -89,7 +89,7 @@ struct SolutionOverlay: View {
 }
 
 struct ContentView: View {
-    @StateObject private var gameData = GameData.shared
+    @StateObject private var gameManager = GameManager.shared
     @State private var showingSolution = false
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
@@ -106,7 +106,7 @@ struct ContentView: View {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(0..<4) { index in
                         CardView(
-                            card: gameData.currentHand?.cards[safe: index],
+                            card: gameManager.currentHand?.cards[safe: index],
                             isFaceUp: isCardsFaceUp
                         )
                         .frame(maxWidth: .infinity)
@@ -119,7 +119,7 @@ struct ContentView: View {
                 HStack(spacing: 20) {
                     Button(action: {
                         // If we already have cards, flip them face down first
-                        if gameData.currentHand != nil {
+                        if gameManager.currentHand != nil {
                             isFlipping = true
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isCardsFaceUp = false
@@ -127,7 +127,7 @@ struct ContentView: View {
                             
                             // After cards are face down, get new hand and flip them up
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                gameData.getRandomHand()
+                                gameManager.getRandomHand()
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     isCardsFaceUp = true
                                 }
@@ -138,7 +138,7 @@ struct ContentView: View {
                         } else {
                             // If no cards yet, just get new hand and show them
                             isFlipping = true
-                            gameData.getRandomHand()
+                            gameManager.getRandomHand()
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isCardsFaceUp = true
                             }
@@ -170,11 +170,11 @@ struct ContentView: View {
                             .frame(height: 50)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(gameData.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
+                                    .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
                                     .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                             )
                     }
-                    .disabled(gameData.currentHand == nil || isFlipping)
+                    .disabled(gameManager.currentHand == nil || isFlipping)
                 }
                 .padding(.horizontal, 32)
             }
@@ -182,7 +182,7 @@ struct ContentView: View {
             // Solution overlay
             if showingSolution {
                 SolutionOverlay(
-                    solution: gameData.formattedSolution,
+                    solution: gameManager.formattedSolution,
                     onDismiss: { showingSolution = false }
                 )
                 .transition(.opacity)

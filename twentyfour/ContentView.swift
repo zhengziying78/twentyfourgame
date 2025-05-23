@@ -6,6 +6,7 @@ import AppKit
 struct ContentView: View {
     @StateObject private var gameData = GameData.shared
     @State private var showingSolution = false
+    @State private var isCardsFaceUp = false
     @State private var exportPath: String = ""
     
     private let columns = [
@@ -15,19 +16,41 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 32) {
-            LazyVGrid(columns: columns, spacing: 16) {
+            LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(0..<4) { index in
                     CardView(
                         card: gameData.currentHand?.cards[safe: index],
-                        isFaceUp: gameData.currentHand != nil
+                        isFaceUp: isCardsFaceUp
                     )
+                    .frame(maxWidth: .infinity)
+                    .frame(height: UIScreen.main.bounds.width * 0.56)
                 }
             }
-            .padding()
+            .padding(.horizontal, 24)
+            .padding(.vertical)
             
             HStack(spacing: 20) {
                 Button(action: {
-                    gameData.getRandomHand()
+                    // If we already have cards, flip them face down first
+                    if gameData.currentHand != nil {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            isCardsFaceUp = false
+                        }
+                        
+                        // After cards are face down, get new hand and flip them up
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            gameData.getRandomHand()
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isCardsFaceUp = true
+                            }
+                        }
+                    } else {
+                        // If no cards yet, just get new hand and show them
+                        gameData.getRandomHand()
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            isCardsFaceUp = true
+                        }
+                    }
                 }) {
                     Text("Play")
                         .font(.system(size: 20, weight: .medium))
@@ -107,6 +130,10 @@ struct ContentView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text(gameData.currentHand?.solution ?? "")
+        }
+        .onAppear {
+            // Start with cards face down
+            isCardsFaceUp = false
         }
     }
 }

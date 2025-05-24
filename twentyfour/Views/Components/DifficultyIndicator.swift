@@ -3,14 +3,23 @@ import SwiftUI
 struct DifficultyIndicator: View {
     let difficulty: Difficulty
     let handNumber: Int
+    @ObservedObject private var settings = SettingsPreferences.shared
     
     private var difficultyText: String {
+        let label = LocalizationResource.string(for: .difficultyLabel, language: settings.language)
+        let level = difficultyLevelText(for: difficulty)
+        return label + level
+    }
+    
+    private func difficultyLevelText(for difficulty: Difficulty) -> String {
+        let key: LocalizedKey
         switch difficulty {
-        case .easy: return "Difficulty: Easy"
-        case .medium: return "Difficulty: Medium"
-        case .hard: return "Difficulty: Hard"
-        case .hardest: return "Difficulty: Hardest"
+        case .easy: key = .difficultyEasy
+        case .medium: key = .difficultyMedium
+        case .hard: key = .difficultyHard
+        case .hardest: key = .difficultyHardest
         }
+        return LocalizationResource.string(for: key, language: settings.language)
     }
     
     private var filledStars: Int {
@@ -24,7 +33,7 @@ struct DifficultyIndicator: View {
     
     var body: some View {
         VStack(spacing: 4) {
-            Text("No. \(handNumber)")
+            Text("No. \(String(handNumber))")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundColor(.black.opacity(0.8))
             

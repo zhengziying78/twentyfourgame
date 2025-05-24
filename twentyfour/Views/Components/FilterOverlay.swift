@@ -1,8 +1,20 @@
 import SwiftUI
 
 struct FilterOverlay: View {
-    @ObservedObject private var preferences = FilterPreferences.shared
     let onDismiss: () -> Void
+    @ObservedObject private var preferences = FilterPreferences.shared
+    @ObservedObject private var settings = SettingsPreferences.shared
+    
+    private func difficultyText(_ difficulty: Difficulty) -> String {
+        let key: LocalizedKey
+        switch difficulty {
+        case .easy: key = .difficultyEasy
+        case .medium: key = .difficultyMedium
+        case .hard: key = .difficultyHard
+        case .hardest: key = .difficultyHardest
+        }
+        return LocalizationResource.string(for: key, language: settings.language)
+    }
     
     var body: some View {
         ZStack {
@@ -22,7 +34,7 @@ struct FilterOverlay: View {
                     Color.white.opacity(0.95)
                     
                     VStack(spacing: 20) {
-                        Text("Select Difficulties")
+                        Text(LocalizationResource.string(for: .selectDifficulties, language: settings.language))
                             .font(.system(size: 20, weight: .medium))
                             .foregroundColor(.black)
                             .padding(.top, 24)
@@ -76,15 +88,6 @@ struct FilterOverlay: View {
                 
                 Spacer()
             }
-        }
-    }
-    
-    private func difficultyText(_ difficulty: Difficulty) -> String {
-        switch difficulty {
-        case .easy: return "Easy"
-        case .medium: return "Medium"
-        case .hard: return "Hard"
-        case .hardest: return "Hardest"
         }
     }
 } 

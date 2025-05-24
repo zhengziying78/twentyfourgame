@@ -183,7 +183,7 @@ struct ContentView: View {
                                     }
                                 }
                             }) {
-                                Text(LocalizedStrings.playButtonText(settings.language))
+                                Text(LocalizationResource.string(for: .playButton, language: settings.language))
                                     .font(.system(size: 20, weight: .medium))
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
@@ -199,7 +199,7 @@ struct ContentView: View {
                             Button(action: {
                                 showingSolution = true
                             }) {
-                                Text(LocalizedStrings.solveButtonText(settings.language))
+                                Text(LocalizationResource.string(for: .solveButton, language: settings.language))
                                     .font(.system(size: 20, weight: .medium))
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)

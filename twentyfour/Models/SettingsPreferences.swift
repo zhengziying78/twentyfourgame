@@ -26,22 +26,6 @@ enum Language: String, CaseIterable, Identifiable {
     }
 }
 
-struct LocalizedStrings {
-    static func playButtonText(_ language: Language) -> String {
-        switch language.effectiveLanguage {
-        case .chinese: return "换一组"
-        default: return "Play"
-        }
-    }
-    
-    static func solveButtonText(_ language: Language) -> String {
-        switch language.effectiveLanguage {
-        case .chinese: return "看答案"
-        default: return "Solve"
-        }
-    }
-}
-
 class SettingsPreferences: ObservableObject {
     static let shared = SettingsPreferences()
     

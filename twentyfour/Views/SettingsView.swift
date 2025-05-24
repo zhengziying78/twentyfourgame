@@ -8,7 +8,7 @@ struct SettingsView: View {
         NavigationView {
             List {
                 Section {
-                    Picker("Language", selection: Binding(
+                    Picker(LocalizationResource.string(for: .settingsLanguage, language: preferences.language), selection: Binding(
                         get: { preferences.language },
                         set: { preferences.setLanguage($0) }
                     )) {
@@ -18,10 +18,10 @@ struct SettingsView: View {
                         }
                     }
                 } header: {
-                    Text("General")
+                    Text(LocalizationResource.string(for: .settingsGeneral, language: preferences.language))
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -30,7 +30,7 @@ struct SettingsView: View {
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                            Text("Back")
+                            Text(LocalizationResource.string(for: .backButton, language: preferences.language))
                         }
                     }
                 }

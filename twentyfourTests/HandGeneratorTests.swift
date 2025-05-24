@@ -147,85 +147,6 @@ class HandGeneratorTests: XCTestCase {
         return result
     }
     
-    // Assess difficulty of a solution
-    func assessDifficulty(_ numbers: [Int], _ solution: String) -> Difficulty {
-        // Count unique numbers
-        let uniqueCount = Set(numbers).count
-        
-        // Check for operations
-        let hasDivision = solution.contains("÷")
-        let hasMultiplication = solution.contains("×")
-        let hasAddition = solution.contains("+")
-        let hasSubtraction = solution.contains("-")
-        
-        // Count number of each operation
-        let divisionCount = solution.components(separatedBy: "÷").count - 1
-        
-        // Count number of brackets
-        let bracketCount = solution.components(separatedBy: "(").count - 1
-        
-        // Check for nested parentheses
-        let nestedParentheses = bracketCount > 1
-        
-        // Check for repeated numbers
-        let hasRepeatedNumbers = uniqueCount < 4
-        
-        // Check for negative intermediates
-        let potentialNegative = solution.contains(") -") || solution.contains("- (")
-        
-        // Check for simple patterns that make 0 or 1
-        let hasSimplification = solution.contains(" - ") && numbers.contains { n in
-            solution.contains("\(n) - \(n)")
-        } || solution.contains(" ÷ ") && numbers.contains { n in
-            solution.contains("\(n) ÷ \(n)")
-        }
-        
-        // Check for simple operation combinations
-        let onlyPlusAndMultiply = hasAddition && hasMultiplication && !hasSubtraction && !hasDivision
-        let onlyPlusAndMinus = hasAddition && hasSubtraction && !hasMultiplication && !hasDivision
-        
-        // Check for large intermediate results
-        func hasLargeIntermediate() -> Bool {
-            // Look for multiplication patterns that would result in large numbers
-            let parts = solution.components(separatedBy: CharacterSet(charactersIn: "+-×÷()"))
-                .map { $0.trimmingCharacters(in: .whitespaces) }
-                .filter { !$0.isEmpty }
-                .compactMap { Int($0) }
-            
-            // Check direct multiplications
-            if hasMultiplication {
-                for i in 0..<parts.count-1 {
-                    for j in i+1..<parts.count {
-                        if parts[i] * parts[j] > 30 {
-                            return true
-                        }
-                    }
-                }
-            }
-            
-            return false
-        }
-        
-        // Factors that make it hard
-        if (nestedParentheses && (hasDivision || potentialNegative)) ||
-           (divisionCount > 1) ||
-           (hasDivision && hasSubtraction && bracketCount > 1) ||
-           (hasRepeatedNumbers && (hasDivision || nestedParentheses)) ||
-           hasLargeIntermediate() {
-            return .hard
-        }
-        
-        // Factors that make it easy
-        if (onlyPlusAndMultiply || onlyPlusAndMinus || hasSimplification || !hasDivision) &&
-           bracketCount == 0 &&
-           !hasRepeatedNumbers {
-            return .easy
-        }
-        
-        // Medium for everything else
-        return .medium
-    }
-    
     // Test to generate and verify all possible hands
     func testGenerateAllHands() {
         var validHands: [(numbers: [Int], solution: String)] = []
@@ -263,8 +184,7 @@ class HandGeneratorTests: XCTestCase {
         print("\nFound \(sortedHands.count) unique valid hands!")
         print("\nlet dataset: [(numbers: [Int], solution: String, difficulty: Difficulty)] = [")
         for hand in sortedHands {
-            let difficulty = assessDifficulty(hand.numbers, hand.solution)
-            print("    (\(hand.numbers), \"\(hand.solution)\", .\(difficulty)),")
+            print("    (\(hand.numbers), \"\(hand.solution)\", .easy),")
         }
         print("]")
     }

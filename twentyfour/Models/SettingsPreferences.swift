@@ -14,6 +14,32 @@ enum Language: String, CaseIterable, Identifiable {
         case .chinese: return "中文"
         }
     }
+    
+    var effectiveLanguage: Language {
+        if self == .auto {
+            // Check system language
+            let preferredLanguages = Locale.preferredLanguages
+            let isChineseSystem = preferredLanguages.first?.contains("zh") == true
+            return isChineseSystem ? .chinese : .english
+        }
+        return self
+    }
+}
+
+struct LocalizedStrings {
+    static func playButtonText(_ language: Language) -> String {
+        switch language.effectiveLanguage {
+        case .chinese: return "换一组"
+        default: return "Play"
+        }
+    }
+    
+    static func solveButtonText(_ language: Language) -> String {
+        switch language.effectiveLanguage {
+        case .chinese: return "看答案"
+        default: return "Solve"
+        }
+    }
 }
 
 class SettingsPreferences: ObservableObject {

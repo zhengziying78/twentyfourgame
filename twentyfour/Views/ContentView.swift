@@ -90,6 +90,7 @@ struct SolutionOverlay: View {
 
 struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
+    @StateObject private var settings = SettingsPreferences.shared
     @State private var showingSolution = false
     @State private var showingFilter = false
     @State private var showingSettings = false
@@ -182,7 +183,7 @@ struct ContentView: View {
                                     }
                                 }
                             }) {
-                                Text("Play")
+                                Text(LocalizedStrings.playButtonText(settings.language))
                                     .font(.system(size: 20, weight: .medium))
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
@@ -198,7 +199,7 @@ struct ContentView: View {
                             Button(action: {
                                 showingSolution = true
                             }) {
-                                Text("Solve")
+                                Text(LocalizedStrings.solveButtonText(settings.language))
                                     .font(.system(size: 20, weight: .medium))
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)

@@ -91,6 +91,7 @@ struct SolutionOverlay: View {
 struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
     @State private var showingSolution = false
+    @State private var showingFilter = false
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
     @State private var exportPath: String = ""
@@ -104,7 +105,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                VStack(spacing: 32) {
+                VStack(spacing: 16) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<4) { index in
                             CardView(
@@ -243,16 +244,23 @@ struct ContentView: View {
                     )
                     .transition(.opacity)
                 }
+                
+                // Filter overlay
+                if showingFilter {
+                    FilterOverlay(onDismiss: { showingFilter = false })
+                        .transition(.opacity)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 16) {
                         Button(action: {
-                            // Filter action will be implemented later
+                            showingFilter = true
                         }) {
                             Image(systemName: "line.3.horizontal.decrease")
                                 .font(.system(size: 20))
                         }
+                        .disabled(showingSolution)
                         
                         Button(action: {
                             // Settings action will be implemented later
@@ -260,6 +268,7 @@ struct ContentView: View {
                             Image(systemName: "gearshape")
                                 .font(.system(size: 20))
                         }
+                        .disabled(showingSolution)
                     }
                 }
             }

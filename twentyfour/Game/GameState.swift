@@ -6,16 +6,21 @@ class GameState: ObservableObject {
     @Published var currentHandIndex: Int?
     private var recentHands: [Hand] = []
     private let maxRecentHands = 5
+    private let preferences = FilterPreferences.shared
     
     func getRandomHand(from hands: [Hand]) {
         guard !hands.isEmpty else { return }
         
-        var availableHands = hands.filter { hand in
+        // Filter hands by selected difficulties
+        let filteredHands = hands.filter { preferences.selectedDifficulties.contains($0.difficulty) }
+        guard !filteredHands.isEmpty else { return }
+        
+        var availableHands = filteredHands.filter { hand in
             !recentHands.contains(hand)
         }
         
         if availableHands.isEmpty {
-            availableHands = hands
+            availableHands = filteredHands
             recentHands.removeAll()
         }
         

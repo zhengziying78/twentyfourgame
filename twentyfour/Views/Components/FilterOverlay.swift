@@ -39,26 +39,29 @@ struct FilterOverlay: View {
                             .foregroundColor(.black)
                             .padding(.top, 24)
                         
-                        VStack(alignment: .leading, spacing: 16) {
-                            ForEach(Difficulty.allCases, id: \.self) { difficulty in
-                                Button(action: {
-                                    preferences.toggleDifficulty(difficulty)
-                                }) {
-                                    HStack {
-                                        Image(systemName: preferences.selectedDifficulties.contains(difficulty) ? "checkmark.square.fill" : "square")
-                                            .foregroundColor(preferences.selectedDifficulties.contains(difficulty) ? .blue : .gray)
-                                            .font(.system(size: 20))
-                                        
-                                        Text(difficultyText(difficulty))
-                                            .font(.system(size: 18))
-                                            .foregroundColor(.black)
-                                        
-                                        Spacer()
+                        // Center the list with a fixed width
+                        HStack {
+                            Spacer()
+                            VStack(alignment: .leading, spacing: 16) {
+                                ForEach(Difficulty.allCases, id: \.self) { difficulty in
+                                    Button(action: {
+                                        preferences.toggleDifficulty(difficulty)
+                                    }) {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: preferences.selectedDifficulties.contains(difficulty) ? "checkmark.square.fill" : "square")
+                                                .foregroundColor(preferences.selectedDifficulties.contains(difficulty) ? .blue : .gray)
+                                                .font(.system(size: 20))
+                                            
+                                            Text(difficultyText(difficulty))
+                                                .font(.system(size: 18))
+                                                .foregroundColor(.black)
+                                        }
+                                        .frame(width: 160, alignment: .leading)
                                     }
                                 }
                             }
+                            Spacer()
                         }
-                        .padding(.horizontal, 32)
                         
                         Spacer()
                     }

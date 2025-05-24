@@ -1,0 +1,40 @@
+import SwiftUI
+
+struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var preferences = SettingsPreferences.shared
+    
+    var body: some View {
+        NavigationView {
+            List {
+                Section {
+                    Picker("Language", selection: Binding(
+                        get: { preferences.language },
+                        set: { preferences.setLanguage($0) }
+                    )) {
+                        ForEach(Language.allCases) { language in
+                            Text(language.displayName)
+                                .tag(language)
+                        }
+                    }
+                } header: {
+                    Text("General")
+                }
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                    }
+                }
+            }
+        }
+    }
+} 

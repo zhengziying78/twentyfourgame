@@ -92,6 +92,7 @@ struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
     @State private var showingSolution = false
     @State private var showingFilter = false
+    @State private var showingSettings = false
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
     @State private var exportPath: String = ""
@@ -263,7 +264,7 @@ struct ContentView: View {
                         .disabled(showingSolution)
                         
                         Button(action: {
-                            // Settings action will be implemented later
+                            showingSettings = true
                         }) {
                             Image(systemName: "gearshape")
                                 .font(.system(size: 20))
@@ -271,6 +272,9 @@ struct ContentView: View {
                         .disabled(showingSolution)
                     }
                 }
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
             .onAppear {
                 // Start with cards face down

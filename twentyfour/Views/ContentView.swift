@@ -102,33 +102,75 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        ZStack {
-            VStack(spacing: 32) {
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(0..<4) { index in
-                        CardView(
-                            card: gameManager.currentHand?.cards[safe: index],
-                            isFaceUp: isCardsFaceUp
-                        )
-                        .frame(maxWidth: .infinity)
-                        .frame(height: UIScreen.main.bounds.width * 0.56)
+        NavigationView {
+            ZStack {
+                VStack(spacing: 32) {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(0..<4) { index in
+                            CardView(
+                                card: gameManager.currentHand?.cards[safe: index],
+                                isFaceUp: isCardsFaceUp
+                            )
+                            .frame(maxWidth: .infinity)
+                            .frame(height: UIScreen.main.bounds.width * 0.56)
+                        }
                     }
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical)
-                
-                VStack(spacing: 16) {
-                    HStack(spacing: 20) {
-                        Button(action: {
-                            // If we already have cards, flip them face down first
-                            if gameManager.currentHand != nil {
-                                isFlipping = true
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isCardsFaceUp = false
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 8)
+                    
+                    // Always show a container for the difficulty indicator
+                    if let currentHand = gameManager.currentHand,
+                       let handNumber = gameManager.currentHandNumber {
+                        DifficultyIndicator(
+                            difficulty: currentHand.difficulty,
+                            handNumber: handNumber
+                        )
+                        .opacity(isCardsFaceUp ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.3), value: isCardsFaceUp)
+                    } else {
+                        // Invisible placeholder with the same size as DifficultyIndicator
+                        VStack(spacing: 4) {  // Match DifficultyIndicator spacing
+                            Text("No. 1")
+                                .font(.system(size: 16, weight: .medium))
+                            HStack(spacing: 8) {
+                                Text("Difficulty: Easy")
+                                    .font(.system(size: 16, weight: .medium))
+                                HStack(spacing: 2) {
+                                    ForEach(0..<4) { _ in
+                                        Image(systemName: "star")
+                                            .font(.system(size: 12))
+                                    }
                                 }
-                                
-                                // After cards are face down, get new hand and flip them up
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            }
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)  // Match DifficultyIndicator padding
+                        .opacity(0)
+                    }
+                    
+                    VStack(spacing: 16) {
+                        HStack(spacing: 20) {
+                            Button(action: {
+                                // If we already have cards, flip them face down first
+                                if gameManager.currentHand != nil {
+                                    isFlipping = true
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        isCardsFaceUp = false
+                                    }
+                                    
+                                    // After cards are face down, get new hand and flip them up
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                        gameManager.getRandomHand()
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            isCardsFaceUp = true
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                            isFlipping = false
+                                        }
+                                    }
+                                } else {
+                                    // If no cards yet, just get new hand and show them
+                                    isFlipping = true
                                     gameManager.getRandomHand()
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         isCardsFaceUp = true
@@ -137,90 +179,99 @@ struct ContentView: View {
                                         isFlipping = false
                                     }
                                 }
-                            } else {
-                                // If no cards yet, just get new hand and show them
-                                isFlipping = true
-                                gameManager.getRandomHand()
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isCardsFaceUp = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                    isFlipping = false
-                                }
+                            }) {
+                                Text("Play")
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 50)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color.black)
+                                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                    )
                             }
-                        }) {
-                            Text("Play")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.black)
-                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                )
+                            .disabled(isFlipping)
+                            
+                            Button(action: {
+                                showingSolution = true
+                            }) {
+                                Text("Solve")
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 50)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
+                                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                    )
+                            }
+                            .disabled(gameManager.currentHand == nil || isFlipping)
                         }
-                        .disabled(isFlipping)
                         
                         Button(action: {
-                            showingSolution = true
+                            Task {
+                                await IconExporter.exportIcon()
+                                if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                                    exportPath = docURL.path
+                                    showingExportAlert = true
+                                }
+                            }
                         }) {
-                            Text("Solve")
-                                .font(.system(size: 20, weight: .medium))
+                            Text("Export App Icon")
+                                .font(.system(size: 18, weight: .medium))
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
-                                .frame(height: 50)
+                                .frame(height: 44)
                                 .background(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
+                                        .fill(Color.blue.opacity(0.9))
                                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                                 )
                         }
-                        .disabled(gameManager.currentHand == nil || isFlipping)
+                        .hidden()
                     }
-                    
-                    Button(action: {
-                        Task {
-                            await IconExporter.exportIcon()
-                            if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                                exportPath = docURL.path
-                                showingExportAlert = true
-                            }
-                        }
-                    }) {
-                        Text("Export App Icon")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 44)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.blue.opacity(0.9))
-                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                            )
-                    }
-                    .hidden()
+                    .padding(.horizontal, 32)
                 }
-                .padding(.horizontal, 32)
+                
+                // Solution overlay
+                if showingSolution {
+                    SolutionOverlay(
+                        solution: gameManager.formattedSolution,
+                        onDismiss: { showingSolution = false }
+                    )
+                    .transition(.opacity)
+                }
             }
-            
-            // Solution overlay
-            if showingSolution {
-                SolutionOverlay(
-                    solution: gameManager.formattedSolution,
-                    onDismiss: { showingSolution = false }
-                )
-                .transition(.opacity)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack(spacing: 16) {
+                        Button(action: {
+                            // Filter action will be implemented later
+                        }) {
+                            Image(systemName: "line.3.horizontal.decrease")
+                                .font(.system(size: 20))
+                        }
+                        
+                        Button(action: {
+                            // Settings action will be implemented later
+                        }) {
+                            Image(systemName: "gearshape")
+                                .font(.system(size: 20))
+                        }
+                    }
+                }
             }
-        }
-        .onAppear {
-            // Start with cards face down
-            isCardsFaceUp = false
-        }
-        .alert("Icon Exported", isPresented: $showingExportAlert) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text("The app icon has been exported to:\n\(exportPath)")
+            .onAppear {
+                // Start with cards face down
+                isCardsFaceUp = false
+            }
+            .alert("Icon Exported", isPresented: $showingExportAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("The app icon has been exported to:\n\(exportPath)")
+            }
         }
     }
 }

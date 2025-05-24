@@ -3,6 +3,7 @@ import SwiftUI
 
 class GameState: ObservableObject {
     @Published var currentHand: Hand?
+    @Published var currentHandIndex: Int?
     private var recentHands: [Hand] = []
     private let maxRecentHands = 5
     
@@ -18,14 +19,17 @@ class GameState: ObservableObject {
             recentHands.removeAll()
         }
         
-        let hand = availableHands.randomElement()!
-        recentHands.append(hand)
-        
-        if recentHands.count > maxRecentHands {
-            recentHands.removeFirst()
+        if let randomIndex = availableHands.indices.randomElement() {
+            let hand = availableHands[randomIndex]
+            recentHands.append(hand)
+            
+            if recentHands.count > maxRecentHands {
+                recentHands.removeFirst()
+            }
+            
+            currentHand = hand
+            currentHandIndex = hands.firstIndex(where: { $0.cards.map { $0.value }.sorted() == hand.cards.map { $0.value }.sorted() })
         }
-        
-        currentHand = hand
     }
     
     var formattedSolution: String {

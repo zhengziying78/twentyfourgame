@@ -6,8 +6,12 @@ struct CardBack: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Base color
-                colorSchemeManager.currentScheme.primary
+                // Card background and border
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(colorSchemeManager.currentScheme.primary)
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.black.opacity(0.15))
                 
                 // Simple block pattern
                 VStack(spacing: 0) {
@@ -26,9 +30,9 @@ struct CardBack: View {
                         }
                     }
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .animation(.easeInOut(duration: 0.3), value: colorSchemeManager.currentScheme)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 } 

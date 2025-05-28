@@ -164,7 +164,7 @@ struct ContentView: View {
                     
                     // Middle part - Cards and difficulty indicator
                     VStack(spacing: 24) {
-                        // Add spacing to move content down
+                        // Fixed spacing at top
                         Spacer()
                             .frame(height: 20)
                         
@@ -180,32 +180,21 @@ struct ContentView: View {
                         }
                         .padding(.horizontal, 28)
                         
-                        // Always show a container for the difficulty indicator
-                        if let currentHand = gameManager.currentHand {
-                            DifficultyIndicator(
-                                difficulty: currentHand.difficulty
-                            )
-                            .opacity(isCardsFaceUp ? 1 : 0)
-                            .animation(.easeInOut(duration: 0.3), value: isCardsFaceUp)
-                        } else {
-                            // Invisible placeholder with the same size as DifficultyIndicator
-                            HStack(spacing: 8) {
-                                Text("Difficulty: Easy")
-                                    .font(.system(size: 16, weight: .medium))
-                                HStack(spacing: 2) {
-                                    ForEach(0..<4) { _ in
-                                        Image(systemName: "star")
-                                            .font(.system(size: 12))
-                                    }
-                                }
+                        // Fixed-height container for difficulty indicator
+                        VStack {
+                            if let currentHand = gameManager.currentHand {
+                                DifficultyIndicator(
+                                    difficulty: currentHand.difficulty
+                                )
+                                .opacity(isCardsFaceUp ? 1 : 0)
+                                .animation(.easeInOut(duration: 0.3), value: isCardsFaceUp)
                             }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .opacity(0)
                         }
+                        .frame(height: 40) // Fixed height that matches DifficultyIndicator
                         
-                        Spacer(minLength: 0)
-                            .layoutPriority(-1) // Lower priority means this Spacer will be compressed first
+                        // Fixed spacing at bottom
+                        Spacer()
+                            .frame(height: 20)
                     }
                     .frame(maxHeight: .infinity)
                     .background(Color.white)

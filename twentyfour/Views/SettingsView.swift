@@ -30,6 +30,8 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var preferences = SettingsPreferences.shared
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
+    @State private var showingExportAlert = false
+    @State private var exportPath = ""
     
     var body: some View {
         NavigationView {
@@ -54,6 +56,9 @@ struct SettingsView: View {
                     ForEach(ColorScheme.allCases) { scheme in
                         Button(action: {
                             colorSchemeManager.setScheme(scheme)
+                            if AppIconManager.supportsAlternateIcons {
+                                AppIconManager.changeAppIcon(to: scheme)
+                            }
                         }) {
                             ColorSchemeRow(
                                 scheme: scheme,
@@ -62,12 +67,40 @@ struct SettingsView: View {
                         }
                         .foregroundColor(.primary)
                     }
+                    
+                    #if DEBUG
+                    Button(action: {
+                        Task {
+                            await IconGenerator.exportAllIcons()
+                            await MainActor.run {
+                                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                                exportPath = documentsDirectory.path
+                                showingExportAlert = true
+                            }
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                            VStack(alignment: .leading) {
+                                Text("Export All App Icons")
+                                Text("Generates icons for all color schemes")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    #endif
                 } header: {
                     Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
                 }
             }
             .navigationTitle(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
             .navigationBarTitleDisplayMode(.large)
+            .alert("Icons Exported", isPresented: $showingExportAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("All app icons have been exported to:\n\(exportPath)")
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -82,4 +115,9 @@ struct SettingsView: View {
             }
         }
     }
+}
+
+// MARK: - Preview
+#Preview {
+    SettingsView()
 } 

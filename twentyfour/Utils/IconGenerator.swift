@@ -5,11 +5,15 @@ import UIKit
 
 // MARK: - Icon Theme
 struct IconTheme {
-    let softRed = Color(red: 0.87, green: 0.27, blue: 0.27)
-    let softBlack = Color(red: 0.2, green: 0.2, blue: 0.2)
-    let textColor = Color.white
+    let primary: Color
+    let secondary: Color
+    let textColor: Color
     
-    static let `default` = IconTheme()
+    init(scheme: ColorScheme) {
+        self.primary = scheme.primary
+        self.secondary = scheme.secondary
+        self.textColor = scheme.textAndIcon
+    }
 }
 
 // MARK: - Card Suit Configuration
@@ -19,10 +23,37 @@ struct SuitConfig {
     let suitColor: Color
 }
 
+// MARK: - App Icon Manager
+enum AppIconManager {
+    static func changeAppIcon(to scheme: ColorScheme) {
+        let iconName = scheme.rawValue.lowercased()
+        
+        // If we want to reset to primary icon, pass nil
+        let targetIconName = iconName == "classic" ? nil : iconName
+        
+        Task { @MainActor in
+            do {
+                try await UIApplication.shared.setAlternateIconName(targetIconName)
+                print("✅ Successfully changed app icon to: \(iconName)")
+            } catch {
+                print("❌ Failed to change app icon: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    static var supportsAlternateIcons: Bool {
+        UIApplication.shared.supportsAlternateIcons
+    }
+}
+
 // MARK: - Icon Generator
 struct IconGenerator: View {
-    private let theme = IconTheme.default
+    let scheme: ColorScheme
     private let fontSize: CGFloat = 800
+    
+    private var theme: IconTheme {
+        IconTheme(scheme: scheme)
+    }
     
     var body: some View {
         ZStack {
@@ -35,43 +66,43 @@ struct IconGenerator: View {
                 .foregroundStyle(.clear)
                 .overlay {
                     ZStack {
-                        // Black text (appears over red areas)
+                        // Primary text (appears over secondary areas)
                         Text("24")
                             .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
-                            .foregroundStyle(theme.softBlack)
+                            .foregroundStyle(theme.primary)
                             .mask {
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {
-                                        // Top-left: Red bg
-                                        Rectangle().fill(theme.softRed)
-                                        // Top-right: Empty (black bg)
+                                        // Top-left: Secondary bg
+                                        Rectangle().fill(theme.secondary)
+                                        // Top-right: Empty (primary bg)
                                         Rectangle().fill(.clear)
                                     }
                                     HStack(spacing: 0) {
-                                        // Bottom-left: Empty (black bg)
+                                        // Bottom-left: Empty (primary bg)
                                         Rectangle().fill(.clear)
-                                        // Bottom-right: Red bg
-                                        Rectangle().fill(theme.softRed)
+                                        // Bottom-right: Secondary bg
+                                        Rectangle().fill(theme.secondary)
                                     }
                                 }
                             }
                         
-                        // Red text (appears over black areas)
+                        // Secondary text (appears over primary areas)
                         Text("24")
                             .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
-                            .foregroundStyle(theme.softRed)
+                            .foregroundStyle(theme.secondary)
                             .mask {
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {
-                                        // Top-left: Empty (red bg)
+                                        // Top-left: Empty (secondary bg)
                                         Rectangle().fill(.clear)
-                                        // Top-right: Black bg
-                                        Rectangle().fill(theme.softBlack)
+                                        // Top-right: Primary bg
+                                        Rectangle().fill(theme.primary)
                                     }
                                     HStack(spacing: 0) {
-                                        // Bottom-left: Black bg
-                                        Rectangle().fill(theme.softBlack)
-                                        // Bottom-right: Empty (red bg)
+                                        // Bottom-left: Primary bg
+                                        Rectangle().fill(theme.primary)
+                                        // Bottom-right: Empty (secondary bg)
                                         Rectangle().fill(.clear)
                                     }
                                 }
@@ -82,28 +113,37 @@ struct IconGenerator: View {
         .frame(width: 1024, height: 1024)
     }
     
-    // Function to generate and save the icon
-    static func exportIcon() async {
-        // Need to run UI operations on the main thread
-        await MainActor.run {
-            let renderer = ImageRenderer(content: IconGenerator())
-            // Configure the renderer
-            renderer.scale = 1.0
-            
-            // Get the rendered image
-            if let image = renderer.uiImage {
-                if let pngData = image.pngData() {
-                    do {
-                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                        let fileURL = documentsDirectory.appendingPathComponent("AppIcon.png")
-                        try pngData.write(to: fileURL)
-                        print("Icon exported to: \(fileURL.path)")
-                    } catch {
-                        print("Failed to save icon: \(error)")
+    // Function to generate and save all icons
+    static func exportAllIcons() async {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        // Create icons for all color schemes
+        for scheme in ColorScheme.allCases {
+            await MainActor.run {
+                let iconName = scheme == .classic ? "AppIcon" : "AppIcon-\(scheme.rawValue)"
+                let renderer = ImageRenderer(content: IconGenerator(scheme: scheme))
+                renderer.scale = 1.0
+                
+                if let image = renderer.uiImage {
+                    if let pngData = image.pngData() {
+                        do {
+                            let fileURL = documentsDirectory.appendingPathComponent("\(iconName).png")
+                            try pngData.write(to: fileURL)
+                            print("✅ Exported \(iconName).png to: \(fileURL.path)")
+                        } catch {
+                            print("❌ Failed to save \(iconName).png: \(error)")
+                        }
                     }
                 }
             }
         }
+        
+        print("\n📁 All icons exported to: \(documentsDirectory.path)")
+    }
+    
+    // Keep the old export function for backward compatibility
+    static func exportIcon() async {
+        await exportAllIcons()
     }
 }
 
@@ -111,12 +151,14 @@ struct IconGenerator: View {
 struct SuitGrid: View {
     let theme: IconTheme
     
-    private let configs: [SuitConfig] = [
-        SuitConfig(background: IconTheme.default.softRed, suitImage: "suit.spade.fill", suitColor: IconTheme.default.softBlack),
-        SuitConfig(background: IconTheme.default.softBlack, suitImage: "suit.heart.fill", suitColor: IconTheme.default.softRed),
-        SuitConfig(background: IconTheme.default.softBlack, suitImage: "suit.diamond.fill", suitColor: IconTheme.default.softRed),
-        SuitConfig(background: IconTheme.default.softRed, suitImage: "suit.club.fill", suitColor: IconTheme.default.softBlack)
-    ]
+    private var configs: [SuitConfig] {
+        [
+            SuitConfig(background: theme.secondary, suitImage: "suit.spade.fill", suitColor: theme.primary),
+            SuitConfig(background: theme.primary, suitImage: "suit.heart.fill", suitColor: theme.secondary),
+            SuitConfig(background: theme.primary, suitImage: "suit.diamond.fill", suitColor: theme.secondary),
+            SuitConfig(background: theme.secondary, suitImage: "suit.club.fill", suitColor: theme.primary)
+        ]
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -173,6 +215,6 @@ struct SuitCell: View {
 
 // MARK: - Preview
 #Preview {
-    IconGenerator()
+    IconGenerator(scheme: .classic)
         .frame(width: 200, height: 200)
 } 

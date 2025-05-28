@@ -29,9 +29,22 @@
 		4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4E266B272DE74C5B0023DCD6 /* Exceptions for "twentyfour" folder in "twentyfour" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4ED9B6152DE0D50D00496C42 /* twentyfour */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4ED9B6182DE0D50D00496C42 /* twentyfour */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4E266B272DE74C5B0023DCD6 /* Exceptions for "twentyfour" folder in "twentyfour" target */,
+			);
 			path = twentyfour;
 			sourceTree = "<group>";
 		};

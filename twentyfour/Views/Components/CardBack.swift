@@ -1,14 +1,12 @@
 import SwiftUI
 
 struct CardBack: View {
-    // Theme colors matching the icon
-    private let softRed = Color(red: 0.75, green: 0.2, blue: 0.2)
-    private let softBlack = Color(white: 0.2)
+    @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     var body: some View {
         GeometryReader { geometry in
             // Base color
-            softBlack
+            colorSchemeManager.currentScheme.primary
             
             // Simple block pattern
             VStack(spacing: 0) {
@@ -17,14 +15,14 @@ struct CardBack: View {
                         ForEach(0..<2) { col in
                             if (row + col) % 2 == 0 {
                                 Rectangle()
-                                    .fill(softRed)
+                                    .fill(colorSchemeManager.currentScheme.secondary)
                                     .frame(
                                         width: geometry.size.width / 2,
                                         height: geometry.size.height / 3
                                     )
                             } else {
                                 Rectangle()
-                                    .fill(softBlack)
+                                    .fill(colorSchemeManager.currentScheme.primary)
                                     .frame(
                                         width: geometry.size.width / 2,
                                         height: geometry.size.height / 3

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CardFront: View {
     let card: Card
+    @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     // Colors
     private let cardBackground = Color(white: 0.96) // Soft white
@@ -27,15 +28,15 @@ struct CardFront: View {
             ZStack {
                 // Card background
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(cardBackground)
+                    .fill(Color.white)
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black.opacity(0.15))
+                    .strokeBorder(colorSchemeManager.currentScheme.primary.opacity(0.15))
                 
                 // Watermark
                 Text(watermarkText)
                     .font(.system(size: 160, weight: .black))
-                    .foregroundColor(.black.opacity(0.02))
+                    .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.02))
                     .offset(x: 20, y: 20)
                     .allowsHitTesting(false)
                 

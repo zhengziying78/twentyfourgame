@@ -4,22 +4,19 @@ struct DifficultyIndicator: View {
     let difficulty: Difficulty
     let handNumber: Int
     @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     private var difficultyText: String {
-        let label = LocalizationResource.string(for: .difficultyLabel, language: settings.language)
-        let level = difficultyLevelText(for: difficulty)
-        return label + level
-    }
-    
-    private func difficultyLevelText(for difficulty: Difficulty) -> String {
-        let key: LocalizedKey
         switch difficulty {
-        case .easy: key = .difficultyEasy
-        case .medium: key = .difficultyMedium
-        case .hard: key = .difficultyHard
-        case .hardest: key = .difficultyHardest
+        case .easy:
+            return LocalizationResource.string(for: .difficultyEasy, language: settings.language)
+        case .medium:
+            return LocalizationResource.string(for: .difficultyMedium, language: settings.language)
+        case .hard:
+            return LocalizationResource.string(for: .difficultyHard, language: settings.language)
+        case .hardest:
+            return LocalizationResource.string(for: .difficultyHardest, language: settings.language)
         }
-        return LocalizationResource.string(for: key, language: settings.language)
     }
     
     private var filledStars: Int {
@@ -35,18 +32,18 @@ struct DifficultyIndicator: View {
         VStack(spacing: 4) {
             Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + String(handNumber))
                 .font(.system(size: 16, weight: .medium))
-                .foregroundColor(.black.opacity(0.8))
+                .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.8))
             
             HStack(spacing: 8) {
                 Text(difficultyText)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.black.opacity(0.8))
+                    .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.8))
                 
                 HStack(spacing: 2) {
                     ForEach(0..<4) { index in
                         Image(systemName: index < filledStars ? "star.fill" : "star")
                             .font(.system(size: 12))
-                            .foregroundColor(index < filledStars ? .yellow : .gray.opacity(0.5))
+                            .foregroundColor(index < filledStars ? .yellow : colorSchemeManager.currentScheme.primary.opacity(0.3))
                     }
                 }
             }
@@ -55,7 +52,7 @@ struct DifficultyIndicator: View {
         .padding(.vertical, 6)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(.white.opacity(0.9))
+                .fill(Color.white.opacity(0.9))
         )
     }
 } 

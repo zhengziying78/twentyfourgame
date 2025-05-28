@@ -30,6 +30,7 @@ struct DynamicFontSize: ViewModifier {
 struct SolutionOverlay: View {
     let solution: String
     let onDismiss: () -> Void
+    @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     var body: some View {
         ZStack {
@@ -52,7 +53,7 @@ struct SolutionOverlay: View {
                         // Solution text centered
                         Text(solution)
                             .modifier(DynamicFontSize(text: solution, containerWidth: geometry.size.width))
-                            .foregroundColor(.black)
+                            .foregroundColor(colorSchemeManager.currentScheme.primary)
                             .fixedSize(horizontal: true, vertical: false)
                             .frame(maxWidth: .infinity)
                             .frame(height: geometry.size.height)
@@ -66,10 +67,10 @@ struct SolutionOverlay: View {
                             Button(action: onDismiss) {
                                 ZStack {
                                     Circle()
-                                        .fill(Color.black.opacity(0.6))
+                                        .fill(colorSchemeManager.currentScheme.primary.opacity(0.6))
                                         .frame(width: 36, height: 36)
                                     Image(systemName: "xmark")
-                                        .foregroundColor(.white)
+                                        .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                                         .font(.system(size: 16, weight: .bold))
                                 }
                             }
@@ -92,6 +93,7 @@ struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
     @StateObject private var settings = SettingsPreferences.shared
     @StateObject private var historyManager = HistoryManager.shared
+    @StateObject private var colorSchemeManager = ColorSchemeManager.shared
     @State private var showingSolution = false
     @State private var showingFilter = false
     @State private var showingSettings = false
@@ -113,11 +115,11 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 // Background color for the entire view
-                Color(red: 0.2, green: 0.2, blue: 0.2)
+                colorSchemeManager.currentScheme.primary
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Top part - Navigation bar with soft black background
+                    // Top part - Navigation bar with primary background
                     HStack(spacing: 20) {
                         Spacer()
                         Button(action: {
@@ -125,7 +127,7 @@ struct ContentView: View {
                         }) {
                             Image(systemName: "questionmark.circle")
                                 .font(.system(size: 22))
-                                .foregroundColor(.white.opacity(0.9))
+                                .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
                         
@@ -134,7 +136,7 @@ struct ContentView: View {
                         }) {
                             Image(systemName: "clock.arrow.circlepath")
                                 .font(.system(size: 22))
-                                .foregroundColor(.white.opacity(0.9))
+                                .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
                         
@@ -143,7 +145,7 @@ struct ContentView: View {
                         }) {
                             Image(systemName: "line.3.horizontal.decrease")
                                 .font(.system(size: 22))
-                                .foregroundColor(.white.opacity(0.9))
+                                .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
                         
@@ -152,7 +154,7 @@ struct ContentView: View {
                         }) {
                             Image(systemName: "gearshape")
                                 .font(.system(size: 22))
-                                .foregroundColor(.white.opacity(0.9))
+                                .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
                     }
@@ -271,9 +273,9 @@ struct ContentView: View {
                                 Text(LocalizationResource.string(for: .playButton, language: settings.language))
                                     .font(.system(size: 20, weight: .medium))
                             }
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color(red: 0.2, green: 0.2, blue: 0.2))
+                            .background(colorSchemeManager.currentScheme.primary)
                         }
                         .disabled(isFlipping)
                         
@@ -289,11 +291,11 @@ struct ContentView: View {
                                 Text(LocalizationResource.string(for: .solveButton, language: settings.language))
                                     .font(.system(size: 20, weight: .medium))
                             }
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(gameManager.currentHand != nil && !isFlipping ? 
-                                Color(red: 0.87, green: 0.27, blue: 0.27) :
-                                Color.gray)
+                                colorSchemeManager.currentScheme.secondary :
+                                colorSchemeManager.currentScheme.disabledBackground)
                         }
                         .disabled(gameManager.currentHand == nil || isFlipping)
                     }

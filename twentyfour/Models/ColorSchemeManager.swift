@@ -13,9 +13,6 @@ class ColorSchemeManager: ObservableObject {
     private let key = "selectedColorScheme"
     
     private init() {
-        // First, ensure we start fresh by removing any saved scheme
-        defaults.removeObject(forKey: key)
-        
         // Load saved scheme or use classic as default
         if let savedScheme = defaults.string(forKey: key),
            let scheme = ColorScheme(rawValue: savedScheme) {
@@ -29,10 +26,13 @@ class ColorSchemeManager: ObservableObject {
     }
     
     func setScheme(_ scheme: ColorScheme) {
-        currentScheme = scheme
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentScheme = scheme
+        }
     }
     
     private func saveToUserDefaults() {
         defaults.set(currentScheme.rawValue, forKey: key)
+        defaults.synchronize() // Ensure changes are saved immediately
     }
 } 

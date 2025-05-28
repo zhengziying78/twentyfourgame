@@ -19,8 +19,8 @@ struct CardFront: View {
     }
     
     private var watermarkFontSize: CGFloat {
-        // Use much smaller font size for double-digit numbers
-        return card.value >= 10 ? 90 : 160
+        // Use same size for all single characters (A, X, J, Q, K, 1-9)
+        return 160
     }
     
     var body: some View {

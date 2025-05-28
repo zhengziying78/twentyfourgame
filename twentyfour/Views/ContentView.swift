@@ -53,7 +53,7 @@ struct SolutionOverlay: View {
                         // Solution text centered
                         Text(solution)
                             .modifier(DynamicFontSize(text: solution, containerWidth: geometry.size.width))
-                            .foregroundColor(colorSchemeManager.currentScheme.primary)
+                            .foregroundColor(.black.opacity(0.8))
                             .fixedSize(horizontal: true, vertical: false)
                             .frame(maxWidth: .infinity)
                             .frame(height: geometry.size.height)

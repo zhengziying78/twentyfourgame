@@ -94,14 +94,10 @@ struct HistoryEntryRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                // Hand number and difficulty
-                Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + String(entry.id))
-                    .font(.system(size: 16, weight: .medium))
-                
-                Spacer()
-                
                 // Difficulty stars
                 DifficultyStars(difficulty: entry.difficulty)
+                
+                Spacer()
             }
             
             // Cards

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct DifficultyIndicator: View {
     let difficulty: Difficulty
-    let handNumber: Int
     @ObservedObject private var settings = SettingsPreferences.shared
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
@@ -29,22 +28,16 @@ struct DifficultyIndicator: View {
     }
     
     var body: some View {
-        VStack(spacing: 4) {
-            Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + String(handNumber))
+        HStack(spacing: 8) {
+            Text(difficultyText)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.8))
             
-            HStack(spacing: 8) {
-                Text(difficultyText)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.8))
-                
-                HStack(spacing: 2) {
-                    ForEach(0..<4) { index in
-                        Image(systemName: index < filledStars ? "star.fill" : "star")
-                            .font(.system(size: 12))
-                            .foregroundColor(index < filledStars ? .yellow : colorSchemeManager.currentScheme.primary.opacity(0.3))
-                    }
+            HStack(spacing: 2) {
+                ForEach(0..<4) { index in
+                    Image(systemName: index < filledStars ? "star.fill" : "star")
+                        .font(.system(size: 12))
+                        .foregroundColor(index < filledStars ? .yellow : colorSchemeManager.currentScheme.primary.opacity(0.3))
                 }
             }
         }

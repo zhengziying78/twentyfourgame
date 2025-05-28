@@ -181,27 +181,21 @@ struct ContentView: View {
                         .padding(.horizontal, 28)
                         
                         // Always show a container for the difficulty indicator
-                        if let currentHand = gameManager.currentHand,
-                           let handNumber = gameManager.currentHandNumber {
+                        if let currentHand = gameManager.currentHand {
                             DifficultyIndicator(
-                                difficulty: currentHand.difficulty,
-                                handNumber: handNumber
+                                difficulty: currentHand.difficulty
                             )
                             .opacity(isCardsFaceUp ? 1 : 0)
                             .animation(.easeInOut(duration: 0.3), value: isCardsFaceUp)
                         } else {
                             // Invisible placeholder with the same size as DifficultyIndicator
-                            VStack(spacing: 4) {
-                                Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + "1")
+                            HStack(spacing: 8) {
+                                Text("Difficulty: Easy")
                                     .font(.system(size: 16, weight: .medium))
-                                HStack(spacing: 8) {
-                                    Text("Difficulty: Easy")
-                                        .font(.system(size: 16, weight: .medium))
-                                    HStack(spacing: 2) {
-                                        ForEach(0..<4) { _ in
-                                            Image(systemName: "star")
-                                                .font(.system(size: 12))
-                                        }
+                                HStack(spacing: 2) {
+                                    ForEach(0..<4) { _ in
+                                        Image(systemName: "star")
+                                            .font(.system(size: 12))
                                     }
                                 }
                             }

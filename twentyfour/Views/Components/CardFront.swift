@@ -31,12 +31,12 @@ struct CardFront: View {
                     .fill(Color.white)
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(colorSchemeManager.currentScheme.primary.opacity(0.15))
+                    .strokeBorder(Color.black.opacity(0.15))
                 
                 // Watermark
                 Text(watermarkText)
-                    .font(.system(size: 160, weight: .black))
-                    .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.02))
+                    .font(.system(size: watermarkFontSize, weight: .black))
+                    .foregroundColor(.black.opacity(0.02))
                     .offset(x: 20, y: 20)
                     .allowsHitTesting(false)
                 
@@ -46,10 +46,10 @@ struct CardFront: View {
                         VStack(alignment: .leading, spacing: -4) {
                             Text(card.displayValue)
                                 .font(.system(size: 56, weight: .medium))
-                            Text(card.suit.rawValue)
+                            Image(systemName: card.suit.symbol)
                                 .font(.system(size: 48))
                         }
-                        .foregroundColor(card.suit.color)
+                        .foregroundColor(card.suit.color(scheme: colorSchemeManager.currentScheme))
                         .padding(.leading, 16)
                         .padding(.top, 12)
                         Spacer()
@@ -57,6 +57,7 @@ struct CardFront: View {
                     Spacer()
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: colorSchemeManager.currentScheme)
         }
     }
 } 

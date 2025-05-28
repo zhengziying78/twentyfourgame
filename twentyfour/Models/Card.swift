@@ -2,19 +2,21 @@ import Foundation
 import SwiftUI
 
 enum Suit: String, CaseIterable {
-    case spades = "♠️"
-    case hearts = "♥️"
-    case diamonds = "♦️"
-    case clubs = "♣️"
+    case spades = "suit.spade.fill"
+    case hearts = "suit.heart.fill"
+    case diamonds = "suit.diamond.fill"
+    case clubs = "suit.club.fill"
     
-    var color: Color {
+    func color(scheme: ColorScheme) -> Color {
         switch self {
         case .hearts, .diamonds:
-            return .red
+            return scheme.secondary
         case .spades, .clubs:
-            return .black
+            return scheme.primary
         }
     }
+    
+    var symbol: String { rawValue }
 }
 
 struct Card: Equatable, Identifiable {
@@ -32,6 +34,6 @@ struct Card: Equatable, Identifiable {
     }
     
     var displayText: String {
-        return "\(displayValue)\(suit.rawValue)"
+        return "\(displayValue)\(suit.symbol)"
     }
 } 

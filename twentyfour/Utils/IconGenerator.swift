@@ -36,14 +36,34 @@ enum AppIconManager {
         }
     }
     
+    private static func getCurrentIconName() -> String? {
+        if let alternateIconName = UIApplication.shared.alternateIconName {
+            return alternateIconName
+        }
+        return "classic" // Primary icon is classic
+    }
+    
+    private static func getTargetIconName(for scheme: ColorScheme) -> String {
+        scheme == .classic ? "classic" : "AppIcon-\(scheme.rawValue)"
+    }
+    
     static func changeAppIcon(to scheme: ColorScheme) {
         // For classic, use nil to revert to primary icon
         // For others, use the raw value as the icon name with "AppIcon-" prefix
         let iconName = scheme == .classic ? nil : "AppIcon-\(scheme.rawValue)"
         
-        // Only proceed if auto-change is enabled or if this is a manual change
+        // Only proceed if auto-change is enabled
         guard shouldAutoChange else {
             print("🔄 App icon auto-change is disabled")
+            return
+        }
+        
+        // Check if the current icon already matches the target scheme
+        let currentIconName = getCurrentIconName()
+        let targetIconName = getTargetIconName(for: scheme)
+        
+        if currentIconName == targetIconName {
+            print("✅ App icon already matches the selected scheme: \(targetIconName)")
             return
         }
         
@@ -101,7 +121,16 @@ enum AppIconManager {
     }
     
     static func forceChangeAppIcon(to scheme: ColorScheme) {
-        // This method will change the icon regardless of the auto-change setting
+        // Check if the current icon already matches the target scheme
+        let currentIconName = getCurrentIconName()
+        let targetIconName = getTargetIconName(for: scheme)
+        
+        if currentIconName == targetIconName {
+            print("✅ App icon already matches the selected scheme: \(targetIconName)")
+            return
+        }
+        
+        // For classic, use nil to revert to primary icon
         let iconName = scheme == .classic ? nil : "AppIcon-\(scheme.rawValue)"
         
         print("🔄 Forcing app icon change to: \(iconName ?? "classic")")

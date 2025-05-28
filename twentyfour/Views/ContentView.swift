@@ -98,6 +98,8 @@ struct ContentView: View {
     @State private var isFlipping = false
     @State private var exportPath: String = ""
     @State private var showingExportAlert = false
+    @State private var playButtonTrigger = false  // Animation trigger for play button
+    @State private var solveButtonTrigger = false  // Animation trigger for solve button
     
     private let columns = [
         GridItem(.flexible()),
@@ -133,7 +135,7 @@ struct ContentView: View {
                     } else {
                         // Invisible placeholder with the same size as DifficultyIndicator
                         VStack(spacing: 4) {  // Match DifficultyIndicator spacing
-                            Text("No. 1")
+                            Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + "1")
                                 .font(.system(size: 16, weight: .medium))
                             HStack(spacing: 8) {
                                 Text("Difficulty: Easy")
@@ -154,6 +156,9 @@ struct ContentView: View {
                     VStack(spacing: 16) {
                         HStack(spacing: 20) {
                             Button(action: {
+                                // Trigger button animation once
+                                playButtonTrigger.toggle()
+                                
                                 // If we already have cards, flip them face down first
                                 if gameManager.currentHand != nil {
                                     isFlipping = true
@@ -183,32 +188,71 @@ struct ContentView: View {
                                     }
                                 }
                             }) {
-                                Text(LocalizationResource.string(for: .playButton, language: settings.language))
-                                    .font(.system(size: 20, weight: .medium))
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 50)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
+                                HStack(spacing: 12) {
+                                    Image(systemName: "arrow.clockwise")
+                                        .font(.system(size: 24))
+                                        .symbolEffect(.bounce.up, options: .nonRepeating, value: playButtonTrigger)
+                                    Text(LocalizationResource.string(for: .playButton, language: settings.language))
+                                        .font(.system(size: 20, weight: .medium))
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 54)
+                                .background(
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 16)
                                             .fill(Color.black)
-                                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                    )
+                                        // Subtle gradient overlay
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(
+                                                LinearGradient(
+                                                    colors: [
+                                                        .white.opacity(0.2),
+                                                        .clear
+                                                    ],
+                                                    startPoint: .topLeading,
+                                                    endPoint: .bottomTrailing
+                                                )
+                                            )
+                                    }
+                                )
+                                .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                             }
                             .disabled(isFlipping)
                             
                             Button(action: {
+                                solveButtonTrigger.toggle()
                                 showingSolution = true
                             }) {
-                                Text(LocalizationResource.string(for: .solveButton, language: settings.language))
-                                    .font(.system(size: 20, weight: .medium))
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 50)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
+                                HStack(spacing: 12) {
+                                    Image(systemName: "lightbulb.fill")
+                                        .font(.system(size: 24))
+                                        .symbolEffect(.pulse, options: .nonRepeating, value: solveButtonTrigger)
+                                    Text(LocalizationResource.string(for: .solveButton, language: settings.language))
+                                        .font(.system(size: 20, weight: .medium))
+                                }
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 54)
+                                .background(
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 16)
                                             .fill(gameManager.currentHand != nil && !isFlipping ? Color.red.opacity(0.9) : Color.gray)
-                                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                    )
+                                        // Subtle gradient overlay
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(
+                                                LinearGradient(
+                                                    colors: [
+                                                        .white.opacity(0.2),
+                                                        .clear
+                                                    ],
+                                                    startPoint: .topLeading,
+                                                    endPoint: .bottomTrailing
+                                                )
+                                            )
+                                    }
+                                )
+                                .shadow(color: (gameManager.currentHand != nil && !isFlipping ? Color.red : Color.gray).opacity(0.15), radius: 8, x: 0, y: 4)
                             }
                             .disabled(gameManager.currentHand == nil || isFlipping)
                         }

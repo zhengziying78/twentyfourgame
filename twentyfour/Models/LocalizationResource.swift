@@ -24,6 +24,7 @@ enum LocalizedKey {
     case settingsLanguage
     case backButton
     case selectDifficulties
+    case handNumberPrefix
     
     var english: String {
         switch self {
@@ -39,6 +40,7 @@ enum LocalizedKey {
         case .settingsLanguage: return "Language"
         case .backButton: return "Back"
         case .selectDifficulties: return "Select Difficulties"
+        case .handNumberPrefix: return "No. "
         }
     }
     
@@ -56,6 +58,7 @@ enum LocalizedKey {
         case .settingsLanguage: return "语言"
         case .backButton: return "返回"
         case .selectDifficulties: return "选择难度"
+        case .handNumberPrefix: return "编号 "
         }
     }
 } 

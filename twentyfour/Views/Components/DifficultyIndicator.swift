@@ -33,7 +33,7 @@ struct DifficultyIndicator: View {
     
     var body: some View {
         VStack(spacing: 4) {
-            Text("No. \(String(handNumber))")
+            Text(LocalizationResource.string(for: .handNumberPrefix, language: settings.language) + String(handNumber))
                 .font(.system(size: 16, weight: .medium))
                 .foregroundColor(.black.opacity(0.8))
             

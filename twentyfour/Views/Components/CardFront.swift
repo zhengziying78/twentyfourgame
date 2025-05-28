@@ -5,7 +5,7 @@ struct CardFront: View {
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     // Colors
-    private let cardBackground = Color(white: 0.96) // Soft white
+    private let cardBackground = Color(white: 0.98) // Very light gray, almost white
     
     private var watermarkText: String {
         switch card.value {
@@ -28,7 +28,7 @@ struct CardFront: View {
             ZStack {
                 // Card background
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
+                    .fill(cardBackground)
                 
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(Color.black.opacity(0.15))
@@ -36,7 +36,7 @@ struct CardFront: View {
                 // Watermark
                 Text(watermarkText)
                     .font(.system(size: watermarkFontSize, weight: .black))
-                    .foregroundColor(.black.opacity(0.02))
+                    .foregroundColor(.black.opacity(0.04)) // Slightly more visible
                     .offset(x: 20, y: 20)
                     .allowsHitTesting(false)
                 

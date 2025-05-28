@@ -31,9 +31,12 @@ enum LocalizedKey {
     case historyEmpty
     case historyLimitNote
     case colorSchemeClassic
-    case colorSchemeOcean
-    case colorSchemeForest
-    case colorSchemeSunset
+    case colorSchemeGrass
+    case colorSchemeNavy
+    case colorSchemeSteel
+    case colorSchemeRouge
+    case colorSchemeBarbie
+    case colorSchemeHermes
     
     var english: String {
         switch self {
@@ -56,9 +59,12 @@ enum LocalizedKey {
         case .historyEmpty: return "No history yet"
         case .historyLimitNote: return "Showing the most recent 20 hands"
         case .colorSchemeClassic: return "Classic"
-        case .colorSchemeOcean: return "Ocean Breeze"
-        case .colorSchemeForest: return "Forest"
-        case .colorSchemeSunset: return "Sunset"
+        case .colorSchemeGrass: return "Grass"
+        case .colorSchemeNavy: return "Navy"
+        case .colorSchemeSteel: return "Steel"
+        case .colorSchemeRouge: return "Rouge"
+        case .colorSchemeBarbie: return "Barbie"
+        case .colorSchemeHermes: return "Hermes"
         }
     }
     
@@ -83,9 +89,12 @@ enum LocalizedKey {
         case .historyEmpty: return "暂无记录"
         case .historyLimitNote: return "显示最近20组"
         case .colorSchemeClassic: return "经典"
-        case .colorSchemeOcean: return "海洋"
-        case .colorSchemeForest: return "森林"
-        case .colorSchemeSunset: return "晚霞"
+        case .colorSchemeGrass: return "草绿"
+        case .colorSchemeNavy: return "藏青"
+        case .colorSchemeSteel: return "缙云"
+        case .colorSchemeRouge: return "胭脂"
+        case .colorSchemeBarbie: return "芭比"
+        case .colorSchemeHermes: return "爱马仕"
         }
     }
 } 

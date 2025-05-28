@@ -68,6 +68,7 @@ struct SettingsView: View {
                         .foregroundColor(.primary)
                     }
                     
+                    /* Hide export button for now
                     #if DEBUG
                     Button(action: {
                         Task {
@@ -90,6 +91,7 @@ struct SettingsView: View {
                         }
                     }
                     #endif
+                    */
                 } header: {
                     Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
                 }

@@ -33,6 +33,11 @@ enum LocalizedKey {
     case colorSchemeClassic
     case colorSchemeBarbie
     case colorSchemeHermes
+    case colorSchemeSeahawks
+    case colorSchemeBarcelona
+    case colorSchemeInterMilan
+    case colorSchemePSG
+    case colorSchemeLakers
     case settingsAppIcon
     case settingsAppIconAutoChange
     case settingsAppIconAutoChangeDescription
@@ -60,6 +65,11 @@ enum LocalizedKey {
         case .colorSchemeClassic: return "Classic"
         case .colorSchemeBarbie: return "Barbie"
         case .colorSchemeHermes: return "Hermes"
+        case .colorSchemeSeahawks: return "Seahawks"
+        case .colorSchemeBarcelona: return "Barcelona"
+        case .colorSchemeInterMilan: return "Inter Milan"
+        case .colorSchemePSG: return "PSG"
+        case .colorSchemeLakers: return "Lakers"
         case .settingsAppIcon: return "App Icon"
         case .settingsAppIconAutoChange: return "Auto-change with color scheme"
         case .settingsAppIconAutoChangeDescription: return "When enabled, the app icon will automatically change to match your selected color scheme."
@@ -89,6 +99,11 @@ enum LocalizedKey {
         case .colorSchemeClassic: return "经典"
         case .colorSchemeBarbie: return "芭比"
         case .colorSchemeHermes: return "爱马仕"
+        case .colorSchemeSeahawks: return "西雅图海鹰"
+        case .colorSchemeBarcelona: return "巴塞罗那"
+        case .colorSchemeInterMilan: return "国际米兰"
+        case .colorSchemePSG: return "巴黎圣日耳曼"
+        case .colorSchemeLakers: return "湖人"
         case .settingsAppIcon: return "应用图标"
         case .settingsAppIconAutoChange: return "跟随配色方案自动更改"
         case .settingsAppIconAutoChangeDescription: return "是否根据配色方案自动更改应用图标。"

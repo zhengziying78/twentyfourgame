@@ -94,6 +94,7 @@ struct ContentView: View {
     @State private var showingSolution = false
     @State private var showingFilter = false
     @State private var showingSettings = false
+    @State private var showingHelp = false
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
     @State private var exportPath: String = ""
@@ -117,6 +118,15 @@ struct ContentView: View {
                     // Top part - Navigation bar with soft black background
                     HStack(spacing: 20) {
                         Spacer()
+                        Button(action: {
+                            showingHelp = true
+                        }) {
+                            Image(systemName: "questionmark.circle")
+                                .font(.system(size: 22))
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                        .disabled(showingSolution)
+                        
                         Button(action: {
                             showingFilter = true
                         }) {
@@ -274,6 +284,12 @@ struct ContentView: View {
                 // Filter overlay
                 if showingFilter {
                     FilterOverlay(onDismiss: { showingFilter = false })
+                        .transition(.opacity)
+                }
+                
+                // Help overlay
+                if showingHelp {
+                    HelpOverlay(onDismiss: { showingHelp = false })
                         .transition(.opacity)
                 }
             }

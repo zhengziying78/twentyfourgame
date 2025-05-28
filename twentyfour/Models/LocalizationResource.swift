@@ -14,51 +14,54 @@ struct LocalizationResource {
 enum LocalizedKey {
     case playButton
     case solveButton
+    case backButton
+    case settingsTitle
+    case settingsGeneral
+    case settingsLanguage
+    case selectDifficulties
     case difficultyLabel
     case difficultyEasy
     case difficultyMedium
     case difficultyHard
     case difficultyHardest
-    case settingsTitle
-    case settingsGeneral
-    case settingsLanguage
-    case backButton
-    case selectDifficulties
     case handNumberPrefix
+    case helpTitle
     
     var english: String {
         switch self {
         case .playButton: return "Play"
         case .solveButton: return "Solve"
+        case .backButton: return "Back"
+        case .settingsTitle: return "Settings"
+        case .settingsGeneral: return "General"
+        case .settingsLanguage: return "Language"
+        case .selectDifficulties: return "Select Difficulties"
         case .difficultyLabel: return "Difficulty: "
         case .difficultyEasy: return "Easy"
         case .difficultyMedium: return "Medium"
         case .difficultyHard: return "Hard"
         case .difficultyHardest: return "Hardest"
-        case .settingsTitle: return "Settings"
-        case .settingsGeneral: return "General"
-        case .settingsLanguage: return "Language"
-        case .backButton: return "Back"
-        case .selectDifficulties: return "Select Difficulties"
         case .handNumberPrefix: return "No. "
+        case .helpTitle: return "How to Play"
         }
     }
     
     var chinese: String {
         switch self {
-        case .playButton: return "换一组"
-        case .solveButton: return "看答案"
-        case .difficultyLabel: return "难度: "
-        case .difficultyEasy: return "简单"
-        case .difficultyMedium: return "中等"
-        case .difficultyHard: return "有点难"
-        case .difficultyHardest: return "非常难"
+        case .playButton: return "发牌"
+        case .solveButton: return "解答"
+        case .backButton: return "返回"
         case .settingsTitle: return "设置"
         case .settingsGeneral: return "通用"
         case .settingsLanguage: return "语言"
-        case .backButton: return "返回"
         case .selectDifficulties: return "选择难度"
+        case .difficultyLabel: return "难度："
+        case .difficultyEasy: return "简单"
+        case .difficultyMedium: return "中等"
+        case .difficultyHard: return "有点难"
+        case .difficultyHardest: return "很难"
         case .handNumberPrefix: return "编号 "
+        case .helpTitle: return "玩法说明"
         }
     }
 } 

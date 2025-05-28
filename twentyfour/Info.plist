@@ -24,15 +24,6 @@
         </dict>
         <key>CFBundleAlternateIcons</key>
         <dict>
-            <key>grass</key>
-            <dict>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>AppIcon-grass</string>
-                </array>
-            </dict>
             <key>barbie</key>
             <dict>
                 <key>UIPrerenderedIcon</key>

@@ -42,6 +42,51 @@
                     <string>AppIcon-hermes</string>
                 </array>
             </dict>
+            <key>seahawks</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-seahawks</string>
+                </array>
+            </dict>
+            <key>barcelona</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-barcelona</string>
+                </array>
+            </dict>
+            <key>interMilan</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-interMilan</string>
+                </array>
+            </dict>
+            <key>psg</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-psg</string>
+                </array>
+            </dict>
+            <key>lakers</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-lakers</string>
+                </array>
+            </dict>
         </dict>
     </dict>
     <key>UILaunchScreen</key>

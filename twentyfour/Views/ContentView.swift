@@ -91,10 +91,12 @@ struct SolutionOverlay: View {
 struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
     @StateObject private var settings = SettingsPreferences.shared
+    @StateObject private var historyManager = HistoryManager.shared
     @State private var showingSolution = false
     @State private var showingFilter = false
     @State private var showingSettings = false
     @State private var showingHelp = false
+    @State private var showingHistory = false
     @State private var isCardsFaceUp = false
     @State private var isFlipping = false
     @State private var exportPath: String = ""
@@ -122,6 +124,15 @@ struct ContentView: View {
                             showingHelp = true
                         }) {
                             Image(systemName: "questionmark.circle")
+                                .font(.system(size: 22))
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                        .disabled(showingSolution)
+                        
+                        Button(action: {
+                            showingHistory = true
+                        }) {
+                            Image(systemName: "clock.arrow.circlepath")
                                 .font(.system(size: 22))
                                 .foregroundColor(.white.opacity(0.9))
                         }
@@ -217,6 +228,15 @@ struct ContentView: View {
                                 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     gameManager.getRandomHand()
+                                    // Add to history when new hand is dealt
+                                    if let hand = gameManager.currentHand, let handNumber = gameManager.currentHandNumber {
+                                        historyManager.addEntry(
+                                            handNumber: handNumber,
+                                            cards: hand.cards,
+                                            difficulty: hand.difficulty,
+                                            solution: gameManager.formattedSolution
+                                        )
+                                    }
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         isCardsFaceUp = true
                                     }
@@ -227,6 +247,15 @@ struct ContentView: View {
                             } else {
                                 isFlipping = true
                                 gameManager.getRandomHand()
+                                // Add to history when first hand is dealt
+                                if let hand = gameManager.currentHand, let handNumber = gameManager.currentHandNumber {
+                                    historyManager.addEntry(
+                                        handNumber: handNumber,
+                                        cards: hand.cards,
+                                        difficulty: hand.difficulty,
+                                        solution: gameManager.formattedSolution
+                                    )
+                                }
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     isCardsFaceUp = true
                                 }
@@ -276,7 +305,9 @@ struct ContentView: View {
                 if showingSolution {
                     SolutionOverlay(
                         solution: gameManager.formattedSolution,
-                        onDismiss: { showingSolution = false }
+                        onDismiss: { 
+                            showingSolution = false
+                        }
                     )
                     .transition(.opacity)
                 }
@@ -290,6 +321,12 @@ struct ContentView: View {
                 // Help overlay
                 if showingHelp {
                     HelpOverlay(onDismiss: { showingHelp = false })
+                        .transition(.opacity)
+                }
+                
+                // History overlay
+                if showingHistory {
+                    HistoryView(onDismiss: { showingHistory = false })
                         .transition(.opacity)
                 }
             }

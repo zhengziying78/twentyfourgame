@@ -26,6 +26,9 @@ enum LocalizedKey {
     case difficultyHardest
     case handNumberPrefix
     case helpTitle
+    case historyTitle
+    case historyEmpty
+    case historyLimitNote
     
     var english: String {
         switch self {
@@ -43,13 +46,16 @@ enum LocalizedKey {
         case .difficultyHardest: return "Hardest"
         case .handNumberPrefix: return "No. "
         case .helpTitle: return "How to Play"
+        case .historyTitle: return "History"
+        case .historyEmpty: return "No history yet"
+        case .historyLimitNote: return "Showing the most recent 20 hands"
         }
     }
     
     var chinese: String {
         switch self {
-        case .playButton: return "发牌"
-        case .solveButton: return "解答"
+        case .playButton: return "换一组"
+        case .solveButton: return "看答案"
         case .backButton: return "返回"
         case .settingsTitle: return "设置"
         case .settingsGeneral: return "通用"
@@ -62,6 +68,9 @@ enum LocalizedKey {
         case .difficultyHardest: return "很难"
         case .handNumberPrefix: return "编号 "
         case .helpTitle: return "玩法说明"
+        case .historyTitle: return "历史记录"
+        case .historyEmpty: return "暂无记录"
+        case .historyLimitNote: return "显示最近20组"
         }
     }
 } 

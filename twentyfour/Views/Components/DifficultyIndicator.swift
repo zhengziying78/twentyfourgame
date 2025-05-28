@@ -56,7 +56,6 @@ struct DifficultyIndicator: View {
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(.white.opacity(0.9))
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
         )
     }
 } 

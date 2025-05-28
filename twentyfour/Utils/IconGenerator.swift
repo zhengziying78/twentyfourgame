@@ -22,8 +22,6 @@ struct SuitConfig {
 // MARK: - Icon Generator
 struct IconGenerator: View {
     private let theme = IconTheme.default
-    private let cornerRadius: CGFloat = 220
-    private let suitPadding: CGFloat = 140
     private let fontSize: CGFloat = 800
     
     var body: some View {
@@ -32,55 +30,80 @@ struct IconGenerator: View {
             SuitGrid(theme: theme)
             
             // The "24" text with color flipping
-            CenterText(theme: theme, fontSize: fontSize)
+            Text("24")
+                .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+                .foregroundStyle(.clear)
+                .overlay {
+                    ZStack {
+                        // Black text (appears over red areas)
+                        Text("24")
+                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+                            .foregroundStyle(theme.softBlack)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        // Top-left: Red bg
+                                        Rectangle().fill(theme.softRed)
+                                        // Top-right: Empty (black bg)
+                                        Rectangle().fill(.clear)
+                                    }
+                                    HStack(spacing: 0) {
+                                        // Bottom-left: Empty (black bg)
+                                        Rectangle().fill(.clear)
+                                        // Bottom-right: Red bg
+                                        Rectangle().fill(theme.softRed)
+                                    }
+                                }
+                            }
+                        
+                        // Red text (appears over black areas)
+                        Text("24")
+                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
+                            .foregroundStyle(theme.softRed)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        // Top-left: Empty (red bg)
+                                        Rectangle().fill(.clear)
+                                        // Top-right: Black bg
+                                        Rectangle().fill(theme.softBlack)
+                                    }
+                                    HStack(spacing: 0) {
+                                        // Bottom-left: Black bg
+                                        Rectangle().fill(theme.softBlack)
+                                        // Bottom-right: Empty (red bg)
+                                        Rectangle().fill(.clear)
+                                    }
+                                }
+                            }
+                    }
+                }
         }
         .frame(width: 1024, height: 1024)
-        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
     
-    #if DEBUG
     // Function to generate and save the icon
-    func saveIcon() {
-        let renderer = ImageRenderer(content: self)
-        renderer.scale = 1.0
-        
-        // Ensure we can get the CGImage
-        guard let cgImage = renderer.cgImage else {
-            print("Failed to generate icon image")
-            return
-        }
-        
-        // Convert to UIImage
-        let uiImage = UIImage(cgImage: cgImage)
-        
-        // Get the asset catalog path
-        if let projectURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let assetPath = projectURL
-                .appendingPathComponent("twentyfour")
-                .appendingPathComponent("Assets.xcassets")
-                .appendingPathComponent("AppIcon.appiconset")
+    static func exportIcon() async {
+        // Need to run UI operations on the main thread
+        await MainActor.run {
+            let renderer = ImageRenderer(content: IconGenerator())
+            // Configure the renderer
+            renderer.scale = 1.0
             
-            // Create directories if they don't exist
-            try? FileManager.default.createDirectory(at: assetPath, withIntermediateDirectories: true)
-            
-            // Save the image
-            let imageURL = assetPath.appendingPathComponent("AppIcon.png")
-            if let imageData = uiImage.pngData() {
-                try? imageData.write(to: imageURL)
-                print("Icon saved to: \(imageURL.path)")
+            // Get the rendered image
+            if let image = renderer.uiImage {
+                if let pngData = image.pngData() {
+                    do {
+                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                        let fileURL = documentsDirectory.appendingPathComponent("AppIcon.png")
+                        try pngData.write(to: fileURL)
+                        print("Icon exported to: \(fileURL.path)")
+                    } catch {
+                        print("Failed to save icon: \(error)")
+                    }
+                }
             }
         }
-    }
-    #endif
-}
-
-// MARK: - Grid Background
-struct GridBackground: View {
-    let backgroundColor: Color
-    
-    var body: some View {
-        Rectangle()
-            .fill(backgroundColor)
     }
 }
 
@@ -88,30 +111,21 @@ struct GridBackground: View {
 struct SuitGrid: View {
     let theme: IconTheme
     
-    private var suitConfigs: [[SuitConfig]] {
-        [
-            [
-                // Top left - Red bg, Black spade
-                SuitConfig(background: theme.softRed, suitImage: "suit.spade.fill", suitColor: theme.softBlack),
-                // Top right - Black bg, Red heart
-                SuitConfig(background: theme.softBlack, suitImage: "suit.heart.fill", suitColor: theme.softRed)
-            ],
-            [
-                // Bottom left - Black bg, Red diamond
-                SuitConfig(background: theme.softBlack, suitImage: "suit.diamond.fill", suitColor: theme.softRed),
-                // Bottom right - Red bg, Black club
-                SuitConfig(background: theme.softRed, suitImage: "suit.club.fill", suitColor: theme.softBlack)
-            ]
-        ]
-    }
+    private let configs: [SuitConfig] = [
+        SuitConfig(background: IconTheme.default.softRed, suitImage: "suit.spade.fill", suitColor: IconTheme.default.softBlack),
+        SuitConfig(background: IconTheme.default.softBlack, suitImage: "suit.heart.fill", suitColor: IconTheme.default.softRed),
+        SuitConfig(background: IconTheme.default.softBlack, suitImage: "suit.diamond.fill", suitColor: IconTheme.default.softRed),
+        SuitConfig(background: IconTheme.default.softRed, suitImage: "suit.club.fill", suitColor: IconTheme.default.softBlack)
+    ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<2) { row in
-                HStack(spacing: 0) {
-                    ForEach(0..<2) { col in
-                        SuitCell(config: suitConfigs[row][col])
-                    }
+        GeometryReader { geometry in
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 0) {
+                ForEach(0..<4) { index in
+                    SuitCell(config: configs[index])
                 }
             }
         }
@@ -157,72 +171,8 @@ struct SuitCell: View {
     }
 }
 
-// MARK: - Center Text
-struct CenterText: View {
-    let theme: IconTheme
-    let fontSize: CGFloat
-    
-    var body: some View {
-        Text("24")
-            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
-            .foregroundStyle(.clear)
-            .overlay {
-                GeometryReader { geometry in
-                    ZStack {
-                        // Black text (appears over red areas)
-                        Text("24")
-                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
-                            .foregroundStyle(theme.softBlack)
-                            .mask {
-                                VStack(spacing: 0) {
-                                    HStack(spacing: 0) {
-                                        // Top-left: Red bg
-                                        Rectangle().fill(theme.softRed)
-                                        // Top-right: Empty (black bg)
-                                        Rectangle().fill(.clear)
-                                    }
-                                    HStack(spacing: 0) {
-                                        // Bottom-left: Empty (black bg)
-                                        Rectangle().fill(.clear)
-                                        // Bottom-right: Red bg
-                                        Rectangle().fill(theme.softRed)
-                                    }
-                                }
-                            }
-                        
-                        // Red text (appears over black areas)
-                        Text("24")
-                            .font(.custom("Helvetica-Bold", size: fontSize * 0.7))
-                            .foregroundStyle(theme.softRed)
-                            .mask {
-                                VStack(spacing: 0) {
-                                    HStack(spacing: 0) {
-                                        // Top-left: Empty (red bg)
-                                        Rectangle().fill(.clear)
-                                        // Top-right: Black bg
-                                        Rectangle().fill(theme.softBlack)
-                                    }
-                                    HStack(spacing: 0) {
-                                        // Bottom-left: Black bg
-                                        Rectangle().fill(theme.softBlack)
-                                        // Bottom-right: Empty (red bg)
-                                        Rectangle().fill(.clear)
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
-    }
-}
-
 // MARK: - Preview
 #Preview {
     IconGenerator()
         .frame(width: 200, height: 200)
-        .onAppear {
-            #if DEBUG
-            IconGenerator().saveIcon()
-            #endif
-        }
 } 

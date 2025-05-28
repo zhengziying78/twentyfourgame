@@ -213,27 +213,29 @@ struct ContentView: View {
                             .disabled(gameManager.currentHand == nil || isFlipping)
                         }
                         
-                        Button(action: {
-                            Task {
-                                await IconExporter.exportIcon()
-                                if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                                    exportPath = docURL.path
-                                    showingExportAlert = true
+                        // Export App Icon button - hidden but code preserved
+                        if false {  // This condition ensures the button is always hidden
+                            Button(action: {
+                                Task {
+                                    await IconExporter.exportIcon()
+                                    if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                                        exportPath = docURL.path
+                                        showingExportAlert = true
+                                    }
                                 }
+                            }) {
+                                Text("Export App Icon")
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 44)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color.blue.opacity(0.9))
+                                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                    )
                             }
-                        }) {
-                            Text("Export App Icon")
-                                .font(.system(size: 18, weight: .medium))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 44)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.blue.opacity(0.9))
-                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                )
                         }
-                        .hidden()
                     }
                     .padding(.horizontal, 32)
                 }

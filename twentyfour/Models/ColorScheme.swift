@@ -8,13 +8,17 @@ enum ColorScheme: String, CaseIterable, Identifiable {
     
     var id: String { rawValue }
     
-    var name: String {
+    var localizedKey: LocalizedKey {
         switch self {
-        case .classic: return "Classic"
-        case .ocean: return "Ocean Breeze"
-        case .forest: return "Forest"
-        case .sunset: return "Sunset"
+        case .classic: return .colorSchemeClassic
+        case .ocean: return .colorSchemeOcean
+        case .forest: return .colorSchemeForest
+        case .sunset: return .colorSchemeSunset
         }
+    }
+    
+    func localizedName(language: Language) -> String {
+        return LocalizationResource.string(for: localizedKey, language: language)
     }
     
     var primary: Color {

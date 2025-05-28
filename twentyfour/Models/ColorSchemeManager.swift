@@ -13,13 +13,19 @@ class ColorSchemeManager: ObservableObject {
     private let key = "selectedColorScheme"
     
     private init() {
+        // First, ensure we start fresh by removing any saved scheme
+        defaults.removeObject(forKey: key)
+        
         // Load saved scheme or use classic as default
         if let savedScheme = defaults.string(forKey: key),
            let scheme = ColorScheme(rawValue: savedScheme) {
+            print("DEBUG: Loading saved color scheme: \(savedScheme)")
             self.currentScheme = scheme
         } else {
+            print("DEBUG: No saved scheme found, using classic as default")
             self.currentScheme = .classic
         }
+        print("DEBUG: Current color scheme: \(currentScheme)")
     }
     
     func setScheme(_ scheme: ColorScheme) {

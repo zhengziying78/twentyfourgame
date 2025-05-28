@@ -18,6 +18,7 @@ enum LocalizedKey {
     case settingsTitle
     case settingsGeneral
     case settingsLanguage
+    case settingsColorScheme
     case selectDifficulties
     case difficultyLabel
     case difficultyEasy
@@ -29,6 +30,10 @@ enum LocalizedKey {
     case historyTitle
     case historyEmpty
     case historyLimitNote
+    case colorSchemeClassic
+    case colorSchemeOcean
+    case colorSchemeForest
+    case colorSchemeSunset
     
     var english: String {
         switch self {
@@ -38,6 +43,7 @@ enum LocalizedKey {
         case .settingsTitle: return "Settings"
         case .settingsGeneral: return "General"
         case .settingsLanguage: return "Language"
+        case .settingsColorScheme: return "Color Scheme"
         case .selectDifficulties: return "Select Difficulties"
         case .difficultyLabel: return "Difficulty: "
         case .difficultyEasy: return "Easy"
@@ -49,6 +55,10 @@ enum LocalizedKey {
         case .historyTitle: return "History"
         case .historyEmpty: return "No history yet"
         case .historyLimitNote: return "Showing the most recent 20 hands"
+        case .colorSchemeClassic: return "Classic"
+        case .colorSchemeOcean: return "Ocean Breeze"
+        case .colorSchemeForest: return "Forest"
+        case .colorSchemeSunset: return "Sunset"
         }
     }
     
@@ -60,6 +70,7 @@ enum LocalizedKey {
         case .settingsTitle: return "设置"
         case .settingsGeneral: return "通用"
         case .settingsLanguage: return "语言"
+        case .settingsColorScheme: return "配色方案"
         case .selectDifficulties: return "选择难度"
         case .difficultyLabel: return "难度："
         case .difficultyEasy: return "简单"
@@ -71,6 +82,10 @@ enum LocalizedKey {
         case .historyTitle: return "历史记录"
         case .historyEmpty: return "暂无记录"
         case .historyLimitNote: return "显示最近20组"
+        case .colorSchemeClassic: return "经典"
+        case .colorSchemeOcean: return "海洋"
+        case .colorSchemeForest: return "森林"
+        case .colorSchemeSunset: return "晚霞"
         }
     }
 } 

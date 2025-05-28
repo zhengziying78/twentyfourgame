@@ -16,6 +16,15 @@ struct FilterOverlay: View {
         return LocalizationResource.string(for: key, language: settings.language)
     }
     
+    private func filledStars(for difficulty: Difficulty) -> Int {
+        switch difficulty {
+        case .easy: return 1
+        case .medium: return 2
+        case .hard: return 3
+        case .hardest: return 4
+        }
+    }
+    
     var body: some View {
         ZStack {
             // Semi-transparent background
@@ -52,11 +61,21 @@ struct FilterOverlay: View {
                                                 .foregroundColor(preferences.selectedDifficulties.contains(difficulty) ? .blue : .gray)
                                                 .font(.system(size: 20))
                                             
-                                            Text(difficultyText(difficulty))
-                                                .font(.system(size: 18))
-                                                .foregroundColor(.black)
+                                            HStack(spacing: 8) {
+                                                Text(difficultyText(difficulty))
+                                                    .font(.system(size: 18))
+                                                    .foregroundColor(.black)
+                                                
+                                                HStack(spacing: 2) {
+                                                    ForEach(0..<4) { index in
+                                                        Image(systemName: index < filledStars(for: difficulty) ? "star.fill" : "star")
+                                                            .font(.system(size: 12))
+                                                            .foregroundColor(index < filledStars(for: difficulty) ? .yellow : .gray.opacity(0.5))
+                                                    }
+                                                }
+                                            }
                                         }
-                                        .frame(width: 160, alignment: .leading)
+                                        .frame(width: 220, alignment: .leading)
                                     }
                                 }
                             }

@@ -268,10 +268,10 @@ struct ContentView: View {
                         }) {
                             HStack(spacing: 12) {
                                 Image(systemName: "arrow.clockwise")
-                                    .font(.system(size: 24, weight: .medium))
+                                    .font(.system(size: 28, weight: .medium))
                                     .symbolEffect(.bounce.up, options: .nonRepeating, value: playButtonTrigger)
                                 Text(LocalizationResource.string(for: .playButton, language: settings.language))
-                                    .font(.system(size: 20, weight: .medium))
+                                    .font(.system(size: 24, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -286,10 +286,10 @@ struct ContentView: View {
                         }) {
                             HStack(spacing: 12) {
                                 Image(systemName: "lightbulb.fill")
-                                    .font(.system(size: 24, weight: .medium))
+                                    .font(.system(size: 28, weight: .medium))
                                     .symbolEffect(.pulse, options: .nonRepeating, value: solveButtonTrigger)
                                 Text(LocalizationResource.string(for: .solveButton, language: settings.language))
-                                    .font(.system(size: 20, weight: .medium))
+                                    .font(.system(size: 24, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)

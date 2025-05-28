@@ -33,33 +33,6 @@
                     <string>AppIcon-grass</string>
                 </array>
             </dict>
-            <key>navy</key>
-            <dict>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>AppIcon-navy</string>
-                </array>
-            </dict>
-            <key>steel</key>
-            <dict>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>AppIcon-steel</string>
-                </array>
-            </dict>
-            <key>rouge</key>
-            <dict>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>AppIcon-rouge</string>
-                </array>
-            </dict>
             <key>barbie</key>
             <dict>
                 <key>UIPrerenderedIcon</key>

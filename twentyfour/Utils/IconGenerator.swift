@@ -25,18 +25,134 @@ struct SuitConfig {
 
 // MARK: - App Icon Manager
 enum AppIconManager {
+    private static let autoChangeKey = "autoChangeAppIcon"
+    
+    static var shouldAutoChange: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: autoChangeKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: autoChangeKey)
+        }
+    }
+    
     static func changeAppIcon(to scheme: ColorScheme) {
-        let iconName = scheme.rawValue.lowercased()
+        // For classic, use nil to revert to primary icon
+        // For others, use the raw value as the icon name with "AppIcon-" prefix
+        let iconName = scheme == .classic ? nil : "AppIcon-\(scheme.rawValue)"
         
-        // If we want to reset to primary icon, pass nil
-        let targetIconName = iconName == "classic" ? nil : iconName
+        // Only proceed if auto-change is enabled or if this is a manual change
+        guard shouldAutoChange else {
+            print("🔄 App icon auto-change is disabled")
+            return
+        }
+        
+        print("🔄 Attempting to change app icon to: \(iconName ?? "classic")")
+        print("📱 Device supports alternate icons: \(UIApplication.shared.supportsAlternateIcons)")
+        print("🎯 Current alternate icon name: \(UIApplication.shared.alternateIconName ?? "None")")
+        
+        // Print out bundle information for debugging
+        print("📦 Bundle URL: \(Bundle.main.bundleURL)")
+        if let infoPlist = Bundle.main.infoDictionary {
+            print("📝 Info.plist contents:")
+            if let iconsDict = infoPlist["CFBundleIcons"] as? [String: Any] {
+                print("   Icons configuration found:")
+                print("   Primary icon: \(iconsDict["CFBundlePrimaryIcon"] ?? "Not found")")
+                if let alternateIcons = iconsDict["CFBundleAlternateIcons"] as? [String: Any] {
+                    print("   Available alternate icons: \(alternateIcons.keys.joined(separator: ", "))")
+                    if let iconName = iconName {
+                        print("   Attempting to set icon: \(iconName)")
+                    }
+                } else {
+                    print("   No alternate icons found in Info.plist")
+                }
+            } else {
+                print("   No CFBundleIcons found in Info.plist")
+            }
+        }
         
         Task { @MainActor in
             do {
-                try await UIApplication.shared.setAlternateIconName(targetIconName)
-                print("✅ Successfully changed app icon to: \(iconName)")
+                if UIApplication.shared.supportsAlternateIcons {
+                    try await UIApplication.shared.setAlternateIconName(iconName)
+                    print("✅ Successfully changed app icon to: \(iconName ?? "classic")")
+                    
+                    // Verify the change
+                    if let currentIcon = UIApplication.shared.alternateIconName {
+                        print("🎨 New icon name verified: \(currentIcon)")
+                    } else {
+                        print("🎨 Using primary icon (verified)")
+                    }
+                } else {
+                    print("❌ Device does not support alternate icons")
+                }
             } catch {
                 print("❌ Failed to change app icon: \(error.localizedDescription)")
+                print("❌ Error details: \(error)")
+                
+                // Additional error information
+                if let nsError = error as NSError? {
+                    print("❌ Error domain: \(nsError.domain)")
+                    print("❌ Error code: \(nsError.code)")
+                    print("❌ Error user info: \(nsError.userInfo)")
+                }
+            }
+        }
+    }
+    
+    static func forceChangeAppIcon(to scheme: ColorScheme) {
+        // This method will change the icon regardless of the auto-change setting
+        let iconName = scheme == .classic ? nil : "AppIcon-\(scheme.rawValue)"
+        
+        print("🔄 Forcing app icon change to: \(iconName ?? "classic")")
+        print("📱 Device supports alternate icons: \(UIApplication.shared.supportsAlternateIcons)")
+        print("🎯 Current alternate icon name: \(UIApplication.shared.alternateIconName ?? "None")")
+        
+        // Print out bundle information for debugging
+        print("📦 Bundle URL: \(Bundle.main.bundleURL)")
+        if let infoPlist = Bundle.main.infoDictionary {
+            print("📝 Info.plist contents:")
+            if let iconsDict = infoPlist["CFBundleIcons"] as? [String: Any] {
+                print("   Icons configuration found:")
+                print("   Primary icon: \(iconsDict["CFBundlePrimaryIcon"] ?? "Not found")")
+                if let alternateIcons = iconsDict["CFBundleAlternateIcons"] as? [String: Any] {
+                    print("   Available alternate icons: \(alternateIcons.keys.joined(separator: ", "))")
+                    if let iconName = iconName {
+                        print("   Attempting to set icon: \(iconName)")
+                    }
+                } else {
+                    print("   No alternate icons found in Info.plist")
+                }
+            } else {
+                print("   No CFBundleIcons found in Info.plist")
+            }
+        }
+        
+        Task { @MainActor in
+            do {
+                if UIApplication.shared.supportsAlternateIcons {
+                    try await UIApplication.shared.setAlternateIconName(iconName)
+                    print("✅ Successfully changed app icon to: \(iconName ?? "classic")")
+                    
+                    // Verify the change
+                    if let currentIcon = UIApplication.shared.alternateIconName {
+                        print("🎨 New icon name verified: \(currentIcon)")
+                    } else {
+                        print("🎨 Using primary icon (verified)")
+                    }
+                } else {
+                    print("❌ Device does not support alternate icons")
+                }
+            } catch {
+                print("❌ Failed to change app icon: \(error.localizedDescription)")
+                print("❌ Error details: \(error)")
+                
+                // Additional error information
+                if let nsError = error as NSError? {
+                    print("❌ Error domain: \(nsError.domain)")
+                    print("❌ Error code: \(nsError.code)")
+                    print("❌ Error user info: \(nsError.userInfo)")
+                }
             }
         }
     }

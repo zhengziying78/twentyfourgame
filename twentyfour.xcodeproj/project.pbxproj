@@ -24,7 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4ED9B6162DE0D50D00496C42 /* twentyfour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = twentyfour.app; path = TwentyFour.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4ED9B6162DE0D50D00496C42 /* TwentyFour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwentyFour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B6232DE0D50F00496C42 /* twentyfourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -98,7 +98,7 @@
 		4ED9B6172DE0D50D00496C42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4ED9B6162DE0D50D00496C42 /* twentyfour.app */,
+				4ED9B6162DE0D50D00496C42 /* TwentyFour.app */,
 				4ED9B6232DE0D50F00496C42 /* twentyfourTests.xctest */,
 				4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */,
 			);
@@ -127,7 +127,7 @@
 			packageProductDependencies = (
 			);
 			productName = twentyfour;
-			productReference = 4ED9B6162DE0D50D00496C42 /* twentyfour.app */;
+			productReference = 4ED9B6162DE0D50D00496C42 /* TwentyFour.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4ED9B6222DE0D50F00496C42 /* twentyfourTests */ = {
@@ -286,7 +286,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-hermes AppIcon-barbie AppIcon-rouge AppIcon-steel AppIcon-navy AppIcon-grass";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -350,7 +353,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-hermes AppIcon-barbie AppIcon-rouge AppIcon-steel AppIcon-navy AppIcon-grass";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -406,8 +412,10 @@
 		4ED9B6382DE0D50F00496C42 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-rouge AppIcon-steel AppIcon-navy AppIcon-grass AppIcon-hermes AppIcon-barbie";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5824G2N4V6;
@@ -434,8 +442,10 @@
 		4ED9B6392DE0D50F00496C42 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-rouge AppIcon-steel AppIcon-navy AppIcon-grass AppIcon-hermes AppIcon-barbie";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5824G2N4V6;

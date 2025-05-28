@@ -37,6 +37,9 @@ enum LocalizedKey {
     case colorSchemeRouge
     case colorSchemeBarbie
     case colorSchemeHermes
+    case settingsAppIcon
+    case settingsAppIconAutoChange
+    case settingsAppIconAutoChangeDescription
     
     var english: String {
         switch self {
@@ -65,6 +68,9 @@ enum LocalizedKey {
         case .colorSchemeRouge: return "Rouge"
         case .colorSchemeBarbie: return "Barbie"
         case .colorSchemeHermes: return "Hermes"
+        case .settingsAppIcon: return "App Icon"
+        case .settingsAppIconAutoChange: return "Auto-change with color scheme"
+        case .settingsAppIconAutoChangeDescription: return "When enabled, the app icon will automatically change to match your selected color scheme."
         }
     }
     
@@ -95,6 +101,9 @@ enum LocalizedKey {
         case .colorSchemeRouge: return "胭脂"
         case .colorSchemeBarbie: return "芭比"
         case .colorSchemeHermes: return "爱马仕"
+        case .settingsAppIcon: return "应用图标"
+        case .settingsAppIconAutoChange: return "跟随配色方案自动更改"
+        case .settingsAppIconAutoChangeDescription: return "是否根据配色方案自动更改应用图标。"
         }
     }
 } 

@@ -32,6 +32,8 @@ struct SettingsView: View {
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     @State private var showingExportAlert = false
     @State private var exportPath = ""
+    @AppStorage("autoChangeAppIcon") private var autoChangeAppIcon = false
+    @Environment(\.colorScheme) private var selectedScheme
     
     var body: some View {
         NavigationView {
@@ -51,13 +53,35 @@ struct SettingsView: View {
                     Text(LocalizationResource.string(for: .settingsGeneral, language: preferences.language))
                 }
                 
+                // App Icon section
+                if AppIconManager.supportsAlternateIcons {
+                    Section {
+                        Toggle(
+                            LocalizationResource.string(for: .settingsAppIconAutoChange, language: preferences.language),
+                            isOn: $autoChangeAppIcon
+                        )
+                        .onChange(of: autoChangeAppIcon) { newValue in
+                            if newValue {
+                                // If enabled, immediately update icon to match current scheme
+                                AppIconManager.forceChangeAppIcon(to: colorSchemeManager.currentScheme)
+                            }
+                        }
+                    } header: {
+                        Text(LocalizationResource.string(for: .settingsAppIcon, language: preferences.language))
+                    }
+                }
+                
                 // Appearance section
                 Section {
                     ForEach(ColorScheme.allCases) { scheme in
                         Button(action: {
+                            print("🎨 SettingsView: Selected color scheme: \(scheme.rawValue)")
                             colorSchemeManager.setScheme(scheme)
                             if AppIconManager.supportsAlternateIcons {
+                                print("✅ SettingsView: Device supports alternate icons, attempting to change...")
                                 AppIconManager.changeAppIcon(to: scheme)
+                            } else {
+                                print("❌ SettingsView: Device does not support alternate icons")
                             }
                         }) {
                             ColorSchemeRow(
@@ -67,34 +91,34 @@ struct SettingsView: View {
                         }
                         .foregroundColor(.primary)
                     }
-                    
-                    /* Hide export button for now
-                    #if DEBUG
-                    Button(action: {
-                        Task {
-                            await IconGenerator.exportAllIcons()
-                            await MainActor.run {
-                                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                                exportPath = documentsDirectory.path
-                                showingExportAlert = true
-                            }
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: "square.and.arrow.down")
-                            VStack(alignment: .leading) {
-                                Text("Export All App Icons")
-                                Text("Generates icons for all color schemes")
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    #endif
-                    */
                 } header: {
                     Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
                 }
+                
+                /* Hide export button for now
+                #if DEBUG
+                Button(action: {
+                    Task {
+                        await IconGenerator.exportAllIcons()
+                        await MainActor.run {
+                            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                            exportPath = documentsDirectory.path
+                            showingExportAlert = true
+                        }
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "square.and.arrow.down")
+                        VStack(alignment: .leading) {
+                            Text("Export All App Icons")
+                            Text("Generates icons for all color schemes")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                #endif
+                */
             }
             .navigationTitle(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
             .navigationBarTitleDisplayMode(.large)
@@ -116,10 +140,14 @@ struct SettingsView: View {
                 }
             }
         }
+        .formStyle(.grouped)
+        .navigationTitle("Settings")
     }
 }
 
 // MARK: - Preview
 #Preview {
-    SettingsView()
+    NavigationView {
+        SettingsView()
+    }
 } 

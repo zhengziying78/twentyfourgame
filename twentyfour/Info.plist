@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>LSSupportsAlternateIcons</key>
+    <true/>
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
@@ -13,74 +15,76 @@
     </array>
     <key>CFBundleIcons</key>
     <dict>
-        <key>CFBundleAlternateIcons</key>
-        <dict>
-            <key>grass</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>grass</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>navy</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>navy</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>steel</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>steel</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>rouge</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>rouge</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>barbie</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>barbie</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>hermes</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>hermes</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-        </dict>
         <key>CFBundlePrimaryIcon</key>
         <dict>
             <key>CFBundleIconFiles</key>
             <array>
                 <string>AppIcon</string>
             </array>
-            <key>UIPrerenderedIcon</key>
-            <false/>
+        </dict>
+        <key>CFBundleAlternateIcons</key>
+        <dict>
+            <key>grass</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-grass</string>
+                </array>
+            </dict>
+            <key>navy</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-navy</string>
+                </array>
+            </dict>
+            <key>steel</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-steel</string>
+                </array>
+            </dict>
+            <key>rouge</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-rouge</string>
+                </array>
+            </dict>
+            <key>barbie</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-barbie</string>
+                </array>
+            </dict>
+            <key>hermes</key>
+            <dict>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>AppIcon-hermes</string>
+                </array>
+            </dict>
         </dict>
     </dict>
     <key>UILaunchScreen</key>
     <dict/>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <true/>
+    <key>INFOPLIST_KEY_LSSupportsAlternateIcons</key>
+    <true/>
 </dict>
 </plist> 

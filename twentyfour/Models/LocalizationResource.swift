@@ -32,9 +32,6 @@ enum LocalizedKey {
     case historyLimitNote
     case colorSchemeClassic
     case colorSchemeGrass
-    case colorSchemeNavy
-    case colorSchemeSteel
-    case colorSchemeRouge
     case colorSchemeBarbie
     case colorSchemeHermes
     case settingsAppIcon
@@ -63,9 +60,6 @@ enum LocalizedKey {
         case .historyLimitNote: return "Showing the most recent 20 hands"
         case .colorSchemeClassic: return "Classic"
         case .colorSchemeGrass: return "Grass"
-        case .colorSchemeNavy: return "Navy"
-        case .colorSchemeSteel: return "Steel"
-        case .colorSchemeRouge: return "Rouge"
         case .colorSchemeBarbie: return "Barbie"
         case .colorSchemeHermes: return "Hermes"
         case .settingsAppIcon: return "App Icon"
@@ -96,9 +90,6 @@ enum LocalizedKey {
         case .historyLimitNote: return "显示最近20组"
         case .colorSchemeClassic: return "经典"
         case .colorSchemeGrass: return "草绿"
-        case .colorSchemeNavy: return "藏青"
-        case .colorSchemeSteel: return "缙云"
-        case .colorSchemeRouge: return "胭脂"
         case .colorSchemeBarbie: return "芭比"
         case .colorSchemeHermes: return "爱马仕"
         case .settingsAppIcon: return "应用图标"

@@ -92,52 +92,40 @@ struct HistoryEntryRow: View {
     @ObservedObject private var settings = SettingsPreferences.shared
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                // Difficulty stars
-                DifficultyStars(difficulty: entry.difficulty)
-                
-                Spacer()
-            }
+        HStack(spacing: 0) {
+            // Left part - Cards only
+            CardValuesColumn(cards: entry.cards)
+                .frame(maxWidth: .infinity)
             
-            // Cards
-            HStack(spacing: 8) {
-                CardRow(cards: entry.cards)
+            // Right part - Difficulty and Solution
+            VStack(spacing: 0) {
+                // Upper part - Difficulty stars
+                DifficultyStars(difficulty: entry.difficulty)
+                    .frame(maxWidth: .infinity)
+                    .frame(maxHeight: .infinity)
+                    .background(Color.black.opacity(0.03))
                 
-                Text("→")
-                    .font(.system(size: 18))
-                    .foregroundColor(.black.opacity(0.6))
-                
+                // Lower part - Solution
                 Text(entry.solution)
                     .font(.system(size: 16))
                     .foregroundColor(.black.opacity(0.8))
+                    .frame(maxWidth: .infinity)
+                    .frame(maxHeight: .infinity)
+                    .background(Color.black.opacity(0.06))
             }
+            .frame(maxWidth: .infinity)
         }
-        .padding(12)
+        .frame(height: 80)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.black.opacity(0.05))
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
         )
     }
 }
 
-// Helper view for displaying difficulty stars
-struct DifficultyStars: View {
-    let difficulty: Difficulty
-    
-    var body: some View {
-        HStack(spacing: 2) {
-            ForEach(0..<4, id: \.self) { index in
-                Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
-                    .font(.system(size: 12))
-                    .foregroundColor(index < difficulty.starCount ? .yellow : .gray.opacity(0.5))
-            }
-        }
-    }
-}
-
-// Helper view for displaying cards
-struct CardRow: View {
+// New helper view for displaying just card values in large format
+struct CardValuesColumn: View {
     let cards: [Card]
     
     private func displayValue(for card: Card) -> String {
@@ -154,9 +142,25 @@ struct CardRow: View {
         HStack(spacing: 8) {
             ForEach(Array(cards.enumerated()), id: \.offset) { _, card in
                 Text(displayValue(for: card))
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: 22, weight: .bold, design: .default))
                     .foregroundColor(.black)
-                    .frame(width: 24, alignment: .center)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(.horizontal, 12)
+    }
+}
+
+// Helper view for displaying difficulty stars
+struct DifficultyStars: View {
+    let difficulty: Difficulty
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(0..<4, id: \.self) { index in
+                Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
+                    .font(.system(size: 12))
+                    .foregroundColor(index < difficulty.starCount ? .yellow : .gray.opacity(0.5))
             }
         }
     }

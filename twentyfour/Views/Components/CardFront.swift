@@ -20,7 +20,7 @@ struct CardFront: View {
     
     private var watermarkFontSize: CGFloat {
         // Use same size for all single characters (A, X, J, Q, K, 1-9)
-        return 160
+        return 140
     }
     
     var body: some View {
@@ -36,7 +36,7 @@ struct CardFront: View {
                 // Watermark
                 Text(watermarkText)
                     .font(.system(size: watermarkFontSize, weight: .black))
-                    .foregroundColor(.black.opacity(0.04)) // Slightly more visible
+                    .foregroundColor(.black.opacity(0.025)) // More subtle
                     .offset(x: 20, y: 20)
                     .allowsHitTesting(false)
                 

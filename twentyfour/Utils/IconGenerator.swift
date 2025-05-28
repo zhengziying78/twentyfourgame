@@ -162,12 +162,14 @@ struct SuitGrid: View {
     
     var body: some View {
         GeometryReader { geometry in
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 0) {
-                ForEach(0..<4) { index in
-                    SuitCell(config: configs[index])
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    SuitCell(config: configs[0])
+                    SuitCell(config: configs[1])
+                }
+                HStack(spacing: 0) {
+                    SuitCell(config: configs[2])
+                    SuitCell(config: configs[3])
                 }
             }
         }

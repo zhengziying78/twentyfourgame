@@ -7,35 +7,35 @@ struct LanguagePicker: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(LocalizationResource.string(for: .settingsLanguage, language: preferences.language))
-                .font(.system(size: UIConstants.Font.titleSize, weight: .medium))
+                .font(.system(size: LanguagePickerConstants.Font.titleSize, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, UIConstants.Layout.elementSpacing)
+                .padding(.vertical, SharedUIConstants.Layout.elementSpacing)
             
             Divider()
                 .background(Color(UIColor.separator))
             
-            VStack(spacing: UIConstants.Layout.buttonSpacing) {
+            VStack(spacing: SharedUIConstants.Layout.buttonSpacing) {
                 // Language picker
-                VStack(spacing: UIConstants.Layout.compactElementSpacing) {
+                VStack(spacing: SharedUIConstants.Layout.compactElementSpacing) {
                     Picker("", selection: Binding(
                         get: { preferences.language },
                         set: { preferences.setLanguage($0) }
                     )) {
                         ForEach(Language.allCases) { language in
                             Text(language.displayName)
-                                .font(.system(size: UIConstants.Font.bodySize))
+                                .font(.system(size: LanguagePickerConstants.Font.optionSize))
                                 .tag(language)
                         }
                     }
                     .pickerStyle(.segmented)
-                    .scaleEffect(1.2)
-                    .frame(height: 44)
+                    .scaleEffect(LanguagePickerConstants.Layout.pickerScale)
+                    .frame(height: LanguagePickerConstants.Layout.pickerHeight)
                 }
-                .frame(width: 240)
-                .padding(.vertical, UIConstants.Layout.elementSpacing)
+                .frame(width: LanguagePickerConstants.Layout.pickerWidth)
+                .padding(.vertical, LanguagePickerConstants.Layout.verticalPadding)
             }
-            .padding(.vertical, UIConstants.Layout.buttonSpacing)
+            .padding(.vertical, SharedUIConstants.Layout.buttonSpacing)
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemBackground).ignoresSafeArea())

@@ -11,19 +11,19 @@ struct PopupContainer<Content: View>: View {
     }
     
     private var maxHeight: CGFloat {
-        UIScreen.main.bounds.height - UIConstants.topBarHeight
+        UIScreen.main.bounds.height - SharedUIConstants.topBarHeight
     }
     
     var body: some View {
         ZStack(alignment: .top) {
             // Semi-transparent background that lets content show through
-            Color.black.opacity(0.2)
+            Color.black.opacity(PopupContainerConstants.Opacity.backgroundOverlay)
                 .ignoresSafeArea()
                 .contentShape(Rectangle())
                 .onTapGesture {
                     withAnimation(.spring(
-                        response: UIConstants.Animation.springResponse,
-                        dampingFraction: UIConstants.Animation.springDamping
+                        response: PopupContainerConstants.Animation.springResponse,
+                        dampingFraction: PopupContainerConstants.Animation.springDamping
                     )) {
                         onDismiss()
                     }
@@ -35,10 +35,10 @@ struct PopupContainer<Content: View>: View {
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle())
                     .onTapGesture { } // Prevent taps from reaching the background only in content area
-                    .background(Color(UIColor.systemBackground).opacity(0.95))
+                    .background(Color(UIColor.systemBackground).opacity(PopupContainerConstants.Opacity.contentBackground))
             }
             .frame(maxWidth: .infinity)
-            .offset(y: UIConstants.topBarHeight)
+            .offset(y: SharedUIConstants.topBarHeight)
         }
         .transition(.asymmetric(
             insertion: .offset(y: -UIScreen.main.bounds.height),

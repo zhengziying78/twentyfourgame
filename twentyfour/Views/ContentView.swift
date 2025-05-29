@@ -121,13 +121,13 @@ struct ContentView: View {
                 
                 VStack(spacing: 0) {
                     // Top part - Navigation bar with primary background
-                    HStack(spacing: UIConstants.ContentView.Layout.navigationIconSpacing) {
+                    HStack(spacing: ContentViewConstants.Layout.navigationIconSpacing) {
                         Spacer()
                         Button(action: {
                             showingFilter = true
                         }) {
                             Image(systemName: "line.3.horizontal.decrease")
-                                .font(.system(size: UIConstants.ContentView.Font.navigationIcon))
+                                .font(.system(size: ContentViewConstants.Font.navigationIcon))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
@@ -136,7 +136,7 @@ struct ContentView: View {
                             showingHistory = true
                         }) {
                             Image(systemName: "clock.arrow.circlepath")
-                                .font(.system(size: UIConstants.ContentView.Font.navigationIcon))
+                                .font(.system(size: ContentViewConstants.Font.navigationIcon))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
@@ -145,7 +145,7 @@ struct ContentView: View {
                             showingHelp = true
                         }) {
                             Image(systemName: "questionmark.circle")
-                                .font(.system(size: UIConstants.ContentView.Font.navigationIcon))
+                                .font(.system(size: ContentViewConstants.Font.navigationIcon))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
@@ -154,7 +154,7 @@ struct ContentView: View {
                             showingColorPicker = true
                         }) {
                             Image(systemName: "paintpalette")
-                                .font(.system(size: UIConstants.ContentView.Font.navigationIcon))
+                                .font(.system(size: ContentViewConstants.Font.navigationIcon))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
@@ -163,32 +163,32 @@ struct ContentView: View {
                             showingSettings = true
                         }) {
                             Image(systemName: "globe")
-                                .font(.system(size: UIConstants.ContentView.Font.navigationIcon))
+                                .font(.system(size: ContentViewConstants.Font.navigationIcon))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
                         .disabled(showingSolution)
                     }
-                    .padding(.horizontal, UIConstants.ContentView.Layout.navigationPaddingHorizontal)
-                    .padding(.vertical, UIConstants.ContentView.Layout.navigationPaddingVertical)
-                    .frame(height: UIConstants.topBarHeight)
+                    .padding(.horizontal, ContentViewConstants.Layout.navigationPaddingHorizontal)
+                    .padding(.vertical, ContentViewConstants.Layout.navigationPaddingVertical)
+                    .frame(height: SharedUIConstants.topBarHeight)
                     
                     // Middle part - Cards and difficulty indicator
-                    VStack(spacing: UIConstants.Layout.buttonSpacing) {
+                    VStack(spacing: SharedUIConstants.Layout.buttonSpacing) {
                         // Fixed spacing at top
                         Spacer()
-                            .frame(height: UIConstants.ContentView.Layout.cardSectionTopSpacing)
+                            .frame(height: ContentViewConstants.Layout.cardSectionTopSpacing)
                         
-                        LazyVGrid(columns: columns, spacing: UIConstants.ContentView.Layout.cardGridSpacing) {
+                        LazyVGrid(columns: columns, spacing: ContentViewConstants.Layout.cardGridSpacing) {
                             ForEach(0..<4) { index in
                                 CardView(
                                     card: gameManager.currentHand?.cards[safe: index],
                                     isFaceUp: isCardsFaceUp
                                 )
                                 .frame(maxWidth: .infinity)
-                                .frame(height: UIScreen.main.bounds.width * UIConstants.Card.aspectRatio)
+                                .frame(height: UIScreen.main.bounds.width * SharedUIConstants.Card.aspectRatio)
                             }
                         }
-                        .padding(.horizontal, UIConstants.ContentView.Layout.cardGridPaddingHorizontal)
+                        .padding(.horizontal, ContentViewConstants.Layout.cardGridPaddingHorizontal)
                         
                         // Fixed-height container for difficulty indicator
                         VStack {
@@ -197,31 +197,31 @@ struct ContentView: View {
                                     difficulty: currentHand.difficulty
                                 )
                                 .opacity(isCardsFaceUp ? 1 : 0)
-                                .animation(.easeInOut(duration: UIConstants.ContentView.Animation.cardFlipDuration), value: isCardsFaceUp)
+                                .animation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration), value: isCardsFaceUp)
                             }
                         }
-                        .frame(height: UIConstants.ContentView.Layout.difficultyIndicatorHeight)
+                        .frame(height: ContentViewConstants.Layout.difficultyIndicatorHeight)
                         
                         // Fixed spacing at bottom
                         Spacer()
-                            .frame(height: UIConstants.ContentView.Layout.cardSectionBottomSpacing)
+                            .frame(height: ContentViewConstants.Layout.cardSectionBottomSpacing)
                     }
                     .frame(maxHeight: .infinity)
                     .background(Color.white)
                     
                     // Bottom part - Action buttons
-                    HStack(spacing: UIConstants.ContentView.Layout.actionButtonSeparator) {
+                    HStack(spacing: ContentViewConstants.Layout.actionButtonSeparator) {
                         // Play button
                         Button(action: {
                             playButtonTrigger.toggle()
                             
                             if gameManager.currentHand != nil {
                                 isFlipping = true
-                                withAnimation(.easeInOut(duration: UIConstants.ContentView.Animation.cardFlipDuration)) {
+                                withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
                                     isCardsFaceUp = false
                                 }
                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + UIConstants.ContentView.Animation.cardFlipDelay) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
                                     gameManager.getRandomHand()
                                     if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
                                         historyManager.addEntry(
@@ -231,10 +231,10 @@ struct ContentView: View {
                                             solution: gameManager.formattedSolution
                                         )
                                     }
-                                    withAnimation(.easeInOut(duration: UIConstants.ContentView.Animation.cardFlipDuration)) {
+                                    withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
                                         isCardsFaceUp = true
                                     }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + UIConstants.ContentView.Animation.cardFlipDelay) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
                                         isFlipping = false
                                     }
                                 }
@@ -249,20 +249,20 @@ struct ContentView: View {
                                         solution: gameManager.formattedSolution
                                     )
                                 }
-                                withAnimation(.easeInOut(duration: UIConstants.ContentView.Animation.cardFlipDuration)) {
+                                withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
                                     isCardsFaceUp = true
                                 }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + UIConstants.ContentView.Animation.cardFlipDelay) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
                                     isFlipping = false
                                 }
                             }
                         }) {
-                            HStack(spacing: UIConstants.ContentView.Layout.actionButtonIconTextSpacing) {
+                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
                                 Image(systemName: "arrow.clockwise")
-                                    .font(.system(size: UIConstants.ContentView.Font.actionButtonIcon, weight: .medium))
+                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
                                     .symbolEffect(.bounce.up, options: .nonRepeating, value: playButtonTrigger)
                                 Text(LocalizationResource.string(for: .playButton, language: settings.language))
-                                    .font(.system(size: UIConstants.ContentView.Font.actionButtonText, weight: .medium))
+                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -275,12 +275,12 @@ struct ContentView: View {
                             solveButtonTrigger.toggle()
                             showingSolution = true
                         }) {
-                            HStack(spacing: UIConstants.ContentView.Layout.actionButtonIconTextSpacing) {
+                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
                                 Image(systemName: "lightbulb.fill")
-                                    .font(.system(size: UIConstants.ContentView.Font.actionButtonIcon, weight: .medium))
+                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
                                     .symbolEffect(.pulse, options: .nonRepeating, value: solveButtonTrigger)
                                 Text(LocalizationResource.string(for: .solveButton, language: settings.language))
-                                    .font(.system(size: UIConstants.ContentView.Font.actionButtonText, weight: .medium))
+                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -290,7 +290,7 @@ struct ContentView: View {
                         }
                         .disabled(gameManager.currentHand == nil || isFlipping)
                     }
-                    .frame(height: UIConstants.ContentView.Layout.actionButtonHeight)
+                    .frame(height: ContentViewConstants.Layout.actionButtonHeight)
                 }
                 .ignoresSafeArea(edges: .bottom)
                 

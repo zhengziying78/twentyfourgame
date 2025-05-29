@@ -16,9 +16,10 @@ class HistoryManager: ObservableObject {
     static let shared = HistoryManager()
     @Published private(set) var entries: [HistoryEntry] = []
     private let maxEntries = 20
+    private var _totalHandsCount = 0
     
     var totalHandsCount: Int {
-        return entries.count
+        return _totalHandsCount
     }
     
     func addEntry(handNumber: Int, cards: [Card], difficulty: Difficulty, solution: String) {
@@ -30,6 +31,7 @@ class HistoryManager: ObservableObject {
         )
         
         entries.insert(entry, at: 0)
+        _totalHandsCount += 1
         
         // Keep only the last maxEntries
         if entries.count > maxEntries {

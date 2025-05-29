@@ -7,47 +7,65 @@ struct HistoryView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(LocalizationResource.string(for: .historyTitle, language: settings.language))
-                .font(.system(size: 20, weight: .medium))
-                .foregroundColor(.primary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(Color(UIColor.systemBackground).opacity(0.95))
+            // Header with dismiss button
+            HStack {
+                Spacer()
+                
+                Text(LocalizationResource.string(for: .historyTitle, language: settings.language))
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.gray)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
             
             Divider()
+                .background(Color(UIColor.separator))
             
-            if historyManager.entries.isEmpty {
-                Text(LocalizationResource.string(for: .historyEmpty, language: settings.language))
-                    .font(.system(size: 16))
-                    .foregroundColor(.primary.opacity(0.6))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 24)
-                    .background(Color(UIColor.systemBackground).opacity(0.95))
-            } else {
+            ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(historyManager.entries) { entry in
-                            HistoryEntryRow(entry: entry)
-                                .background(Color(UIColor.systemBackground).opacity(0.95))
+                        if historyManager.entries.isEmpty {
+                            Text(LocalizationResource.string(for: .historyEmpty, language: settings.language))
+                                .font(.system(size: 16))
+                                .foregroundColor(.primary.opacity(0.6))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 24)
+                        } else {
+                            VStack(spacing: 0) {
+                                ForEach(historyManager.entries) { entry in
+                                    HistoryEntryRow(entry: entry)
+                                }
+                            }
                             
-                            if entry != historyManager.entries.last {
-                                Divider()
+                            if historyManager.totalHandsCount > historyManager.entries.count {
+                                Text(LocalizationResource.string(for: .historyLimitNote, language: settings.language))
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.primary.opacity(0.5))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                                    .padding(.bottom, 16)
                             }
                         }
-                        
-                        if historyManager.totalHandsCount > historyManager.entries.count {
-                            Divider()
-                            Text(LocalizationResource.string(for: .historyLimitNote, language: settings.language))
-                                .font(.system(size: 14))
-                                .foregroundColor(.primary.opacity(0.5))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
-                                .background(Color(UIColor.systemBackground).opacity(0.95))
-                        }
                     }
+                    .padding(.horizontal, 20)
+                }
+                .padding(.top, 32)
+                .safeAreaInset(edge: .bottom) {
+                    Color.clear.frame(height: 90)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.systemBackground).ignoresSafeArea())
     }
 }
 
@@ -63,7 +81,7 @@ struct HistoryEntryRow: View {
                 .padding(.vertical, 12)
             
             // Right part
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .center, spacing: 4) {
                 // Difficulty stars
                 DifficultyStars(difficulty: entry.difficulty)
                 
@@ -71,6 +89,7 @@ struct HistoryEntryRow: View {
                 Text(entry.solution)
                     .font(.system(size: 16))
                     .foregroundColor(.primary.opacity(0.8))
+                    .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)

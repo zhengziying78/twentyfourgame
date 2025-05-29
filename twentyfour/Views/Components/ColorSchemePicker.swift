@@ -7,60 +7,57 @@ struct ColorSchemePicker: View {
     @AppStorage("autoChangeAppIcon") private var autoChangeAppIcon = false
     
     var body: some View {
-        PopupContainer(content: {
+        VStack(spacing: 0) {
+            Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
+                .font(.system(size: 20, weight: .medium))
+                .foregroundColor(.primary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+            
+            Divider()
+                .background(Color(UIColor.separator))
+            
             VStack(spacing: 0) {
-                Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(Color(UIColor.systemBackground).opacity(0.95))
-                
-                Divider()
-                
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(ColorScheme.allCases) { scheme in
-                            Button(action: {
-                                colorSchemeManager.setScheme(scheme)
-                                if AppIconManager.supportsAlternateIcons && autoChangeAppIcon {
-                                    AppIconManager.changeAppIcon(to: scheme)
-                                }
-                                onDismiss()
-                            }) {
-                                HStack {
-                                    // Color preview circles
-                                    HStack(spacing: 8) {
-                                        Circle()
-                                            .fill(scheme.primary)
-                                            .frame(width: 20, height: 20)
-                                        Circle()
-                                            .fill(scheme.secondary)
-                                            .frame(width: 20, height: 20)
-                                    }
-                                    
-                                    Text(scheme.localizedName(language: preferences.language))
-                                        .foregroundColor(.primary)
-                                    
-                                    Spacer()
-                                    
-                                    if colorSchemeManager.currentScheme == scheme {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 16)
+                ForEach(ColorScheme.allCases) { scheme in
+                    Button(action: {
+                        colorSchemeManager.setScheme(scheme)
+                        if AppIconManager.supportsAlternateIcons && autoChangeAppIcon {
+                            AppIconManager.changeAppIcon(to: scheme)
+                        }
+                    }) {
+                        HStack(spacing: 12) {
+                            // Color preview circles
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(scheme.primary)
+                                    .frame(width: 20, height: 20)
+                                Circle()
+                                    .fill(scheme.secondary)
+                                    .frame(width: 20, height: 20)
                             }
                             
-                            if scheme != ColorScheme.allCases.last {
-                                Divider()
+                            Text(scheme.localizedName(language: preferences.language))
+                                .font(.system(size: 18))
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                            
+                            if colorSchemeManager.currentScheme == scheme {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                                    .font(.system(size: 20))
                             }
                         }
+                        .frame(width: 200)
+                        .contentShape(Rectangle())
                     }
+                    .padding(.vertical, 12)
                 }
-                .background(Color(UIColor.systemBackground).opacity(0.95))
             }
-        }, onDismiss: onDismiss)
+            .padding(.vertical, 16)
+            .padding(.bottom, 8)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.systemBackground).ignoresSafeArea())
     }
 } 

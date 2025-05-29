@@ -19,24 +19,24 @@ struct DifficultyIndicator: View {
     }
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DifficultyIndicatorConstants.Layout.textStarsSpacing) {
             Text(difficultyText)
-                .font(.system(size: 20, weight: .medium))
-                .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(0.8))
+                .font(.system(size: DifficultyIndicatorConstants.Font.difficultyTextSize, weight: .medium))
+                .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(DifficultyIndicatorConstants.Opacity.difficultyTextOpacity))
             
-            HStack(spacing: 4) {
-                ForEach(0..<4) { index in
+            HStack(spacing: DifficultyIndicatorConstants.Layout.starsSpacing) {
+                ForEach(0..<DifficultyIndicatorConstants.Layout.totalStars) { index in
                     Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
-                        .font(.system(size: 16))
-                        .foregroundColor(index < difficulty.starCount ? .yellow : colorSchemeManager.currentScheme.primary.opacity(0.3))
+                        .font(.system(size: DifficultyIndicatorConstants.Font.starSize))
+                        .foregroundColor(index < difficulty.starCount ? .yellow : colorSchemeManager.currentScheme.primary.opacity(DifficultyIndicatorConstants.Opacity.inactiveStarOpacity))
                 }
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
+        .padding(.horizontal, DifficultyIndicatorConstants.Layout.containerPaddingHorizontal)
+        .padding(.vertical, DifficultyIndicatorConstants.Layout.containerPaddingVertical)
         .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white.opacity(0.9))
+            RoundedRectangle(cornerRadius: DifficultyIndicatorConstants.Layout.containerCornerRadius)
+                .fill(Color.white.opacity(DifficultyIndicatorConstants.Opacity.containerBackgroundOpacity))
         )
     }
 }

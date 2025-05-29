@@ -350,7 +350,7 @@ struct ContentView: View {
                 // Settings overlay
                 if showingSettings {
                     PopupContainer(
-                        content: { SettingsView(onDismiss: { 
+                        content: { LanguagePicker(onDismiss: { 
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                 showingSettings = false
                             }

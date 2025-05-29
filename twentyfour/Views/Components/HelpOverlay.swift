@@ -94,6 +94,8 @@ struct HelpOverlay: View {
         VStack(spacing: 0) {
             // Header with dismiss button
             HStack {
+                Spacer()
+                
                 Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(.primary)

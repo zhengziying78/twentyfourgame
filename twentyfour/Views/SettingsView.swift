@@ -32,7 +32,6 @@ struct SettingsView: View {
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     @State private var showingExportAlert = false
     @State private var exportPath = ""
-    @AppStorage("autoChangeAppIcon") private var autoChangeAppIcon = false
     @Environment(\.colorScheme) private var selectedScheme
     
     var body: some View {
@@ -51,24 +50,6 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text(LocalizationResource.string(for: .settingsGeneral, language: preferences.language))
-                }
-                
-                // App Icon section
-                if AppIconManager.supportsAlternateIcons {
-                    Section {
-                        Toggle(
-                            LocalizationResource.string(for: .settingsAppIconAutoChange, language: preferences.language),
-                            isOn: $autoChangeAppIcon
-                        )
-                        .onChange(of: autoChangeAppIcon) { newValue in
-                            if newValue {
-                                // If enabled, immediately update icon to match current scheme
-                                AppIconManager.forceChangeAppIcon(to: colorSchemeManager.currentScheme)
-                            }
-                        }
-                    } header: {
-                        Text(LocalizationResource.string(for: .settingsAppIcon, language: preferences.language))
-                    }
                 }
                 
                 /* Hide export button for now

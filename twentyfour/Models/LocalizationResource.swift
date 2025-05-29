@@ -71,8 +71,8 @@ enum LocalizedKey {
         case .colorSchemePSG: return "PSG"
         case .colorSchemeLakers: return "Lakers"
         case .settingsAppIcon: return "App Icon"
-        case .settingsAppIconAutoChange: return "Auto-change with color scheme"
-        case .settingsAppIconAutoChangeDescription: return "When enabled, the app icon will automatically change to match your selected color scheme."
+        case .settingsAppIconAutoChange: return "Matching app icon"
+        case .settingsAppIconAutoChangeDescription: return "When enabled, the app icon will automatically match your selected color scheme."
         }
     }
     
@@ -105,8 +105,8 @@ enum LocalizedKey {
         case .colorSchemePSG: return "大巴黎"
         case .colorSchemeLakers: return "湖人"
         case .settingsAppIcon: return "应用图标"
-        case .settingsAppIconAutoChange: return "跟随配色方案自动更改"
-        case .settingsAppIconAutoChangeDescription: return "是否根据配色方案自动更改应用图标。"
+        case .settingsAppIconAutoChange: return "匹配应用图标"
+        case .settingsAppIconAutoChangeDescription: return "开启后，应用图标会自动匹配所选的配色方案。"
         }
     }
 } 

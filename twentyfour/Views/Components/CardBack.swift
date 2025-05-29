@@ -7,30 +7,30 @@ struct CardBack: View {
         GeometryReader { geometry in
             ZStack {
                 // Card background and border
-                RoundedRectangle(cornerRadius: CardBackConstants.Layout.cornerRadius)
+                RoundedRectangle(cornerRadius: SharedUIConstants.Card.cornerRadius)
                     .fill(colorSchemeManager.currentScheme.primary)
                 
-                RoundedRectangle(cornerRadius: CardBackConstants.Layout.cornerRadius)
+                RoundedRectangle(cornerRadius: SharedUIConstants.Card.cornerRadius)
                     .strokeBorder(Color.black.opacity(CardBackConstants.Opacity.borderOpacity))
                 
                 // Simple block pattern
                 VStack(spacing: 0) {
                     ForEach(0..<CardBackConstants.Layout.gridRows) { row in
                         HStack(spacing: 0) {
-                            ForEach(0..<(CardBackConstants.Layout.gridColumns - 1)) { col in
+                            ForEach(0..<CardBackConstants.Layout.gridColumns) { col in
                                 Rectangle()
                                     .fill((row + col) % 2 == 0 ? 
                                         colorSchemeManager.currentScheme.secondary :
                                         colorSchemeManager.currentScheme.primary)
                                     .frame(
-                                        width: geometry.size.width / CGFloat(CardBackConstants.Layout.gridColumns - 1),
+                                        width: geometry.size.width / CGFloat(CardBackConstants.Layout.gridColumns),
                                         height: geometry.size.height / CGFloat(CardBackConstants.Layout.gridRows)
                                     )
                             }
                         }
                     }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: CardBackConstants.Layout.cornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: SharedUIConstants.Card.cornerRadius))
             }
             .animation(.easeInOut(duration: CardBackConstants.Animation.colorSchemeDuration), value: colorSchemeManager.currentScheme)
         }

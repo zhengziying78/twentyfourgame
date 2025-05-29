@@ -16,6 +16,7 @@ public enum SharedUIConstants {
     
     public enum Card {
         public static let aspectRatio: CGFloat = 0.52
+        public static let cornerRadius: CGFloat = 10  // Shared corner radius for all cards
     }
     
     public enum Animation {

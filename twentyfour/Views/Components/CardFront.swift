@@ -4,9 +4,6 @@ struct CardFront: View {
     let card: Card
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
-    // Colors
-    private let cardBackground = Color(white: 0.98) // Very light gray, almost white
-    
     private var watermarkText: String {
         switch card.value {
         case 1: return "A"
@@ -18,46 +15,41 @@ struct CardFront: View {
         }
     }
     
-    private var watermarkFontSize: CGFloat {
-        // Use same size for all single characters (A, X, J, Q, K, 1-9)
-        return 140
-    }
-    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 // Card background
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(cardBackground)
+                RoundedRectangle(cornerRadius: SharedUIConstants.Card.cornerRadius)
+                    .fill(CardFrontConstants.Colors.background)
                 
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.black.opacity(0.15))
+                RoundedRectangle(cornerRadius: SharedUIConstants.Card.cornerRadius)
+                    .strokeBorder(Color.black.opacity(CardFrontConstants.Opacity.borderOpacity))
                 
                 // Watermark
                 Text(watermarkText)
-                    .font(.system(size: watermarkFontSize, weight: .black))
-                    .foregroundColor(.black.opacity(0.025)) // More subtle
-                    .offset(x: 20, y: 20)
+                    .font(.system(size: CardFrontConstants.Font.watermarkSize, weight: .black))
+                    .foregroundColor(.black.opacity(CardFrontConstants.Opacity.watermarkOpacity))
+                    .offset(x: CardFrontConstants.Layout.watermarkOffset, y: CardFrontConstants.Layout.watermarkOffset)
                     .allowsHitTesting(false)
                 
                 // Corner number and suit
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: -4) {
+                        VStack(alignment: .leading, spacing: CardFrontConstants.Layout.cornerStackSpacing) {
                             Text(card.displayValue)
-                                .font(.system(size: 56, weight: .medium))
+                                .font(.system(size: CardFrontConstants.Font.valueSize, weight: .medium))
                             Image(systemName: card.suit.symbol)
-                                .font(.system(size: 48))
+                                .font(.system(size: CardFrontConstants.Font.suitSize))
                         }
                         .foregroundColor(card.suit.color(scheme: colorSchemeManager.currentScheme))
-                        .padding(.leading, 16)
-                        .padding(.top, 12)
+                        .padding(.leading, CardFrontConstants.Layout.cornerPaddingLeading)
+                        .padding(.top, CardFrontConstants.Layout.cornerPaddingTop)
                         Spacer()
                     }
                     Spacer()
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: colorSchemeManager.currentScheme)
+            .animation(.easeInOut(duration: CardFrontConstants.Animation.colorSchemeDuration), value: colorSchemeManager.currentScheme)
         }
     }
 } 

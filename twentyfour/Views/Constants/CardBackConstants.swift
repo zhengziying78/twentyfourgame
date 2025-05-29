@@ -2,9 +2,8 @@ import SwiftUI
 
 public enum CardBackConstants {
     public enum Layout {
-        public static let cornerRadius: CGFloat = 10
         public static let gridRows: Int = 3
-        public static let gridColumns: Int = 3
+        public static let gridColumns: Int = 2  // 2 columns for the checkerboard pattern
     }
     
     public enum Animation {

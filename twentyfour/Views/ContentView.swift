@@ -162,7 +162,7 @@ struct ContentView: View {
                         Button(action: {
                             showingSettings = true
                         }) {
-                            Image(systemName: "character.bubble")
+                            Image(systemName: "globe")
                                 .font(.system(size: 22))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }

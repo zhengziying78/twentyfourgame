@@ -38,6 +38,7 @@ enum LocalizedKey {
     case colorSchemeInterMilan
     case colorSchemePSG
     case colorSchemeLakers
+    case colorSchemeBocaJuniors
     case settingsAppIcon
     case settingsAppIconAutoChange
     
@@ -69,6 +70,7 @@ enum LocalizedKey {
         case .colorSchemeInterMilan: return "Inter Milan"
         case .colorSchemePSG: return "PSG"
         case .colorSchemeLakers: return "Lakers"
+        case .colorSchemeBocaJuniors: return "Boca Juniors"
         case .settingsAppIcon: return "App Icon"
         case .settingsAppIconAutoChange: return "Matching app icon"
         }
@@ -102,6 +104,7 @@ enum LocalizedKey {
         case .colorSchemeInterMilan: return "国际米兰"
         case .colorSchemePSG: return "大巴黎"
         case .colorSchemeLakers: return "湖人"
+        case .colorSchemeBocaJuniors: return "博卡青年"
         case .settingsAppIcon: return "应用图标"
         case .settingsAppIconAutoChange: return "匹配应用图标"
         }

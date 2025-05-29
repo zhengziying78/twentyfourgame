@@ -5,11 +5,29 @@ struct ColorSchemePicker: View {
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     @ObservedObject private var preferences = SettingsPreferences.shared
     @AppStorage("autoChangeAppIcon") private var autoChangeAppIcon = false
+    @State private var showingExportAlert = false
+    @State private var exportPath = ""
+    
+    private var orderedSchemes: [ColorScheme] {
+        [
+            // First row (unchanged)
+            .classic,
+            .hermes,
+            .barbie,
+            // Second row
+            .seahawks,
+            .lakers,
+            .barcelona,
+            // Third row
+            .psg,
+            .interMilan,
+            .bocaJuniors
+        ]
+    }
     
     private var colorSchemeRows: [[ColorScheme]] {
-        let schemes = ColorScheme.allCases
-        return stride(from: 0, to: schemes.count, by: 2).map {
-            Array(schemes[$0..<min($0 + 2, schemes.count)])
+        stride(from: 0, to: orderedSchemes.count, by: 3).map {
+            Array(orderedSchemes[$0..<min($0 + 3, orderedSchemes.count)])
         }
     }
     
@@ -59,15 +77,18 @@ struct ColorSchemePicker: View {
                                         }
                                     }
                                 }
-                                .frame(width: 100)
+                                .frame(width: 90)
                                 .padding(.vertical, 4)
                                 .contentShape(Rectangle())
                             }
                         }
                         
-                        if row.count == 1 {
-                            Color.clear
-                                .frame(width: 100)
+                        // Fill empty spaces in the last row if needed
+                        if row.count < 3 {
+                            ForEach(0..<(3 - row.count), id: \.self) { _ in
+                                Color.clear
+                                    .frame(width: 90)
+                            }
                         }
                     }
                 }
@@ -78,20 +99,38 @@ struct ColorSchemePicker: View {
                 Divider()
                     .background(Color(UIColor.separator))
                 
-                HStack {
-                    Spacer()
-                    Text(LocalizationResource.string(for: .settingsAppIconAutoChange, language: preferences.language))
-                        .font(.system(size: 14))
-                        .foregroundColor(.primary)
-                    Toggle("", isOn: $autoChangeAppIcon)
-                        .labelsHidden()
-                    Spacer()
-                }
-                .onChange(of: autoChangeAppIcon) { newValue in
-                    if newValue {
-                        // If enabled, immediately update icon to match current scheme
-                        AppIconManager.forceChangeAppIcon(to: colorSchemeManager.currentScheme)
+                VStack(spacing: 12) {
+                    HStack {
+                        Spacer()
+                        Text(LocalizationResource.string(for: .settingsAppIconAutoChange, language: preferences.language))
+                            .font(.system(size: 14))
+                            .foregroundColor(.primary)
+                        Toggle("", isOn: $autoChangeAppIcon)
+                            .labelsHidden()
+                        Spacer()
                     }
+                    .onChange(of: autoChangeAppIcon) { newValue in
+                        if newValue {
+                            // If enabled, immediately update icon to match current scheme
+                            AppIconManager.forceChangeAppIcon(to: colorSchemeManager.currentScheme)
+                        }
+                    }
+                    
+                    // Temporarily hidden export button
+                    /*#if DEBUG
+                    Button(action: {
+                        Task {
+                            await IconGenerator.exportAllIcons()
+                            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                            exportPath = documentsDirectory.path
+                            showingExportAlert = true
+                        }
+                    }) {
+                        Text("Export All Icons")
+                            .font(.system(size: 14))
+                            .foregroundColor(.blue)
+                    }
+                    #endif*/
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -99,5 +138,10 @@ struct ColorSchemePicker: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemBackground).ignoresSafeArea())
+        .alert("Icon Exported", isPresented: $showingExportAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("All app icons have been exported to:\n\(exportPath)")
+        }
     }
 } 

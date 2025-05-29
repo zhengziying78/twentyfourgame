@@ -9,6 +9,7 @@ enum ColorScheme: String, CaseIterable, Identifiable {
     case interMilan
     case psg
     case lakers
+    case bocaJuniors
     
     var id: String { rawValue }
     
@@ -22,6 +23,7 @@ enum ColorScheme: String, CaseIterable, Identifiable {
         case .interMilan: return .colorSchemeInterMilan
         case .psg: return .colorSchemePSG
         case .lakers: return .colorSchemeLakers
+        case .bocaJuniors: return .colorSchemeBocaJuniors
         }
     }
     
@@ -39,6 +41,7 @@ enum ColorScheme: String, CaseIterable, Identifiable {
         case .interMilan: return Color(red: 4/255, green: 7/255, blue: 7/255) // RGB(4, 7, 7)
         case .psg: return Color(red: 0x00/255, green: 0x41/255, blue: 0x70/255) // #004170
         case .lakers: return Color(red: 85/255, green: 37/255, blue: 130/255) // RGB(85, 37, 130)
+        case .bocaJuniors: return Color(red: 16/255, green: 63/255, blue: 121/255) // RGB(16, 63, 121)
         }
     }
     
@@ -52,6 +55,7 @@ enum ColorScheme: String, CaseIterable, Identifiable {
         case .interMilan: return Color(red: 18/255, green: 102/255, blue: 171/255) // RGB(18, 102, 171)
         case .psg: return Color(red: 0xDA/255, green: 0x29/255, blue: 0x1C/255) // #DA291C
         case .lakers: return Color(red: 253/255, green: 185/255, blue: 39/255) // RGB(253, 185, 39)
+        case .bocaJuniors: return Color(red: 243/255, green: 178/255, blue: 41/255) // RGB(243, 178, 41)
         }
     }
     

@@ -27,7 +27,7 @@ struct ColorSchemeRow: View {
 }
 
 struct SettingsView: View {
-    @Environment(\.dismiss) private var dismiss
+    let onDismiss: () -> Void
     @ObservedObject private var preferences = SettingsPreferences.shared
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     @State private var showingExportAlert = false
@@ -35,11 +35,24 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var selectedScheme
     
     var body: some View {
-        NavigationView {
-            List {
-                // General section
-                Section {
-                    Picker(LocalizationResource.string(for: .settingsLanguage, language: preferences.language), selection: Binding(
+        VStack(spacing: 0) {
+            Text(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
+                .font(.system(size: 20, weight: .medium))
+                .foregroundColor(.primary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+            
+            Divider()
+                .background(Color(UIColor.separator))
+            
+            VStack(spacing: 12) {
+                // Language picker
+                VStack(spacing: 4) {
+                    Text(LocalizationResource.string(for: .settingsLanguage, language: preferences.language))
+                        .font(.system(size: 14))
+                        .foregroundColor(.primary)
+                    
+                    Picker("", selection: Binding(
                         get: { preferences.language },
                         set: { preferences.setLanguage($0) }
                     )) {
@@ -48,63 +61,19 @@ struct SettingsView: View {
                                 .tag(language)
                         }
                     }
-                } header: {
-                    Text(LocalizationResource.string(for: .settingsGeneral, language: preferences.language))
+                    .pickerStyle(.segmented)
                 }
-                
-                /* Hide export button for now
-                #if DEBUG
-                Button(action: {
-                    Task {
-                        await IconGenerator.exportAllIcons()
-                        await MainActor.run {
-                            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                            exportPath = documentsDirectory.path
-                            showingExportAlert = true
-                        }
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: "square.and.arrow.down")
-                        VStack(alignment: .leading) {
-                            Text("Export All App Icons")
-                            Text("Generates icons for all color schemes")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                #endif
-                */
+                .frame(width: 200)
+                .padding(.vertical, 4)
             }
-            .navigationTitle(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
-            .navigationBarTitleDisplayMode(.large)
-            .alert("Icons Exported", isPresented: $showingExportAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text("All app icons have been exported to:\n\(exportPath)")
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                            Text(LocalizationResource.string(for: .backButton, language: preferences.language))
-                        }
-                    }
-                }
-            }
+            .padding(.vertical, 12)
         }
-        .formStyle(.grouped)
-        .navigationTitle("Settings")
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.systemBackground).ignoresSafeArea())
     }
 }
 
 // MARK: - Preview
 #Preview {
-    NavigationView {
-        SettingsView()
-    }
+    SettingsView(onDismiss: {})
 } 

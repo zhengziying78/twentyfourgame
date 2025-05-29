@@ -346,18 +346,31 @@ struct ContentView: View {
                         }
                     )
                 }
+                
+                // Settings overlay
+                if showingSettings {
+                    PopupContainer(
+                        content: { SettingsView(onDismiss: { 
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                showingSettings = false
+                            }
+                        }) },
+                        onDismiss: { 
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                showingSettings = false
+                            }
+                        }
+                    )
+                }
             }
             .navigationBarHidden(true)
-            .sheet(isPresented: $showingSettings) {
-                SettingsView()
-            }
             .onAppear {
                 isCardsFaceUp = false
             }
             .alert("Icon Exported", isPresented: $showingExportAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("The app icon has been exported to:\n\(exportPath)")
+                Text("All app icons have been exported to:\n\(exportPath)")
             }
         }
         .navigationViewStyle(.stack)

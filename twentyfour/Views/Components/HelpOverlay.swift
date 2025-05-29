@@ -91,74 +91,41 @@ struct HelpOverlay: View {
     }
     
     var body: some View {
-        ZStack {
-            // Semi-transparent background
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    onDismiss()
-                }
-            
+        PopupContainer(content: {
             VStack(spacing: 0) {
-                Spacer()
+                Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color(UIColor.systemBackground).opacity(0.95))
                 
-                // Help content container
-                ZStack {
-                    // White background
-                    Color.white.opacity(0.95)
-                    
-                    VStack(spacing: 20) {
-                        Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
-                            .font(.system(size: 22, weight: .medium))
-                            .foregroundColor(.black)
-                            .padding(.top, 24)
-                        
-                        ScrollView {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(helpContent)
+                Divider()
+                
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text(helpContent)
+                                .font(.system(size: 16))
+                                .foregroundColor(.primary.opacity(0.8))
+                                .lineSpacing(4)
+                                .id("top")
+                            
+                            if settings.language == .english {
+                                Link("Learn more: Wikipedia", destination: URL(string: "https://en.wikipedia.org/wiki/24_(puzzle)")!)
                                     .font(.system(size: 16))
-                                    .foregroundColor(.black.opacity(0.8))
-                                    .lineSpacing(4)
-                                
-                                if settings.language == .english {
-                                    Link("Learn more: Wikipedia", destination: URL(string: "https://en.wikipedia.org/wiki/24_(puzzle)")!)
-                                        .font(.system(size: 16))
-                                        .padding(.top, 8)
-                                }
                             }
-                            .padding(.horizontal, 24)
-                            .padding(.bottom, 24)
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 16)
                     }
-                    
-                    // Dismiss button overlay
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: onDismiss) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color.black.opacity(0.6))
-                                        .frame(width: 36, height: 36)
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 16, weight: .bold))
-                                }
-                            }
-                            .padding(.top, 16)
-                            .padding(.trailing, 16)
-                        }
-                        Spacer()
+                    .background(Color(UIColor.systemBackground).opacity(0.95))
+                    .onAppear {
+                        proxy.scrollTo("top", anchor: .top)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 480)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding(.horizontal, 20)
-                
-                Spacer()
             }
-        }
+        }, onDismiss: onDismiss)
     }
 }
 

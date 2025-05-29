@@ -6,82 +6,46 @@ struct HistoryView: View {
     @ObservedObject private var settings = SettingsPreferences.shared
     
     var body: some View {
-        ZStack {
-            // Semi-transparent background
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    onDismiss()
-                }
-            
-            VStack(spacing: 0) {
-                Spacer()
-                
-                // History container
-                ZStack {
-                    // White background
-                    Color.white.opacity(0.95)
-                    
-                    VStack(spacing: 20) {
-                        Text(LocalizationResource.string(for: .historyTitle, language: settings.language))
-                            .font(.system(size: 22, weight: .medium))
-                            .foregroundColor(.black)
-                            .padding(.top, 24)
-                        
-                        if historyManager.entries.isEmpty {
-                            VStack {
-                                Spacer()
-                                Text(LocalizationResource.string(for: .historyEmpty, language: settings.language))
-                                    .font(.system(size: 16))
-                                    .foregroundColor(.black.opacity(0.6))
-                                Spacer()
-                            }
-                        } else {
-                            ScrollView {
-                                VStack(spacing: 16) {
-                                    ForEach(historyManager.entries) { entry in
-                                        HistoryEntryRow(entry: entry)
-                                    }
-                                    
-                                    if historyManager.totalHandsCount > historyManager.entries.count {
-                                        Text(LocalizationResource.string(for: .historyLimitNote, language: settings.language))
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.black.opacity(0.5))
-                                            .padding(.top, 8)
-                                    }
-                                }
-                                .padding(.horizontal, 20)
-                                .padding(.bottom, 24)
-                            }
-                        }
-                    }
-                    
-                    // Dismiss button overlay
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: onDismiss) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color.black.opacity(0.6))
-                                        .frame(width: 36, height: 36)
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 16, weight: .bold))
-                                }
-                            }
-                            .padding(.top, 16)
-                            .padding(.trailing, 16)
-                        }
-                        Spacer()
-                    }
-                }
+        VStack(spacing: 0) {
+            Text(LocalizationResource.string(for: .historyTitle, language: settings.language))
+                .font(.system(size: 20, weight: .medium))
+                .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
-                .frame(height: 480)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding(.horizontal, 20)
-                
-                Spacer()
+                .padding(.vertical, 16)
+                .background(Color(UIColor.systemBackground).opacity(0.95))
+            
+            Divider()
+            
+            if historyManager.entries.isEmpty {
+                Text(LocalizationResource.string(for: .historyEmpty, language: settings.language))
+                    .font(.system(size: 16))
+                    .foregroundColor(.primary.opacity(0.6))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 24)
+                    .background(Color(UIColor.systemBackground).opacity(0.95))
+            } else {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(historyManager.entries) { entry in
+                            HistoryEntryRow(entry: entry)
+                                .background(Color(UIColor.systemBackground).opacity(0.95))
+                            
+                            if entry != historyManager.entries.last {
+                                Divider()
+                            }
+                        }
+                        
+                        if historyManager.totalHandsCount > historyManager.entries.count {
+                            Divider()
+                            Text(LocalizationResource.string(for: .historyLimitNote, language: settings.language))
+                                .font(.system(size: 14))
+                                .foregroundColor(.primary.opacity(0.5))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(Color(UIColor.systemBackground).opacity(0.95))
+                        }
+                    }
+                }
             }
         }
     }
@@ -92,39 +56,45 @@ struct HistoryEntryRow: View {
     @ObservedObject private var settings = SettingsPreferences.shared
     
     var body: some View {
-        HStack(spacing: 0) {
-            // Left part - Cards only
+        HStack(alignment: .center, spacing: 0) {
+            // Left part - Cards
             CardValuesColumn(cards: entry.cards)
                 .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
             
-            // Right part - Difficulty and Solution
-            VStack(spacing: 0) {
-                // Upper part - Difficulty stars
+            // Right part
+            VStack(alignment: .leading, spacing: 4) {
+                // Difficulty stars
                 DifficultyStars(difficulty: entry.difficulty)
-                    .frame(maxWidth: .infinity)
-                    .frame(maxHeight: .infinity)
-                    .background(Color.black.opacity(0.03))
                 
-                // Lower part - Solution
+                // Solution
                 Text(entry.solution)
                     .font(.system(size: 16))
-                    .foregroundColor(.black.opacity(0.8))
-                    .frame(maxWidth: .infinity)
-                    .frame(maxHeight: .infinity)
-                    .background(Color.black.opacity(0.06))
+                    .foregroundColor(.primary.opacity(0.8))
             }
             .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
         }
-        .frame(height: 80)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-        )
+        .padding(.horizontal, 20)
     }
 }
 
-// New helper view for displaying just card values in large format
+// Helper view for displaying difficulty stars
+struct DifficultyStars: View {
+    let difficulty: Difficulty
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(0..<4, id: \.self) { index in
+                Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
+                    .font(.system(size: 12))
+                    .foregroundColor(index < difficulty.starCount ? .yellow : .gray.opacity(0.5))
+            }
+        }
+    }
+}
+
+// Helper view for displaying just card values
 struct CardValuesColumn: View {
     let cards: [Card]
     
@@ -142,25 +112,9 @@ struct CardValuesColumn: View {
         HStack(spacing: 8) {
             ForEach(Array(cards.enumerated()), id: \.offset) { _, card in
                 Text(displayValue(for: card))
-                    .font(.system(size: 22, weight: .bold, design: .default))
-                    .foregroundColor(.black)
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(.primary)
                     .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(.horizontal, 12)
-    }
-}
-
-// Helper view for displaying difficulty stars
-struct DifficultyStars: View {
-    let difficulty: Difficulty
-    
-    var body: some View {
-        HStack(spacing: 2) {
-            ForEach(0..<4, id: \.self) { index in
-                Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
-                    .font(.system(size: 12))
-                    .foregroundColor(index < difficulty.starCount ? .yellow : .gray.opacity(0.5))
             }
         }
     }

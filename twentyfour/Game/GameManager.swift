@@ -8,9 +8,9 @@ class GameManager: ObservableObject {
     
     var currentHand: Hand? { state.currentHand }
     var formattedSolution: String { state.formattedSolution }
-    var currentHandNumber: Int? { state.currentHandIndex.map { $0 + 1 } }
+    var handNumber: Int? { state.currentHandIndex.map { $0 + 1 } }
     
     func getRandomHand() {
         state.getRandomHand(from: dataset.hands)
     }
-} 
+}

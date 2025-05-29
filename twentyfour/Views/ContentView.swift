@@ -170,7 +170,7 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 16)
-                    .frame(height: 92)
+                    .frame(height: UIConstants.topBarHeight)
                     
                     // Middle part - Cards and difficulty indicator
                     VStack(spacing: 24) {
@@ -185,7 +185,7 @@ struct ContentView: View {
                                     isFaceUp: isCardsFaceUp
                                 )
                                 .frame(maxWidth: .infinity)
-                                .frame(height: UIScreen.main.bounds.width * 0.52)
+                                .frame(height: UIScreen.main.bounds.width * UIConstants.Card.aspectRatio)
                             }
                         }
                         .padding(.horizontal, 28)
@@ -224,7 +224,7 @@ struct ContentView: View {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     gameManager.getRandomHand()
                                     // Add to history when new hand is dealt
-                                    if let hand = gameManager.currentHand, let handNumber = gameManager.currentHandNumber {
+                                    if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
                                         historyManager.addEntry(
                                             handNumber: handNumber,
                                             cards: hand.cards,
@@ -243,7 +243,7 @@ struct ContentView: View {
                                 isFlipping = true
                                 gameManager.getRandomHand()
                                 // Add to history when first hand is dealt
-                                if let hand = gameManager.currentHand, let handNumber = gameManager.currentHandNumber {
+                                if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
                                     historyManager.addEntry(
                                         handNumber: handNumber,
                                         cards: hand.cards,
@@ -309,41 +309,42 @@ struct ContentView: View {
                 
                 // Filter overlay
                 if showingFilter {
-                    FilterOverlay(onDismiss: { showingFilter = false })
-                        .transition(.opacity)
+                    PopupContainer(
+                        content: { FilterOverlay(onDismiss: { showingFilter = false }) },
+                        onDismiss: { showingFilter = false }
+                    )
                 }
                 
                 // Help overlay
                 if showingHelp {
-                    HelpOverlay(onDismiss: { showingHelp = false })
-                        .transition(.opacity)
+                    PopupContainer(
+                        content: { HelpOverlay(onDismiss: { showingHelp = false }) },
+                        onDismiss: { showingHelp = false }
+                    )
                 }
                 
                 // History overlay
                 if showingHistory {
-                    HistoryView(onDismiss: { showingHistory = false })
-                        .transition(.opacity)
+                    PopupContainer(
+                        content: { HistoryView(onDismiss: { showingHistory = false }) },
+                        onDismiss: { showingHistory = false }
+                    )
                 }
                 
                 // Color scheme picker overlay
                 if showingColorPicker {
-                    Color.black.opacity(0.2)
-                        .ignoresSafeArea()
-                        .onTapGesture {
+                    PopupContainer(
+                        content: { ColorSchemePicker(onDismiss: { 
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                showingColorPicker = false
+                            }
+                        }) },
+                        onDismiss: { 
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                 showingColorPicker = false
                             }
                         }
-                    
-                    GeometryReader { geometry in
-                        ColorSchemePicker()
-                            .frame(maxWidth: .infinity)
-                            .offset(y: 92) // Height of the top bar
-                            .transition(.asymmetric(
-                                insertion: .offset(y: -280),
-                                removal: .offset(y: -280)
-                            ))
-                    }
+                    )
                 }
             }
             .navigationBarHidden(true)

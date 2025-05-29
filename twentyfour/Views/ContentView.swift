@@ -105,6 +105,7 @@ struct ContentView: View {
     @State private var showingExportAlert = false
     @State private var playButtonTrigger = false
     @State private var solveButtonTrigger = false
+    @State private var showingColorPicker = false
     
     private let columns = [
         GridItem(.flexible()),
@@ -123,9 +124,9 @@ struct ContentView: View {
                     HStack(spacing: 20) {
                         Spacer()
                         Button(action: {
-                            showingHelp = true
+                            showingFilter = true
                         }) {
-                            Image(systemName: "questionmark.circle")
+                            Image(systemName: "line.3.horizontal.decrease")
                                 .font(.system(size: 22))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
@@ -141,9 +142,18 @@ struct ContentView: View {
                         .disabled(showingSolution)
                         
                         Button(action: {
-                            showingFilter = true
+                            showingHelp = true
                         }) {
-                            Image(systemName: "line.3.horizontal.decrease")
+                            Image(systemName: "questionmark.circle")
+                                .font(.system(size: 22))
+                                .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
+                        }
+                        .disabled(showingSolution)
+                        
+                        Button(action: {
+                            showingColorPicker = true
+                        }) {
+                            Image(systemName: "paintpalette")
                                 .font(.system(size: 22))
                                 .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                         }
@@ -314,6 +324,27 @@ struct ContentView: View {
                     HistoryView(onDismiss: { showingHistory = false })
                         .transition(.opacity)
                 }
+                
+                // Color scheme picker overlay
+                if showingColorPicker {
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                showingColorPicker = false
+                            }
+                        }
+                    
+                    GeometryReader { geometry in
+                        ColorSchemePicker()
+                            .frame(maxWidth: .infinity)
+                            .offset(y: 92) // Height of the top bar
+                            .transition(.asymmetric(
+                                insertion: .offset(y: -280),
+                                removal: .offset(y: -280)
+                            ))
+                    }
+                }
             }
             .navigationBarHidden(true)
             .sheet(isPresented: $showingSettings) {
@@ -329,6 +360,13 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .onChange(of: showingColorPicker) { isShowing in
+            if isShowing {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    showingColorPicker = true
+                }
+            }
+        }
     }
 }
 

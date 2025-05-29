@@ -71,30 +71,6 @@ struct SettingsView: View {
                     }
                 }
                 
-                // Appearance section
-                Section {
-                    ForEach(ColorScheme.allCases) { scheme in
-                        Button(action: {
-                            print("🎨 SettingsView: Selected color scheme: \(scheme.rawValue)")
-                            colorSchemeManager.setScheme(scheme)
-                            if AppIconManager.supportsAlternateIcons {
-                                print("✅ SettingsView: Device supports alternate icons, attempting to change...")
-                                AppIconManager.changeAppIcon(to: scheme)
-                            } else {
-                                print("❌ SettingsView: Device does not support alternate icons")
-                            }
-                        }) {
-                            ColorSchemeRow(
-                                scheme: scheme,
-                                isSelected: colorSchemeManager.currentScheme == scheme
-                            )
-                        }
-                        .foregroundColor(.primary)
-                    }
-                } header: {
-                    Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
-                }
-                
                 /* Hide export button for now
                 #if DEBUG
                 Button(action: {

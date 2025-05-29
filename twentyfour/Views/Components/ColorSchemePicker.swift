@@ -77,7 +77,7 @@ struct ColorSchemePicker: View {
                                         }
                                     }
                                 }
-                                .frame(width: 90)
+                                .frame(width: 110)
                                 .padding(.vertical, 4)
                                 .contentShape(Rectangle())
                             }
@@ -87,7 +87,7 @@ struct ColorSchemePicker: View {
                         if row.count < 3 {
                             ForEach(0..<(3 - row.count), id: \.self) { _ in
                                 Color.clear
-                                    .frame(width: 90)
+                                    .frame(width: 110)
                             }
                         }
                     }

@@ -91,41 +91,56 @@ struct HelpOverlay: View {
     }
     
     var body: some View {
-        PopupContainer(content: {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            // Header with dismiss button
+            HStack {
                 Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(Color(UIColor.systemBackground).opacity(0.95))
                 
-                Divider()
+                Spacer()
                 
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text(helpContent)
-                                .font(.system(size: 16))
-                                .foregroundColor(.primary.opacity(0.8))
-                                .lineSpacing(4)
-                                .id("top")
-                            
-                            if settings.language == .english {
-                                Link("Learn more: Wikipedia", destination: URL(string: "https://en.wikipedia.org/wiki/24_(puzzle)")!)
-                                    .font(.system(size: 16))
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
-                    }
-                    .background(Color(UIColor.systemBackground).opacity(0.95))
-                    .onAppear {
-                        proxy.scrollTo("top", anchor: .top)
-                    }
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.gray)
                 }
             }
-        }, onDismiss: onDismiss)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            
+            Divider()
+                .background(Color(UIColor.separator))
+            
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text(helpContent)
+                            .font(.system(size: 16))
+                            .foregroundColor(.primary.opacity(0.8))
+                            .lineSpacing(4)
+                            .id("top")
+                        
+                        if settings.language == .english {
+                            Link("Learn more: Wikipedia", destination: URL(string: "https://en.wikipedia.org/wiki/24_(puzzle)")!)
+                                .font(.system(size: 16))
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 24)
+                }
+                .padding(.top, 32)  // Reduced from 48 to 32
+                .safeAreaInset(edge: .bottom) {
+                    Color.clear.frame(height: 90)
+                }
+                .onAppear {
+                    proxy.scrollTo("top", anchor: .top)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.systemBackground).ignoresSafeArea())
     }
 }
 

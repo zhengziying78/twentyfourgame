@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FilterOverlay: View {
+struct DifficultyFilter: View {
     let onDismiss: () -> Void
     @ObservedObject private var preferences = FilterPreferences.shared
     @ObservedObject private var settings = SettingsPreferences.shared
@@ -28,46 +28,46 @@ struct FilterOverlay: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(LocalizationResource.string(for: .selectDifficulties, language: settings.language))
-                .font(.system(size: 20, weight: .medium))
+                .font(.system(size: DifficultyFilterConstants.Font.titleSize, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, DifficultyFilterConstants.Layout.titlePaddingVertical)
             
             Divider()
             
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DifficultyFilterConstants.Layout.optionsSpacing) {
                 ForEach(Difficulty.allCases, id: \.self) { difficulty in
                     Button(action: {
                         preferences.toggleDifficulty(difficulty)
                     }) {
-                        HStack(spacing: 12) {
+                        HStack(spacing: DifficultyFilterConstants.Layout.checkboxTextSpacing) {
                             Image(systemName: preferences.selectedDifficulties.contains(difficulty) ? "checkmark.square.fill" : "square")
                                 .foregroundColor(preferences.selectedDifficulties.contains(difficulty) ? .blue : .gray)
-                                .font(.system(size: 20))
-                                .frame(width: 24, height: 24)
+                                .font(.system(size: DifficultyFilterConstants.Font.checkboxSize))
+                                .frame(width: DifficultyFilterConstants.Layout.checkboxSize, height: DifficultyFilterConstants.Layout.checkboxSize)
                             
-                            HStack(spacing: 8) {
+                            HStack(spacing: DifficultyFilterConstants.Layout.textStarsSpacing) {
                                 Text(difficultyText(difficulty))
-                                    .font(.system(size: 18))
+                                    .font(.system(size: DifficultyFilterConstants.Font.optionTextSize))
                                     .foregroundColor(.primary)
                                 
-                                HStack(spacing: 2) {
+                                HStack(spacing: DifficultyFilterConstants.Layout.starsSpacing) {
                                     ForEach(0..<4) { index in
                                         Image(systemName: index < filledStars(for: difficulty) ? "star.fill" : "star")
-                                            .font(.system(size: 12))
-                                            .foregroundColor(index < filledStars(for: difficulty) ? .yellow : .gray.opacity(0.5))
+                                            .font(.system(size: DifficultyFilterConstants.Font.starSize))
+                                            .foregroundColor(index < filledStars(for: difficulty) ? .yellow : .gray.opacity(DifficultyFilterConstants.Opacity.inactiveStarOpacity))
                                     }
                                 }
                             }
                             Spacer()
                         }
-                        .frame(width: 200)
+                        .frame(width: DifficultyFilterConstants.Layout.optionWidth)
                         .contentShape(Rectangle())
                     }
                 }
             }
-            .padding(.vertical, 16)
-            .padding(.bottom, 8)
+            .padding(.vertical, DifficultyFilterConstants.Layout.titlePaddingVertical)
+            .padding(.bottom, DifficultyFilterConstants.Layout.bottomPadding)
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemBackground).ignoresSafeArea())

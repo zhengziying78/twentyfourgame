@@ -308,7 +308,7 @@ struct ContentView: View {
                 // Filter overlay
                 if showingFilter {
                     PopupContainer(
-                        content: { FilterOverlay(onDismiss: { showingFilter = false }) },
+                        content: { DifficultyFilter(onDismiss: { showingFilter = false }) },
                         onDismiss: { showingFilter = false }
                     )
                 }

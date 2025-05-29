@@ -42,7 +42,7 @@ struct ColorSchemePicker: View {
             Divider()
                 .background(Color(UIColor.separator))
             
-            VStack(spacing: ColorSchemePickerConstants.Layout.schemesSpacingVertical) {
+            VStack(spacing: ColorSchemePickerConstants.Layout.schemesGridRowSpacing) {
                 ForEach(colorSchemeRows, id: \.self) { row in
                     HStack(spacing: ColorSchemePickerConstants.Layout.schemesSpacingHorizontal) {
                         ForEach(row) { scheme in
@@ -93,7 +93,7 @@ struct ColorSchemePicker: View {
                     }
                 }
             }
-            .padding(.vertical, ColorSchemePickerConstants.Layout.schemesSpacingVertical)
+            .padding(.vertical, ColorSchemePickerConstants.Layout.schemesGridOuterPadding)
             
             if AppIconManager.supportsAlternateIcons {
                 Divider()

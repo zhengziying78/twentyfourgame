@@ -4,6 +4,8 @@ public enum ColorSchemePickerConstants {
     public enum Layout {
         public static let titlePaddingVertical: CGFloat = 16
         public static let schemesSpacingVertical: CGFloat = 12
+        public static let schemesGridRowSpacing: CGFloat = 24
+        public static let schemesGridOuterPadding: CGFloat = 28
         public static let schemesSpacingHorizontal: CGFloat = 16
         public static let schemeButtonWidth: CGFloat = 110
         public static let schemeButtonPaddingVertical: CGFloat = 4

@@ -97,44 +97,44 @@ struct HelpOverlay: View {
                 Spacer()
                 
                 Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
-                    .font(.system(size: 20, weight: .medium))
+                    .font(.system(size: HelpOverlayConstants.Font.titleSize, weight: .medium))
                     .foregroundColor(.primary)
                 
                 Spacer()
                 
                 Button(action: onDismiss) {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 24))
+                        .font(.system(size: HelpOverlayConstants.Font.dismissButtonSize))
                         .foregroundColor(.gray)
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 16)
+            .padding(.horizontal, HelpOverlayConstants.Layout.headerPaddingHorizontal)
+            .padding(.vertical, HelpOverlayConstants.Layout.headerPaddingVertical)
             
             Divider()
                 .background(Color(UIColor.separator))
             
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: HelpOverlayConstants.Layout.contentSpacing) {
                         Text(helpContent)
-                            .font(.system(size: 16))
-                            .foregroundColor(.primary.opacity(0.8))
-                            .lineSpacing(4)
+                            .font(.system(size: HelpOverlayConstants.Font.contentSize))
+                            .foregroundColor(.primary.opacity(HelpOverlayConstants.Opacity.contentTextOpacity))
+                            .lineSpacing(HelpOverlayConstants.Layout.lineSpacing)
                             .id("top")
                         
                         if settings.language == .english {
                             Link("Learn more: Wikipedia", destination: URL(string: "https://en.wikipedia.org/wiki/24_(puzzle)")!)
-                                .font(.system(size: 16))
+                                .font(.system(size: HelpOverlayConstants.Font.contentSize))
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 24)
+                    .padding(.horizontal, HelpOverlayConstants.Layout.contentPaddingHorizontal)
+                    .padding(.bottom, HelpOverlayConstants.Layout.contentPaddingBottom)
                 }
-                .padding(.top, 32)  // Reduced from 48 to 32
+                .padding(.top, HelpOverlayConstants.Layout.contentPaddingTop)
                 .safeAreaInset(edge: .bottom) {
-                    Color.clear.frame(height: 90)
+                    Color.clear.frame(height: HelpOverlayConstants.Layout.bottomSafeAreaInset)
                 }
                 .onAppear {
                     proxy.scrollTo("top", anchor: .top)

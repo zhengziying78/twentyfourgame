@@ -36,7 +36,7 @@ struct SettingsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(LocalizationResource.string(for: .settingsTitle, language: preferences.language))
+            Text(LocalizationResource.string(for: .settingsLanguage, language: preferences.language))
                 .font(.system(size: 20, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
@@ -48,25 +48,24 @@ struct SettingsView: View {
             VStack(spacing: 12) {
                 // Language picker
                 VStack(spacing: 4) {
-                    Text(LocalizationResource.string(for: .settingsLanguage, language: preferences.language))
-                        .font(.system(size: 14))
-                        .foregroundColor(.primary)
-                    
                     Picker("", selection: Binding(
                         get: { preferences.language },
                         set: { preferences.setLanguage($0) }
                     )) {
                         ForEach(Language.allCases) { language in
                             Text(language.displayName)
+                                .font(.system(size: 16))
                                 .tag(language)
                         }
                     }
                     .pickerStyle(.segmented)
+                    .scaleEffect(1.2)
+                    .frame(height: 44)
                 }
-                .frame(width: 200)
-                .padding(.vertical, 4)
+                .frame(width: 240)
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 12)
+            .padding(.vertical, 24)
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemBackground).ignoresSafeArea())

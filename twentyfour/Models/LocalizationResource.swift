@@ -40,7 +40,6 @@ enum LocalizedKey {
     case colorSchemeLakers
     case settingsAppIcon
     case settingsAppIconAutoChange
-    case settingsAppIconAutoChangeDescription
     
     var english: String {
         switch self {
@@ -72,7 +71,6 @@ enum LocalizedKey {
         case .colorSchemeLakers: return "Lakers"
         case .settingsAppIcon: return "App Icon"
         case .settingsAppIconAutoChange: return "Matching app icon"
-        case .settingsAppIconAutoChangeDescription: return "When enabled, the app icon will automatically match your selected color scheme."
         }
     }
     
@@ -106,7 +104,6 @@ enum LocalizedKey {
         case .colorSchemeLakers: return "湖人"
         case .settingsAppIcon: return "应用图标"
         case .settingsAppIconAutoChange: return "匹配应用图标"
-        case .settingsAppIconAutoChangeDescription: return "开启后，应用图标会自动匹配所选的配色方案。"
         }
     }
 } 

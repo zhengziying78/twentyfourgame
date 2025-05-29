@@ -18,7 +18,7 @@ public enum ColorSchemePickerConstants {
     }
     
     public enum Font {
-        public static let titleSize: CGFloat = 20
+        public static let titleSize: CGFloat = SharedUIConstants.Font.titleSize
         public static let schemeNameSize: CGFloat = 14
         public static let checkmarkSize: CGFloat = 12
         public static let settingsTextSize: CGFloat = 14

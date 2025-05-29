@@ -13,7 +13,7 @@ public enum DifficultyFilterConstants {
     }
     
     public enum Font {
-        public static let titleSize: CGFloat = 20
+        public static let titleSize: CGFloat = SharedUIConstants.Font.titleSize
         public static let checkboxSize: CGFloat = 20
         public static let optionTextSize: CGFloat = 18
         public static let starSize: CGFloat = 12

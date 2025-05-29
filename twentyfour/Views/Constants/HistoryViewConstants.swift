@@ -18,7 +18,7 @@ public enum HistoryViewConstants {
     }
     
     public enum Font {
-        public static let titleSize: CGFloat = 20
+        public static let titleSize: CGFloat = SharedUIConstants.Font.titleSize
         public static let dismissButtonSize: CGFloat = 24
         public static let emptyStateTextSize: CGFloat = 16
         public static let limitNoteTextSize: CGFloat = 14

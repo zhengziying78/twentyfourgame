@@ -14,8 +14,67 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <!-- Left half -->
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="left-half">
+                                <rect key="frame" x="0.0" y="0.0" width="196.5" height="852"/>
+                                <color key="backgroundColor" red="0.90" green="0.90" blue="0.90" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <!-- Right half -->
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="right-half">
+                                <rect key="frame" x="196.5" y="0.0" width="196.5" height="852"/>
+                                <color key="backgroundColor" red="0.92" green="0.92" blue="0.92" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <!-- Number 2 -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="number-2">
+                                <rect key="frame" x="20" y="326" width="166.5" height="100"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="160"/>
+                                <color key="textColor" red="0.92" green="0.92" blue="0.92" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <!-- Number 4 -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="number-4">
+                                <rect key="frame" x="206.5" y="326" width="166.5" height="100"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="160"/>
+                                <color key="textColor" red="0.90" green="0.90" blue="0.90" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <!-- Loading text -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Initializing..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="loading-text">
+                                <rect key="frame" x="20" y="476" width="353" height="36"/>
+                                <fontDescription key="fontDescription" name="Didot-Italic" family="Didot" pointSize="30"/>
+                                <color key="textColor" red="0.70" green="0.70" blue="0.70" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.2" green="0.8" blue="0.8" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <!-- Background view constraints -->
+                            <constraint firstItem="left-half" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="left-leading"/>
+                            <constraint firstItem="left-half" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="left-width"/>
+                            <constraint firstItem="left-half" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="left-top"/>
+                            <constraint firstAttribute="bottom" secondItem="left-half" secondAttribute="bottom" id="left-bottom"/>
+                            
+                            <constraint firstItem="right-half" firstAttribute="leading" secondItem="left-half" secondAttribute="trailing" id="right-leading"/>
+                            <constraint firstAttribute="trailing" secondItem="right-half" secondAttribute="trailing" id="right-trailing"/>
+                            <constraint firstItem="right-half" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="right-top"/>
+                            <constraint firstAttribute="bottom" secondItem="right-half" secondAttribute="bottom" id="right-bottom"/>
+                            
+                            <!-- Number constraints -->
+                            <constraint firstItem="number-2" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-50" id="number-2-center-y"/>
+                            <constraint firstItem="number-2" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="number-2-leading"/>
+                            <constraint firstItem="number-2" firstAttribute="trailing" secondItem="left-half" secondAttribute="trailing" constant="-10" id="number-2-trailing"/>
+                            
+                            <constraint firstItem="number-4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-50" id="number-4-center-y"/>
+                            <constraint firstItem="number-4" firstAttribute="leading" secondItem="right-half" secondAttribute="leading" constant="10" id="number-4-leading"/>
+                            <constraint firstAttribute="trailing" secondItem="number-4" secondAttribute="trailing" constant="20" id="number-4-trailing"/>
+                            
+                            <!-- Loading text constraints -->
+                            <constraint firstItem="loading-text" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="loading-text-leading"/>
+                            <constraint firstAttribute="trailing" secondItem="loading-text" secondAttribute="trailing" constant="20" id="loading-text-trailing"/>
+                            <constraint firstItem="loading-text" firstAttribute="top" secondItem="number-2" secondAttribute="bottom" constant="50" id="loading-text-top"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -23,4 +82,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="hourglass" catalog="system" width="103" height="128"/>
+    </resources>
 </document> 

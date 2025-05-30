@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4E2674C22DEA403A0023DCD6 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4E2674C12DEA403A0023DCD6 /* MarkdownUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4ED9B6242DE0D50F00496C42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E2674C22DEA403A0023DCD6 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = twentyfour;
 			packageProductDependencies = (
+				4E2674C12DEA403A0023DCD6 /* MarkdownUI */,
 			);
 			productName = twentyfour;
 			productReference = 4ED9B6162DE0D50D00496C42 /* TwentyFour.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 4ED9B60D2DE0D50D00496C42;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4E2674C02DEA403A0023DCD6 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4ED9B6172DE0D50D00496C42 /* Products */;
 			projectDirPath = "";
@@ -578,6 +587,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4E2674C02DEA403A0023DCD6 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4E2674C12DEA403A0023DCD6 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4E2674C02DEA403A0023DCD6 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4ED9B60E2DE0D50D00496C42 /* Project object */;
 }

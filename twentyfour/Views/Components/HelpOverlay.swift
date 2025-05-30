@@ -1,19 +1,17 @@
 import SwiftUI
+import MarkdownUI
 
 struct HelpOverlay: View {
     let onDismiss: () -> Void
     @ObservedObject private var settings = SettingsPreferences.shared
     
-    private var helpContent: AttributedString {
-        let markdown = settings.language == .chinese ? chineseHelpMarkdown : englishHelpMarkdown
-        return (try? AttributedString(markdown: markdown, options: AttributedString.MarkdownParsingOptions(
-            interpretedSyntax: .inlineOnlyPreservingWhitespace
-        ))) ?? AttributedString()
+    private var helpContent: String {
+        settings.language == .chinese ? chineseHelpMarkdown : englishHelpMarkdown
     }
     
     private var englishHelpMarkdown: String {
         """
-        # 24 is an arithmetic puzzle where:
+        24 is an arithmetic puzzle where:
 
         • You are dealt 4 cards
         • Use these 4 numbers exactly once each
@@ -58,7 +56,7 @@ struct HelpOverlay: View {
     
     private var chineseHelpMarkdown: String {
         """
-        # 24点是一个数字游戏，规则如下：
+        24点是一个数字游戏，规则如下：
 
         • 每次发4张牌
         • 使用这4个数字，恰好每个数字使用一次
@@ -125,10 +123,11 @@ struct HelpOverlay: View {
                 .background(Color(UIColor.separator))
             
             ScrollView {
-                Text(helpContent)
-                    .textSelection(.enabled)  // Allow text selection for copying
+                Markdown(helpContent)
+                    .textSelection(.enabled)
                     .padding(.horizontal, HelpOverlayConstants.Layout.contentPaddingHorizontal)
                     .padding(.vertical, HelpOverlayConstants.Layout.contentPaddingTop)
+                    .markdownTheme(.gitHub)
             }
             .safeAreaInset(edge: .bottom) {
                 Color.clear.frame(height: HelpOverlayConstants.Layout.bottomSafeAreaInset)

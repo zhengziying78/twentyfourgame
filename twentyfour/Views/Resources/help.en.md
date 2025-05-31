@@ -9,11 +9,11 @@
 * `J`, `Q`, `K` represent 11, 12, 13 respectively
 
 ## Allowed Operations:
-* Addition (`+`)
-* Subtraction (`-`)
-* Multiplication (`×`)
-* Division (`÷`)
-* Parentheses (`(` and `)`)
+* Addition `+`
+* Subtraction `-`
+* Multiplication `×`
+* Division `÷`
+* Parentheses `(` `)`
 
 ## Not Allowed:
 * Square root
@@ -25,7 +25,7 @@
 ## Examples:
 * `7`, `2`, `4`, `1` → `(7 - 2) × 4 × 1`
 * `4`, `7`, `8`, `8` → `(7 - (8 ÷ 8)) × 4`
-* `3`, `3`, `8`, `8` → `(8 ÷ 8 + 3) × 8`
+* `3`, `3`, `8`, `8` → `8 ÷ (3 - (8 ÷ 3))`
 
 Difficulty levels range from Easy to Hardest, indicated by the number of stars.
 

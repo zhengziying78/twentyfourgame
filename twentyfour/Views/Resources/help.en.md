@@ -29,7 +29,7 @@
 
 Difficulty levels range from Easy to Hardest, indicated by the number of stars.
 
-## Tips:
+## Rules:
 * Each number must be used exactly once
 * Parentheses can be used to change operation order
 * Decimal numbers are allowed in intermediate steps, but the final result must be 24

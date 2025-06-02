@@ -5,7 +5,7 @@ class GameState: ObservableObject {
     @Published var currentHand: Hand?
     @Published var currentHandIndex: Int?
     private var recentHands: [Hand] = []
-    private let maxRecentHands = 5
+    private let maxRecentHands = GameConstants.History.maxRecentHands
     private let preferences = FilterPreferences.shared
     
     func getRandomHand(from hands: [Hand]) {

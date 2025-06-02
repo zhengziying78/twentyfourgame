@@ -3,7 +3,7 @@ import SwiftUI
 struct ColorSchemePicker: View {
     let onDismiss: () -> Void
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
-    @ObservedObject private var preferences = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     @AppStorage("autoChangeAppIcon") private var autoChangeAppIcon = false
     @State private var showingExportAlert = false
     @State private var exportPath = ""
@@ -33,7 +33,7 @@ struct ColorSchemePicker: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(LocalizationResource.string(for: .settingsColorScheme, language: preferences.language))
+            Text(LocalizationResource.string(for: .settingsColorScheme, language: languageSettings.language))
                 .font(.system(size: ColorSchemePickerConstants.Font.titleSize, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
@@ -64,7 +64,7 @@ struct ColorSchemePicker: View {
                                     }
                                     
                                     HStack(spacing: ColorSchemePickerConstants.Layout.schemeNameCheckmarkSpacing) {
-                                        Text(scheme.localizedName(language: preferences.language))
+                                        Text(scheme.localizedName(language: languageSettings.language))
                                             .font(.system(size: ColorSchemePickerConstants.Font.schemeNameSize))
                                             .foregroundColor(.primary)
                                             .lineLimit(1)
@@ -102,7 +102,7 @@ struct ColorSchemePicker: View {
                 VStack(spacing: ColorSchemePickerConstants.Layout.schemesSpacingVertical) {
                     HStack {
                         Spacer()
-                        Text(LocalizationResource.string(for: .settingsAppIconAutoChange, language: preferences.language))
+                        Text(LocalizationResource.string(for: .settingsAppIconAutoChange, language: languageSettings.language))
                             .font(.system(size: ColorSchemePickerConstants.Font.settingsTextSize))
                             .foregroundColor(.primary)
                         Toggle("", isOn: $autoChangeAppIcon)

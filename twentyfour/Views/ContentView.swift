@@ -91,7 +91,7 @@ struct SolutionOverlay: View {
 
 struct ContentView: View {
     @StateObject private var gameManager = GameManager.shared
-    @StateObject private var settings = SettingsPreferences.shared
+    @StateObject private var languageSettings = LanguagePreferences.shared
     @StateObject private var historyManager = HistoryManager.shared
     @StateObject private var colorSchemeManager = ColorSchemeManager.shared
     @State private var showingSolution = false
@@ -261,7 +261,7 @@ struct ContentView: View {
                                 Image(systemName: "arrow.clockwise")
                                     .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
                                     .symbolEffect(.bounce.up, options: .nonRepeating, value: playButtonTrigger)
-                                Text(LocalizationResource.string(for: .playButton, language: settings.language))
+                                Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
                                     .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
@@ -279,7 +279,7 @@ struct ContentView: View {
                                 Image(systemName: "lightbulb.fill")
                                     .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
                                     .symbolEffect(.pulse, options: .nonRepeating, value: solveButtonTrigger)
-                                Text(LocalizationResource.string(for: .solveButton, language: settings.language))
+                                Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
                                     .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)

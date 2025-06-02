@@ -26,8 +26,8 @@ enum Language: String, CaseIterable, Identifiable {
     }
 }
 
-class SettingsPreferences: ObservableObject {
-    static let shared = SettingsPreferences()
+class LanguagePreferences: ObservableObject {
+    static let shared = LanguagePreferences()
     
     @Published private(set) var language: Language {
         didSet {

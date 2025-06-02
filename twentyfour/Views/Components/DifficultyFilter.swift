@@ -3,7 +3,7 @@ import SwiftUI
 struct DifficultyFilter: View {
     let onDismiss: () -> Void
     @ObservedObject private var preferences = FilterPreferences.shared
-    @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     
     private func difficultyText(_ difficulty: Difficulty) -> String {
         let key: LocalizedKey
@@ -13,7 +13,7 @@ struct DifficultyFilter: View {
         case .hard: key = .difficultyHard
         case .hardest: key = .difficultyHardest
         }
-        return LocalizationResource.string(for: key, language: settings.language)
+        return LocalizationResource.string(for: key, language: languageSettings.language)
     }
     
     private func filledStars(for difficulty: Difficulty) -> Int {
@@ -27,7 +27,7 @@ struct DifficultyFilter: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(LocalizationResource.string(for: .selectDifficulties, language: settings.language))
+            Text(LocalizationResource.string(for: .selectDifficulties, language: languageSettings.language))
                 .font(.system(size: DifficultyFilterConstants.Font.titleSize, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)

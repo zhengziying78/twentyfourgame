@@ -3,10 +3,10 @@ import MarkdownUI
 
 struct HelpOverlay: View {
     let onDismiss: () -> Void
-    @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     
     private var helpContent: String {
-        let filename = settings.language == .chinese ? "help.zh" : "help.en"
+        let filename = languageSettings.language == .chinese ? "help.zh" : "help.en"
         guard let path = Bundle.main.path(forResource: filename, ofType: "md"),
               let content = try? String(contentsOfFile: path, encoding: .utf8) else {
             return "Help content not found"
@@ -20,7 +20,7 @@ struct HelpOverlay: View {
             HStack {
                 Spacer()
                 
-                Text(LocalizationResource.string(for: .helpTitle, language: settings.language))
+                Text(LocalizationResource.string(for: .helpTitle, language: languageSettings.language))
                     .font(.system(size: HelpOverlayConstants.Font.titleSize, weight: .medium))
                     .foregroundColor(.primary)
                 

@@ -2,19 +2,19 @@ import SwiftUI
 
 struct DifficultyIndicator: View {
     let difficulty: Difficulty
-    @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     @ObservedObject private var colorSchemeManager = ColorSchemeManager.shared
     
     private var difficultyText: String {
         switch difficulty {
         case .easy:
-            return LocalizationResource.string(for: .difficultyEasy, language: settings.language)
+            return LocalizationResource.string(for: .difficultyEasy, language: languageSettings.language)
         case .medium:
-            return LocalizationResource.string(for: .difficultyMedium, language: settings.language)
+            return LocalizationResource.string(for: .difficultyMedium, language: languageSettings.language)
         case .hard:
-            return LocalizationResource.string(for: .difficultyHard, language: settings.language)
+            return LocalizationResource.string(for: .difficultyHard, language: languageSettings.language)
         case .hardest:
-            return LocalizationResource.string(for: .difficultyHardest, language: settings.language)
+            return LocalizationResource.string(for: .difficultyHardest, language: languageSettings.language)
         }
     }
     

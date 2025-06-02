@@ -2,11 +2,11 @@ import SwiftUI
 
 struct LanguagePicker: View {
     let onDismiss: () -> Void
-    @ObservedObject private var preferences = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     
     var body: some View {
         VStack(spacing: 0) {
-            Text(LocalizationResource.string(for: .settingsLanguage, language: preferences.language))
+            Text(LocalizationResource.string(for: .settingsLanguage, language: languageSettings.language))
                 .font(.system(size: LanguagePickerConstants.Font.titleSize, weight: .medium))
                 .foregroundColor(.primary)
                 .frame(maxWidth: .infinity)
@@ -19,8 +19,8 @@ struct LanguagePicker: View {
                 // Language picker
                 VStack(spacing: SharedUIConstants.Layout.compactElementSpacing) {
                     Picker("", selection: Binding(
-                        get: { preferences.language },
-                        set: { preferences.setLanguage($0) }
+                        get: { languageSettings.language },
+                        set: { languageSettings.setLanguage($0) }
                     )) {
                         ForEach(Language.allCases) { language in
                             Text(language.displayName)

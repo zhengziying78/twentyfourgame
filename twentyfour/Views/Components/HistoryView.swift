@@ -3,7 +3,7 @@ import SwiftUI
 struct HistoryView: View {
     let onDismiss: () -> Void
     @ObservedObject private var historyManager = HistoryManager.shared
-    @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     
     var body: some View {
         VStack(spacing: 0) {
@@ -11,7 +11,7 @@ struct HistoryView: View {
             HStack {
                 Spacer()
                 
-                Text(LocalizationResource.string(for: .historyTitle, language: settings.language))
+                Text(LocalizationResource.string(for: .historyTitle, language: languageSettings.language))
                     .font(.system(size: HistoryViewConstants.Font.titleSize, weight: .medium))
                     .foregroundColor(.primary)
                 
@@ -34,7 +34,7 @@ struct HistoryView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         if historyManager.entries.isEmpty {
-                            Text(LocalizationResource.string(for: .historyEmpty, language: settings.language))
+                            Text(LocalizationResource.string(for: .historyEmpty, language: languageSettings.language))
                                 .font(.system(size: HistoryViewConstants.Font.emptyStateTextSize))
                                 .foregroundColor(.primary.opacity(HistoryViewConstants.Opacity.emptyStateTextOpacity))
                                 .frame(maxWidth: .infinity)
@@ -47,7 +47,7 @@ struct HistoryView: View {
                             }
                             
                             if historyManager.totalHandsCount > historyManager.entries.count {
-                                Text(LocalizationResource.string(for: .historyLimitNote, language: settings.language))
+                                Text(LocalizationResource.string(for: .historyLimitNote, language: languageSettings.language))
                                     .font(.system(size: HistoryViewConstants.Font.limitNoteTextSize))
                                     .foregroundColor(.primary.opacity(HistoryViewConstants.Opacity.limitNoteTextOpacity))
                                     .frame(maxWidth: .infinity)
@@ -71,7 +71,7 @@ struct HistoryView: View {
 
 struct HistoryEntryRow: View {
     let entry: HistoryEntry
-    @ObservedObject private var settings = SettingsPreferences.shared
+    @ObservedObject private var languageSettings = LanguagePreferences.shared
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {

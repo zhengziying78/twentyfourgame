@@ -15,9 +15,9 @@ struct CardBack: View {
                 
                 // Simple block pattern
                 VStack(spacing: 0) {
-                    ForEach(0..<CardBackConstants.Layout.gridRows) { row in
+                    ForEach(Array(0..<CardBackConstants.Layout.gridRows), id: \.self) { row in
                         HStack(spacing: 0) {
-                            ForEach(0..<CardBackConstants.Layout.gridColumns) { col in
+                            ForEach(Array(0..<CardBackConstants.Layout.gridColumns), id: \.self) { col in
                                 Rectangle()
                                     .fill((row + col) % 2 == 0 ? 
                                         colorSchemeManager.currentScheme.secondary :

@@ -25,7 +25,7 @@ struct DifficultyIndicator: View {
                 .foregroundColor(colorSchemeManager.currentScheme.primary.opacity(DifficultyIndicatorConstants.Opacity.difficultyTextOpacity))
             
             HStack(spacing: DifficultyIndicatorConstants.Layout.starsSpacing) {
-                ForEach(0..<DifficultyIndicatorConstants.Layout.totalStars) { index in
+                ForEach(Array(0..<DifficultyIndicatorConstants.Layout.totalStars), id: \.self) { index in
                     Image(systemName: index < difficulty.starCount ? "star.fill" : "star")
                         .font(.system(size: DifficultyIndicatorConstants.Font.starSize))
                         .foregroundColor(index < difficulty.starCount ? .yellow : colorSchemeManager.currentScheme.primary.opacity(DifficultyIndicatorConstants.Opacity.inactiveStarOpacity))

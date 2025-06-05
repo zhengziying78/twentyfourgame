@@ -18,18 +18,14 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.2.app
 
-      - name: Validate Xcode project
-        run: |
-          echo "Checking Xcode project structure..."
-          ls -la twentyfour.xcodeproj/
-          echo "Project file contents:"
-          cat twentyfour.xcodeproj/project.pbxproj | head -n 20
+      - name: List Schemes
+        run: xcodebuild -list -project twentyfour.xcodeproj
 
       - name: Build
         run: |
           xcodebuild clean build analyze \
             -project twentyfour.xcodeproj \
-            -scheme twentyfour \
+            -scheme TwentyFour \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \

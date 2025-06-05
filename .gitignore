@@ -45,4 +45,14 @@ Pods/
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
-.com.apple.timemachine.donotpresent 
+.com.apple.timemachine.donotpresent
+
+# IDE and Coverage
+.coverage
+.vscode/
+twentyfour/.cursor/
+
+# Python
+.pytest_cache/
+__pycache__/
+*.pyc 

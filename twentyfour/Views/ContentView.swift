@@ -372,8 +372,8 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .onChange(of: showingColorPicker) { isShowing in
-            if isShowing {
+        .onChange(of: showingColorPicker) { oldValue, newValue in
+            if newValue {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                     showingColorPicker = true
                 }

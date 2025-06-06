@@ -24,6 +24,10 @@ struct Card: Equatable, Identifiable {
     let value: Int
     let suit: Suit
     
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.value == rhs.value && lhs.suit == rhs.suit
+    }
+    
     var displayValue: String {
         switch value {
         case 11: return "J"

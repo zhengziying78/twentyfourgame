@@ -6,12 +6,13 @@ class GameState: ObservableObject {
     @Published var currentHandIndex: Int? = nil
     internal var recentHands: [Hand] = []
     private let maxRecentHands = GameConstants.History.maxRecentHands
-    private let preferences = FilterPreferences.shared
+    private let preferences: FilterPreferences
     
-    init() {
+    init(preferences: FilterPreferences = FilterPreferences.shared) {
         self.currentHand = nil
         self.currentHandIndex = nil
         self.recentHands = []
+        self.preferences = preferences
     }
     
     func getRandomHand(from hands: [Hand]) {

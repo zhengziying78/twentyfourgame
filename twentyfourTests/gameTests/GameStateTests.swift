@@ -2,25 +2,29 @@ import XCTest
 @testable import twentyfour
 
 final class GameStateTests: XCTestCase {
-    var state: GameState!
-    
     override func setUp() {
         super.setUp()
-        state = GameState()
-    }
-    
-    override func tearDown() {
-        state = nil
-        super.tearDown()
+        // Reset FilterPreferences to a known state before each test
+        let preferences = FilterPreferences.shared
+        // First enable all difficulties to ensure a known state
+        for difficulty in Difficulty.allCases {
+            if !preferences.selectedDifficulties.contains(difficulty) {
+                preferences.toggleDifficulty(difficulty)
+            }
+        }
     }
     
     func testInitialState() {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         XCTAssertNil(state.currentHand)
         XCTAssertNil(state.currentHandIndex)
         XCTAssertEqual(state.formattedSolution, "")
     }
     
     func testGetRandomHandWithEmptyHands() {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         // Given
         let emptyHands: [Hand] = []
         
@@ -33,6 +37,8 @@ final class GameStateTests: XCTestCase {
     }
     
     func testGetRandomHandWithFilteredHandsEmpty() throws {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         // Given
         let hand = try Hand(numbers: [1, 2, 3, 4], 
                       solution: "(1+2)*(3+4)", 
@@ -40,7 +46,6 @@ final class GameStateTests: XCTestCase {
         let hands = [hand]
         
         // Clear all difficulties except easy
-        let preferences = FilterPreferences.shared
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
@@ -54,6 +59,8 @@ final class GameStateTests: XCTestCase {
     }
     
     func testGetRandomHandSuccess() throws {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         // Given
         let hand = try Hand(numbers: [1, 2, 3, 4],
                       solution: "(1+2)*(3+4)",
@@ -61,7 +68,6 @@ final class GameStateTests: XCTestCase {
         let hands = [hand]
         
         // Ensure only easy difficulty is selected
-        let preferences = FilterPreferences.shared
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
@@ -78,6 +84,8 @@ final class GameStateTests: XCTestCase {
     }
     
     func testFormattedSolution() throws {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         // Given
         let hand = try Hand(numbers: [1, 2, 3, 4],
                       solution: "1*2/3+4",
@@ -85,7 +93,6 @@ final class GameStateTests: XCTestCase {
         let hands = [hand]
         
         // Ensure only easy difficulty is selected
-        let preferences = FilterPreferences.shared
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
@@ -99,6 +106,8 @@ final class GameStateTests: XCTestCase {
     }
     
     func testRecentHandsLimit() throws {
+        let preferences = FilterPreferences.createForTesting(defaults: UserDefaults(suiteName: #function)!)
+        let state = GameState(preferences: preferences)
         // Given
         let hands = try (1...6).map { i in
             try Hand(numbers: [i, i+1, i+2, i+3],
@@ -107,7 +116,6 @@ final class GameStateTests: XCTestCase {
         }
         
         // Ensure only easy difficulty is selected
-        let preferences = FilterPreferences.shared
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }

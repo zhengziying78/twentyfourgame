@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,23 +33,23 @@
 		4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXGroup section */
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		4ED9B6182DE0D50D00496C42 /* twentyfour */ = {
-			isa = PBXGroup;
+			isa = PBXFileSystemSynchronizedRootGroup;
 			path = twentyfour;
 			sourceTree = "<group>";
 		};
 		4ED9B6262DE0D50F00496C42 /* twentyfourTests */ = {
-			isa = PBXGroup;
+			isa = PBXFileSystemSynchronizedRootGroup;
 			path = twentyfourTests;
 			sourceTree = "<group>";
 		};
 		4ED9B6302DE0D50F00496C42 /* twentyfourUITests */ = {
-			isa = PBXGroup;
+			isa = PBXFileSystemSynchronizedRootGroup;
 			path = twentyfourUITests;
 			sourceTree = "<group>";
 		};
-/* End PBXGroup section */
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4ED9B6132DE0D50D00496C42 /* Frameworks */ = {
@@ -111,6 +111,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4ED9B6182DE0D50D00496C42 /* twentyfour */,
 			);
 			name = twentyfour;
 			packageProductDependencies = (

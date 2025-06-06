@@ -9,10 +9,12 @@ class ColorSchemeManager: ObservableObject {
         }
     }
     
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
     private let key = "selectedColorScheme"
     
-    private init() {
+    private init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        
         // Load saved scheme or use classic as default
         if let savedScheme = defaults.string(forKey: key),
            let scheme = ColorScheme(rawValue: savedScheme) {
@@ -24,6 +26,12 @@ class ColorSchemeManager: ObservableObject {
         }
         print("DEBUG: Current color scheme: \(currentScheme)")
     }
+    
+    #if DEBUG
+    static func createForTesting(defaults: UserDefaults) -> ColorSchemeManager {
+        return ColorSchemeManager(defaults: defaults)
+    }
+    #endif
     
     func setScheme(_ scheme: ColorScheme) {
         withAnimation(.easeInOut(duration: 0.3)) {

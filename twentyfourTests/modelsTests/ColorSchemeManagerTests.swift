@@ -3,6 +3,7 @@ import XCTest
 
 final class ColorSchemeManagerTests: XCTestCase {
     var userDefaults: UserDefaults!
+    var manager: ColorSchemeManager!
     let testKey = "selectedColorScheme"
     
     override func setUp() {
@@ -10,11 +11,13 @@ final class ColorSchemeManagerTests: XCTestCase {
         // Use a unique suite name for testing to avoid interfering with actual app data
         userDefaults = UserDefaults(suiteName: "ColorSchemeManagerTests")!
         userDefaults.removePersistentDomain(forName: "ColorSchemeManagerTests")
+        manager = ColorSchemeManager.createForTesting(defaults: userDefaults)
     }
     
     override func tearDown() {
         userDefaults.removePersistentDomain(forName: "ColorSchemeManagerTests")
         userDefaults = nil
+        manager = nil
         super.tearDown()
     }
     
@@ -29,13 +32,12 @@ final class ColorSchemeManagerTests: XCTestCase {
         // Clear any existing saved scheme
         userDefaults.removeObject(forKey: testKey)
         
-        let manager = ColorSchemeManager.shared
-        XCTAssertEqual(manager.currentScheme, .classic, "Default scheme should be classic")
+        // Create a new manager instance to test initialization
+        let testManager = ColorSchemeManager.createForTesting(defaults: userDefaults)
+        XCTAssertEqual(testManager.currentScheme, .classic, "Default scheme should be classic")
     }
     
     func testSchemeSettingAndPersistence() {
-        let manager = ColorSchemeManager.shared
-        
         // Test setting each available scheme
         for scheme in ColorScheme.allCases {
             manager.setScheme(scheme)
@@ -53,8 +55,8 @@ final class ColorSchemeManagerTests: XCTestCase {
         userDefaults.synchronize()
         
         // Create a new instance which should load the saved scheme
-        let manager = ColorSchemeManager.shared
-        XCTAssertEqual(manager.currentScheme, .barbie, "Manager should load saved scheme from UserDefaults")
+        let testManager = ColorSchemeManager.createForTesting(defaults: userDefaults)
+        XCTAssertEqual(testManager.currentScheme, .barbie, "Manager should load saved scheme from UserDefaults")
     }
     
     func testInvalidSavedScheme() {
@@ -63,7 +65,7 @@ final class ColorSchemeManagerTests: XCTestCase {
         userDefaults.synchronize()
         
         // Create a new instance which should fall back to classic
-        let manager = ColorSchemeManager.shared
-        XCTAssertEqual(manager.currentScheme, .classic, "Manager should use classic scheme when saved value is invalid")
+        let testManager = ColorSchemeManager.createForTesting(defaults: userDefaults)
+        XCTAssertEqual(testManager.currentScheme, .classic, "Manager should use classic scheme when saved value is invalid")
     }
 } 

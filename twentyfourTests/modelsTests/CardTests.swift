@@ -34,20 +34,21 @@ final class CardTests: XCTestCase {
     }
     
     func testSuitColors() {
-        let lightScheme = ColorScheme(primary: .black, secondary: .red)
-        let darkScheme = ColorScheme(primary: .white, secondary: .red)
+        // Use actual ColorScheme cases instead of custom ones
+        let classicScheme = ColorScheme.classic  // black primary, red secondary
+        let hermesScheme = ColorScheme.hermes    // black primary, orange secondary
         
-        // Test light scheme colors
-        XCTAssertEqual(Suit.spades.color(scheme: lightScheme), lightScheme.primary)
-        XCTAssertEqual(Suit.clubs.color(scheme: lightScheme), lightScheme.primary)
-        XCTAssertEqual(Suit.hearts.color(scheme: lightScheme), lightScheme.secondary)
-        XCTAssertEqual(Suit.diamonds.color(scheme: lightScheme), lightScheme.secondary)
+        // Test classic scheme colors
+        XCTAssertEqual(Suit.spades.color(scheme: classicScheme), classicScheme.primary)
+        XCTAssertEqual(Suit.clubs.color(scheme: classicScheme), classicScheme.primary)
+        XCTAssertEqual(Suit.hearts.color(scheme: classicScheme), classicScheme.secondary)
+        XCTAssertEqual(Suit.diamonds.color(scheme: classicScheme), classicScheme.secondary)
         
-        // Test dark scheme colors
-        XCTAssertEqual(Suit.spades.color(scheme: darkScheme), darkScheme.primary)
-        XCTAssertEqual(Suit.clubs.color(scheme: darkScheme), darkScheme.primary)
-        XCTAssertEqual(Suit.hearts.color(scheme: darkScheme), darkScheme.secondary)
-        XCTAssertEqual(Suit.diamonds.color(scheme: darkScheme), darkScheme.secondary)
+        // Test hermes scheme colors
+        XCTAssertEqual(Suit.spades.color(scheme: hermesScheme), hermesScheme.primary)
+        XCTAssertEqual(Suit.clubs.color(scheme: hermesScheme), hermesScheme.primary)
+        XCTAssertEqual(Suit.hearts.color(scheme: hermesScheme), hermesScheme.secondary)
+        XCTAssertEqual(Suit.diamonds.color(scheme: hermesScheme), hermesScheme.secondary)
     }
     
     func testCardEquality() {

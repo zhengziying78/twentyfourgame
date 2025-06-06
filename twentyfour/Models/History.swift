@@ -38,4 +38,9 @@ class HistoryManager: ObservableObject {
             entries.removeLast()
         }
     }
+    
+    func clearEntries() {
+        entries.removeAll()
+        _totalHandsCount = 0
+    }
 } 

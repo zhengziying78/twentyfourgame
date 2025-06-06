@@ -75,7 +75,7 @@ final class LocalizationResourceTests: XCTestCase {
     // Test that system language fallback works
     func testLanguageFallback() {
         // Test that system fallback to English works
-        let systemLanguage = Language.system
+        let systemLanguage = Language.auto
         let result = LocalizationResource.string(for: .playButton, language: systemLanguage)
         XCTAssertTrue(
             result == "Play" || result == "换一组",

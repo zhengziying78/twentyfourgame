@@ -7,7 +7,7 @@ final class HistoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         historyManager = HistoryManager.shared
-        historyManager.entries.removeAll()
+        historyManager.clearEntries()
     }
     
     func testHistoryEntryCreation() {

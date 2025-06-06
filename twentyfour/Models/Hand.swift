@@ -1,10 +1,10 @@
 import Foundation
 
-enum Difficulty: CaseIterable, Hashable {
-    case easy
-    case medium
-    case hard
-    case hardest
+enum Difficulty: Int, CaseIterable, Hashable {
+    case easy = 1
+    case medium = 2
+    case hard = 3
+    case hardest = 4
 }
 
 struct Hand: Equatable, Identifiable {

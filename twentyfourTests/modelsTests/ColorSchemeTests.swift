@@ -1,9 +1,10 @@
 import XCTest
+import SwiftUI
 @testable import twentyfour
 
 final class ColorSchemeTests: XCTestCase {
     func testAllCases() {
-        let allSchemes = ColorScheme.allCases
+        let allSchemes = twentyfour.ColorScheme.allCases
         XCTAssertEqual(allSchemes.count, 9)
         XCTAssertTrue(allSchemes.contains(.classic))
         XCTAssertTrue(allSchemes.contains(.hermes))
@@ -17,7 +18,7 @@ final class ColorSchemeTests: XCTestCase {
     }
     
     func testIdentifiable() {
-        for scheme in ColorScheme.allCases {
+        for scheme in twentyfour.ColorScheme.allCases {
             XCTAssertEqual(scheme.id, scheme.rawValue)
         }
     }
@@ -35,7 +36,7 @@ final class ColorSchemeTests: XCTestCase {
     }
     
     func testLocalizedNames() {
-        for scheme in ColorScheme.allCases {
+        for scheme in twentyfour.ColorScheme.allCases {
             let englishName = scheme.localizedName(language: .english)
             let chineseName = scheme.localizedName(language: .chinese)
             
@@ -108,7 +109,7 @@ final class ColorSchemeTests: XCTestCase {
     }
     
     func testTextAndIconColor() {
-        for scheme in ColorScheme.allCases {
+        for scheme in twentyfour.ColorScheme.allCases {
             let textColor = scheme.textAndIcon
             let components = UIColor(textColor).cgColor.components
             XCTAssertNotNil(components)
@@ -123,7 +124,7 @@ final class ColorSchemeTests: XCTestCase {
     }
     
     func testDisabledBackgroundColor() {
-        for scheme in ColorScheme.allCases {
+        for scheme in twentyfour.ColorScheme.allCases {
             let disabledColor = scheme.disabledBackground
             XCTAssertEqual(disabledColor, .gray)
         }

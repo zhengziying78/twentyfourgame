@@ -29,11 +29,16 @@ final class GameStateTests: XCTestCase {
     func testGetRandomHandWithFilteredHandsEmpty() {
         // Given
         let hands = [
-            Hand(cards: [Card(value: 1), Card(value: 2), Card(value: 3), Card(value: 4)], 
+            Hand(numbers: [1, 2, 3, 4], 
                  solution: "(1+2)*(3+4)", 
                  difficulty: .hard)
         ]
-        FilterPreferences.shared.selectedDifficulties = [.easy] // Only easy selected
+        
+        // Clear all difficulties except easy
+        let preferences = FilterPreferences.shared
+        for difficulty in Difficulty.allCases where difficulty != .easy {
+            preferences.toggleDifficulty(difficulty)
+        }
         
         // When
         gameState.getRandomHand(from: hands)
@@ -45,11 +50,16 @@ final class GameStateTests: XCTestCase {
     
     func testGetRandomHandSuccess() {
         // Given
-        let hand = Hand(cards: [Card(value: 1), Card(value: 2), Card(value: 3), Card(value: 4)],
+        let hand = Hand(numbers: [1, 2, 3, 4],
                        solution: "(1+2)*(3+4)",
                        difficulty: .easy)
         let hands = [hand]
-        FilterPreferences.shared.selectedDifficulties = [.easy]
+        
+        // Ensure only easy difficulty is selected
+        let preferences = FilterPreferences.shared
+        for difficulty in Difficulty.allCases where difficulty != .easy {
+            preferences.toggleDifficulty(difficulty)
+        }
         
         // When
         gameState.getRandomHand(from: hands)
@@ -63,11 +73,16 @@ final class GameStateTests: XCTestCase {
     
     func testFormattedSolution() {
         // Given
-        let hand = Hand(cards: [Card(value: 1), Card(value: 2), Card(value: 3), Card(value: 4)],
+        let hand = Hand(numbers: [1, 2, 3, 4],
                        solution: "1*2/3+4",
                        difficulty: .easy)
         let hands = [hand]
-        FilterPreferences.shared.selectedDifficulties = [.easy]
+        
+        // Ensure only easy difficulty is selected
+        let preferences = FilterPreferences.shared
+        for difficulty in Difficulty.allCases where difficulty != .easy {
+            preferences.toggleDifficulty(difficulty)
+        }
         
         // When
         gameState.getRandomHand(from: hands)
@@ -79,11 +94,16 @@ final class GameStateTests: XCTestCase {
     func testRecentHandsLimit() {
         // Given
         let hands = (1...6).map { i in
-            Hand(cards: [Card(value: i), Card(value: i+1), Card(value: i+2), Card(value: i+3)],
+            Hand(numbers: [i, i+1, i+2, i+3],
                  solution: "1+2+3+4",
                  difficulty: .easy)
         }
-        FilterPreferences.shared.selectedDifficulties = [.easy]
+        
+        // Ensure only easy difficulty is selected
+        let preferences = FilterPreferences.shared
+        for difficulty in Difficulty.allCases where difficulty != .easy {
+            preferences.toggleDifficulty(difficulty)
+        }
         
         // When
         for _ in 1...6 {

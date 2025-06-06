@@ -13,4 +13,12 @@ class GameManager: ObservableObject {
     func getRandomHand() {
         state.getRandomHand(from: dataset.hands)
     }
+    
+    #if DEBUG
+    func reset() {
+        state.currentHand = nil
+        state.currentHandIndex = nil
+        state.recentHands.removeAll()
+    }
+    #endif
 }

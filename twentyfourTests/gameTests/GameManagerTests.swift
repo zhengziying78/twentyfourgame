@@ -2,6 +2,16 @@ import XCTest
 @testable import twentyfour
 
 final class GameManagerTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        GameManager.shared.reset()
+    }
+    
+    override func tearDown() {
+        GameManager.shared.reset()
+        super.tearDown()
+    }
+    
     func testSingletonPattern() {
         let instance1 = GameManager.shared
         let instance2 = GameManager.shared

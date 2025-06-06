@@ -2,11 +2,17 @@ import Foundation
 import SwiftUI
 
 class GameState: ObservableObject {
-    @Published var currentHand: Hand?
-    @Published var currentHandIndex: Int?
-    private var recentHands: [Hand] = []
+    @Published var currentHand: Hand? = nil
+    @Published var currentHandIndex: Int? = nil
+    internal var recentHands: [Hand] = []
     private let maxRecentHands = GameConstants.History.maxRecentHands
     private let preferences = FilterPreferences.shared
+    
+    init() {
+        self.currentHand = nil
+        self.currentHandIndex = nil
+        self.recentHands = []
+    }
     
     func getRandomHand(from hands: [Hand]) {
         guard !hands.isEmpty else { return }

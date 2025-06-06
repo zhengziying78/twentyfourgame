@@ -38,7 +38,7 @@ The app offers a clean, focused interface with several key features:
 - **Language Support**: Switch between English and Chinese (简体中文) interfaces.
 - **Dynamic App Icon**: Optionally have the app icon match your chosen color scheme.
 
-<table>
+<table align="center">
   <tr>
     <td><img src="https://github.com/user-attachments/assets/efc4cd04-63de-40b0-b39a-ce90e3fa575e" alt="Play" width="200"/></td>
     <td><img src="https://github.com/user-attachments/assets/c854e756-f89c-4849-8cca-e4a3e680fabd" alt="Solve" width="200"/></td>

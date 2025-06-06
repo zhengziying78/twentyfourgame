@@ -2,20 +2,22 @@ import XCTest
 @testable import twentyfour
 
 final class FilterPreferencesTests: XCTestCase {
+    var userDefaults: UserDefaults!
     var preferences: FilterPreferences!
-    let defaults = UserDefaults.standard
     let key = "selectedDifficulties"
     
     override func setUp() {
         super.setUp()
-        // Clear any existing preferences
-        defaults.removeObject(forKey: key)
-        preferences = FilterPreferences.shared
+        // Use a unique suite name for testing to avoid interfering with actual app data
+        userDefaults = UserDefaults(suiteName: "FilterPreferencesTests")!
+        userDefaults.removePersistentDomain(forName: "FilterPreferencesTests")
+        preferences = FilterPreferences.createForTesting(defaults: userDefaults)
     }
     
     override func tearDown() {
-        // Clean up after each test
-        defaults.removeObject(forKey: key)
+        userDefaults.removePersistentDomain(forName: "FilterPreferencesTests")
+        userDefaults = nil
+        preferences = nil
         super.tearDown()
     }
     
@@ -24,6 +26,12 @@ final class FilterPreferencesTests: XCTestCase {
         let instance2 = FilterPreferences.shared
         
         XCTAssertTrue(instance1 === instance2, "FilterPreferences should be a singleton")
+        
+        // Also verify that custom instances are different
+        let customInstance1 = FilterPreferences.createForTesting(defaults: userDefaults)
+        let customInstance2 = FilterPreferences.createForTesting(defaults: userDefaults)
+        XCTAssertFalse(customInstance1 === customInstance2, "Custom instances should be different")
+        XCTAssertFalse(customInstance1 === instance1, "Custom instance should be different from singleton")
     }
     
     func testInitialState() {
@@ -71,7 +79,7 @@ final class FilterPreferencesTests: XCTestCase {
         preferences.toggleDifficulty(.medium)
         
         // Create a new instance to test loading from disk
-        let newPreferences = FilterPreferences.shared
+        let newPreferences = FilterPreferences.createForTesting(defaults: userDefaults)
         
         // Should have the same selections
         XCTAssertEqual(preferences.selectedDifficulties, newPreferences.selectedDifficulties)
@@ -83,10 +91,11 @@ final class FilterPreferencesTests: XCTestCase {
     
     func testInvalidPersistedData() {
         // Save invalid data
-        defaults.set(["invalid_difficulty"], forKey: key)
+        userDefaults.set(["invalid_difficulty"], forKey: key)
+        userDefaults.synchronize()
         
         // Create a new instance
-        let newPreferences = FilterPreferences.shared
+        let newPreferences = FilterPreferences.createForTesting(defaults: userDefaults)
         
         // Should fall back to default (all difficulties)
         XCTAssertEqual(

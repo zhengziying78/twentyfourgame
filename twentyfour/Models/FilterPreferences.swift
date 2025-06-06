@@ -5,16 +5,29 @@ class FilterPreferences: ObservableObject {
     
     @Published private(set) var selectedDifficulties: Set<Difficulty>
     
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
     private let key = "selectedDifficulties"
     
-    private init() {
+    private init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        
         // Initialize with a default value first
         self.selectedDifficulties = Set(Difficulty.allCases)
         
         // Then load saved preferences if they exist
         loadFromDisk()
     }
+    
+    #if DEBUG
+    static func createForTesting(defaults: UserDefaults) -> FilterPreferences {
+        return FilterPreferences(defaults: defaults)
+    }
+    
+    func reset() {
+        selectedDifficulties = Set(Difficulty.allCases)
+        defaults.removeObject(forKey: key)
+    }
+    #endif
     
     private func loadFromDisk() {
         if let saved = defaults.array(forKey: key) as? [String] {
@@ -45,6 +58,7 @@ class FilterPreferences: ObservableObject {
     private func saveToDisk() {
         let difficultyStrings = selectedDifficulties.map { difficultyToString($0) }
         defaults.set(difficultyStrings, forKey: key)
+        defaults.synchronize() // Ensure changes are saved immediately
     }
     
     private func difficultyToString(_ difficulty: Difficulty) -> String {

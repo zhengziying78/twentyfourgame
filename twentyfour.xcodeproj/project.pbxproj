@@ -28,7 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4ED9B6162DE0D50D00496C42 /* TwentyFour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwentyFour.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EAAEEF32DF3370D00919E6E /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
+		4ED9B6162DE0D50D00496C42 /* twentyfour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twentyfour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B6232DE0D50F00496C42 /* twentyfourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -77,6 +78,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4EAAEEF52DF3370D00919E6E /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4ED9B60D2DE0D50D00496C42 = {
 			isa = PBXGroup;
 			children = (
@@ -90,7 +96,7 @@
 		4ED9B6172DE0D50D00496C42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4ED9B6162DE0D50D00496C42 /* TwentyFour.app */,
+				4ED9B6162DE0D50D00496C42 /* twentyfour.app */,
 				4ED9B6232DE0D50F00496C42 /* twentyfourTests.xctest */,
 				4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */,
 			);
@@ -120,7 +126,7 @@
 				4E2674C12DEA403A0023DCD6 /* MarkdownUI */,
 			);
 			productName = twentyfour;
-			productReference = 4ED9B6162DE0D50D00496C42 /* TwentyFour.app */;
+			productReference = 4ED9B6162DE0D50D00496C42 /* twentyfour.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4ED9B6222DE0D50F00496C42 /* twentyfourTests */ = {
@@ -207,6 +213,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4ED9B6172DE0D50D00496C42 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4EAAEEF52DF3370D00919E6E /* Products */;
+					ProjectRef = 4EAAEEF32DF3370D00919E6E /* twentyfour.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4ED9B6152DE0D50D00496C42 /* twentyfour */,
@@ -418,7 +430,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = TwentyFour;
+				INFOPLIST_KEY_CFBundleDisplayName = twentyfour;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsAlternateIcons = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -433,7 +445,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ziyingzheng.twentyfour;
-				PRODUCT_NAME = TwentyFour;
+				PRODUCT_NAME = twentyfour;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -453,7 +465,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = TwentyFour;
+				INFOPLIST_KEY_CFBundleDisplayName = twentyfour;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsAlternateIcons = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -468,7 +480,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ziyingzheng.twentyfour;
-				PRODUCT_NAME = TwentyFour;
+				PRODUCT_NAME = twentyfour;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

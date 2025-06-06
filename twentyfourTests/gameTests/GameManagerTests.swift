@@ -2,13 +2,15 @@ import XCTest
 @testable import twentyfour
 
 final class GameManagerTests: XCTestCase {
+    var manager: GameManager!
+    
     override func setUp() {
         super.setUp()
-        GameManager.shared.reset()
+        manager = GameManager(dataset: HandDataset.shared, state: GameState())
     }
     
     override func tearDown() {
-        GameManager.shared.reset()
+        manager = nil
         super.tearDown()
     }
     
@@ -18,11 +20,15 @@ final class GameManagerTests: XCTestCase {
         
         // Test singleton pattern
         XCTAssertTrue(instance1 === instance2, "GameManager should be a singleton")
+        
+        // Also verify that custom instances are different
+        let customInstance1 = GameManager()
+        let customInstance2 = GameManager()
+        XCTAssertFalse(customInstance1 === customInstance2, "Custom instances should be different")
+        XCTAssertFalse(customInstance1 === instance1, "Custom instance should be different from singleton")
     }
     
     func testInitialState() {
-        let manager = GameManager.shared
-        
         // Test initial state
         XCTAssertNil(manager.currentHand, "Initial hand should be nil")
         XCTAssertEqual(manager.formattedSolution, "", "Initial formatted solution should be empty")
@@ -30,8 +36,6 @@ final class GameManagerTests: XCTestCase {
     }
     
     func testHandNumberFormatting() {
-        let manager = GameManager.shared
-        
         // Get a random hand
         manager.getRandomHand()
         
@@ -43,8 +47,6 @@ final class GameManagerTests: XCTestCase {
     }
     
     func testFormattedSolutionConsistency() {
-        let manager = GameManager.shared
-        
         // Get multiple random hands and verify solution formatting
         for _ in 1...5 {
             manager.getRandomHand()

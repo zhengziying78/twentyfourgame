@@ -3,8 +3,13 @@ import SwiftUI
 
 class GameManager: ObservableObject {
     static let shared = GameManager()
-    private let dataset = HandDataset.shared
-    private let state = GameState()
+    private let dataset: HandDataset
+    private let state: GameState
+    
+    init(dataset: HandDataset = HandDataset.shared, state: GameState = GameState()) {
+        self.dataset = dataset
+        self.state = state
+    }
     
     var currentHand: Hand? { state.currentHand }
     var formattedSolution: String { state.formattedSolution }

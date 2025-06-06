@@ -29,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		4EAAEEF32DF3370D00919E6E /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
+		4EAAF0A12DF355AF00919E6E /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4ED9B6162DE0D50D00496C42 /* twentyfour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twentyfour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B6232DE0D50F00496C42 /* twentyfourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED9B62D2DE0D50F00496C42 /* twentyfourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyfourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +80,11 @@
 
 /* Begin PBXGroup section */
 		4EAAEEF52DF3370D00919E6E /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4EAAF0A32DF355AF00919E6E /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -217,6 +223,10 @@
 				{
 					ProductGroup = 4EAAEEF52DF3370D00919E6E /* Products */;
 					ProjectRef = 4EAAEEF32DF3370D00919E6E /* twentyfour.xcodeproj */;
+				},
+				{
+					ProductGroup = 4EAAF0A32DF355AF00919E6E /* Products */;
+					ProjectRef = 4EAAF0A12DF355AF00919E6E /* twentyfour.xcodeproj */;
 				},
 			);
 			projectRoot = "";

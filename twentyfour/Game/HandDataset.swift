@@ -1373,6 +1373,18 @@ class HandDataset {
             ([12, 13, 13, 13], "12 × (13 + 13) ÷ 13", .hard),
         ]
 
-        hands = dataset.map { Hand(numbers: $0.numbers, solution: $0.solution, difficulty: $0.difficulty) }
+        // Initialize hands array with error handling
+        hands = dataset.compactMap { entry in
+            do {
+                return try Hand(numbers: entry.numbers, solution: entry.solution, difficulty: entry.difficulty)
+            } catch {
+                // Log error for debugging
+                print("Error creating hand with numbers \(entry.numbers): \(error)")
+                return nil
+            }
+        }
+        
+        // Verify we didn't lose any hands due to initialization errors
+        assert(hands.count == dataset.count, "Some hands failed to initialize: expected \(dataset.count), got \(hands.count)")
     }
 } 

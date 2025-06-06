@@ -7,13 +7,21 @@ enum Difficulty: Int, CaseIterable, Hashable {
     case hardest = 4
 }
 
+enum HandError: Error {
+    case invalidNumberOfCards
+}
+
 struct Hand: Equatable, Identifiable {
     let id = UUID()
     let cards: [Card]
     let solution: String
     let difficulty: Difficulty
     
-    init(numbers: [Int], solution: String, difficulty: Difficulty) {
+    init(numbers: [Int], solution: String, difficulty: Difficulty) throws {
+        guard numbers.count == 4 else {
+            throw HandError.invalidNumberOfCards
+        }
+        
         // Randomly assign suits ensuring no duplicates for same values
         var availableSuits = Array(repeating: Suit.allCases, count: 4)
         

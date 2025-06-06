@@ -64,4 +64,44 @@ final class GameManagerTests: XCTestCase {
             }
         }
     }
+    
+    func testRandomHandGeneration() {
+        manager.getRandomHand()
+        let hand1 = manager.currentHand
+        XCTAssertNotNil(hand1)
+        XCTAssertEqual(hand1?.cards.count, 4)
+        
+        manager.getRandomHand()
+        let hand2 = manager.currentHand
+        XCTAssertNotNil(hand2)
+        XCTAssertEqual(hand2?.cards.count, 4)
+        
+        // Test that we get different hands
+        XCTAssertNotEqual(hand1?.cards.map { $0.value }, hand2?.cards.map { $0.value })
+    }
+    
+    func testMultipleRandomHands() {
+        var uniqueHands = Set<[Int]>()
+        
+        // Generate 10 random hands and verify they're all valid
+        for _ in 0..<10 {
+            manager.getRandomHand()
+            guard let hand = manager.currentHand else {
+                XCTFail("Failed to generate random hand")
+                return
+            }
+            
+            let values = hand.cards.map { $0.value }.sorted()
+            uniqueHands.insert(values)
+            
+            // Verify each hand has 4 cards
+            XCTAssertEqual(hand.cards.count, 4)
+            
+            // Verify all numbers are between 1 and 13
+            XCTAssertTrue(hand.cards.allSatisfy { $0.value >= 1 && $0.value <= 13 })
+        }
+        
+        // Verify we got some different hands (at least 3 unique hands out of 10)
+        XCTAssertGreaterThan(uniqueHands.count, 3)
+    }
 } 

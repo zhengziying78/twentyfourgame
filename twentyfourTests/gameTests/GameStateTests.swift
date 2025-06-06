@@ -2,16 +2,22 @@ import XCTest
 @testable import twentyfour
 
 final class GameStateTests: XCTestCase {
-    var gameState: GameState!
+    var state: GameState!
     
     override func setUp() {
         super.setUp()
-        gameState = GameState()
+        state = GameState()
     }
     
     override func tearDown() {
-        gameState = nil
+        state = nil
         super.tearDown()
+    }
+    
+    func testInitialState() {
+        XCTAssertNil(state.currentHand)
+        XCTAssertNil(state.currentHandIndex)
+        XCTAssertEqual(state.formattedSolution, "")
     }
     
     func testGetRandomHandWithEmptyHands() {
@@ -19,20 +25,19 @@ final class GameStateTests: XCTestCase {
         let emptyHands: [Hand] = []
         
         // When
-        gameState.getRandomHand(from: emptyHands)
+        state.getRandomHand(from: emptyHands)
         
         // Then
-        XCTAssertNil(gameState.currentHand)
-        XCTAssertNil(gameState.currentHandIndex)
+        XCTAssertNil(state.currentHand)
+        XCTAssertNil(state.currentHandIndex)
     }
     
-    func testGetRandomHandWithFilteredHandsEmpty() {
+    func testGetRandomHandWithFilteredHandsEmpty() throws {
         // Given
-        let hands = [
-            Hand(numbers: [1, 2, 3, 4], 
-                 solution: "(1+2)*(3+4)", 
-                 difficulty: .hard)
-        ]
+        let hand = try Hand(numbers: [1, 2, 3, 4], 
+                      solution: "(1+2)*(3+4)", 
+                      difficulty: .hard)
+        let hands = [hand]
         
         // Clear all difficulties except easy
         let preferences = FilterPreferences.shared
@@ -41,18 +46,18 @@ final class GameStateTests: XCTestCase {
         }
         
         // When
-        gameState.getRandomHand(from: hands)
+        state.getRandomHand(from: hands)
         
         // Then
-        XCTAssertNil(gameState.currentHand)
-        XCTAssertNil(gameState.currentHandIndex)
+        XCTAssertNil(state.currentHand)
+        XCTAssertNil(state.currentHandIndex)
     }
     
-    func testGetRandomHandSuccess() {
+    func testGetRandomHandSuccess() throws {
         // Given
-        let hand = Hand(numbers: [1, 2, 3, 4],
-                       solution: "(1+2)*(3+4)",
-                       difficulty: .easy)
+        let hand = try Hand(numbers: [1, 2, 3, 4],
+                      solution: "(1+2)*(3+4)",
+                      difficulty: .easy)
         let hands = [hand]
         
         // Ensure only easy difficulty is selected
@@ -60,22 +65,23 @@ final class GameStateTests: XCTestCase {
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
+        preferences.toggleDifficulty(.easy) // Make sure easy is selected
         
         // When
-        gameState.getRandomHand(from: hands)
+        state.getRandomHand(from: hands)
         
         // Then
-        XCTAssertNotNil(gameState.currentHand)
-        XCTAssertEqual(gameState.currentHandIndex, 0)
-        XCTAssertEqual(gameState.currentHand?.cards.map { $0.value }.sorted(),
+        XCTAssertNotNil(state.currentHand)
+        XCTAssertEqual(state.currentHandIndex, 0)
+        XCTAssertEqual(state.currentHand?.cards.map { $0.value }.sorted(),
                       hand.cards.map { $0.value }.sorted())
     }
     
-    func testFormattedSolution() {
+    func testFormattedSolution() throws {
         // Given
-        let hand = Hand(numbers: [1, 2, 3, 4],
-                       solution: "1*2/3+4",
-                       difficulty: .easy)
+        let hand = try Hand(numbers: [1, 2, 3, 4],
+                      solution: "1*2/3+4",
+                      difficulty: .easy)
         let hands = [hand]
         
         // Ensure only easy difficulty is selected
@@ -83,20 +89,21 @@ final class GameStateTests: XCTestCase {
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
+        preferences.toggleDifficulty(.easy) // Make sure easy is selected
         
         // When
-        gameState.getRandomHand(from: hands)
+        state.getRandomHand(from: hands)
         
         // Then
-        XCTAssertEqual(gameState.formattedSolution, "1×2÷3+4")
+        XCTAssertEqual(state.formattedSolution, "1×2÷3+4")
     }
     
-    func testRecentHandsLimit() {
+    func testRecentHandsLimit() throws {
         // Given
-        let hands = (1...6).map { i in
-            Hand(numbers: [i, i+1, i+2, i+3],
-                 solution: "1+2+3+4",
-                 difficulty: .easy)
+        let hands = try (1...6).map { i in
+            try Hand(numbers: [i, i+1, i+2, i+3],
+                    solution: "1+2+3+4",
+                    difficulty: .easy)
         }
         
         // Ensure only easy difficulty is selected
@@ -104,15 +111,16 @@ final class GameStateTests: XCTestCase {
         for difficulty in Difficulty.allCases where difficulty != .easy {
             preferences.toggleDifficulty(difficulty)
         }
+        preferences.toggleDifficulty(.easy) // Make sure easy is selected
         
         // When
         for _ in 1...6 {
-            gameState.getRandomHand(from: hands)
+            state.getRandomHand(from: hands)
         }
         
         // Then
         // Get a new hand - it should be possible because we maintain only 5 recent hands
-        gameState.getRandomHand(from: hands)
-        XCTAssertNotNil(gameState.currentHand)
+        state.getRandomHand(from: hands)
+        XCTAssertNotNil(state.currentHand)
     }
 } 

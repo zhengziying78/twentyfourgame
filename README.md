@@ -38,10 +38,10 @@ The app offers a clean, focused interface with several key features:
 - **Language Support**: Switch between English and Chinese (简体中文) interfaces.
 - **Dynamic App Icon**: Optionally have the app icon match your chosen color scheme.
 
-<table align="center">
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/efc4cd04-63de-40b0-b39a-ce90e3fa575e" alt="Play" width="200"/></td>
-    <td><img src="https://github.com/user-attachments/assets/c854e756-f89c-4849-8cca-e4a3e680fabd" alt="Solve" width="200"/></td>
-    <td><img src="https://github.com/user-attachments/assets/6555e3fa-69b6-4fe2-97c4-a897754137e9" alt="Filter" width="200"/></td>
-  </tr>
-</table>
+Some screenshots:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/efc4cd04-63de-40b0-b39a-ce90e3fa575e" alt="Play" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/c854e756-f89c-4849-8cca-e4a3e680fabd" alt="Solve" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/6555e3fa-69b6-4fe2-97c4-a897754137e9" alt="Filter" width="30%" style="margin: 0 3%"/>
+</p>

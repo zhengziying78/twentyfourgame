@@ -44,4 +44,12 @@ Some screenshots:
   <img src="https://github.com/user-attachments/assets/efc4cd04-63de-40b0-b39a-ce90e3fa575e" alt="Play" width="30%" style="margin: 0 3%"/>
   <img src="https://github.com/user-attachments/assets/c854e756-f89c-4849-8cca-e4a3e680fabd" alt="Solve" width="30%" style="margin: 0 3%"/>
   <img src="https://github.com/user-attachments/assets/6555e3fa-69b6-4fe2-97c4-a897754137e9" alt="Filter" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/aa0b8934-4dfa-4b37-8b91-60d03e65f67e" alt="Color" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/2565b5d0-e87f-4bd1-a205-543341aafa6e" alt="History" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/8d176f1c-c2d1-43bc-a85a-058498440235" alt="Language" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/053206a6-7612-4a8f-9003-db47796ab28a" alt="Help" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/01597f48-dbef-4e61-99af-9aa885275c86" alt="BocaJunior" width="30%" style="margin: 0 3%"/>
+  <img src="https://github.com/user-attachments/assets/4c3ae2fe-70ae-4191-b501-ae33806fabe8" alt="Home" width="30%" style="margin: 0 3%"/>
 </p>
+
+

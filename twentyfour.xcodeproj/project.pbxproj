@@ -450,8 +450,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = twentyfour;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_CFBundleDisplayName = "24 Game";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.puzzle-games";
 				INFOPLIST_KEY_LSSupportsAlternateIcons = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -485,8 +485,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = twentyfour;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_CFBundleDisplayName = "24 Game";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.puzzle-games";
 				INFOPLIST_KEY_LSSupportsAlternateIcons = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

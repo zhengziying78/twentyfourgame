@@ -266,18 +266,27 @@ struct IconGenerator: View {
         for scheme in ColorScheme.allCases {
             await MainActor.run {
                 let iconName = scheme == .classic ? "AppIcon" : "AppIcon-\(scheme.rawValue)"
-                let renderer = ImageRenderer(content: IconGenerator(scheme: scheme))
-                renderer.scale = 1.0
                 
-                if let image = renderer.uiImage {
-                    if let pngData = image.pngData() {
-                        do {
-                            let fileURL = documentsDirectory.appendingPathComponent("\(iconName).png")
-                            try pngData.write(to: fileURL)
-                            print("✅ Exported \(iconName).png to: \(fileURL.path)")
-                        } catch {
-                            print("❌ Failed to save \(iconName).png: \(error)")
-                        }
+                // Create a UIHostingController to render the SwiftUI view
+                let hostingController = UIHostingController(rootView: IconGenerator(scheme: scheme))
+                hostingController.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 1024)
+                
+                // Use UIGraphicsImageRenderer to create the image
+                let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1024, height: 1024))
+                let image = renderer.image { context in
+                    // Ensure the view is laid out
+                    hostingController.view.layoutIfNeeded()
+                    // Draw the view hierarchy
+                    hostingController.view.layer.render(in: context.cgContext)
+                }
+                
+                if let pngData = image.pngData() {
+                    do {
+                        let fileURL = documentsDirectory.appendingPathComponent("\(iconName).png")
+                        try pngData.write(to: fileURL)
+                        print("✅ Exported \(iconName).png to: \(fileURL.path)")
+                    } catch {
+                        print("❌ Failed to save \(iconName).png: \(error)")
                     }
                 }
             }

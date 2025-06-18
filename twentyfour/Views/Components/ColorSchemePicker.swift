@@ -109,7 +109,7 @@ struct ColorSchemePicker: View {
                             .labelsHidden()
                         Spacer()
                     }
-                    .onChange(of: autoChangeAppIcon) { oldValue, newValue in
+                    .onChange(of: autoChangeAppIcon) { newValue in
                         if newValue {
                             // If enabled, immediately update icon to match current scheme
                             AppIconManager.forceChangeAppIcon(to: colorSchemeManager.currentScheme)

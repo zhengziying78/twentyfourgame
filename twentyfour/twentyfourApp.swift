@@ -37,8 +37,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 extension twentyfourApp {
     static func setOrientation(_ orientation: UIInterfaceOrientationMask) {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
-        }
+        AppDelegate.orientationLock = orientation
+        // Force orientation change
+        let orientationValue = orientation == .portrait ? UIInterfaceOrientation.portrait.rawValue : UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(orientationValue, forKey: "orientation")
     }
 }

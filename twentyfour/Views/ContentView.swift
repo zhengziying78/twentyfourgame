@@ -263,7 +263,8 @@ struct ContentView: View {
                             HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
                                 Image(systemName: "arrow.clockwise")
                                     .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .symbolEffect(.bounce.up, options: .nonRepeating, value: playButtonTrigger)
+                                    .scaleEffect(playButtonTrigger ? 1.2 : 1.0)
+                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: playButtonTrigger)
                                 Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
                                     .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
@@ -281,7 +282,8 @@ struct ContentView: View {
                             HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
                                 Image(systemName: "lightbulb.fill")
                                     .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .symbolEffect(.pulse, options: .nonRepeating, value: solveButtonTrigger)
+                                    .scaleEffect(solveButtonTrigger ? 1.2 : 1.0)
+                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: solveButtonTrigger)
                                 Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
                                     .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
                             }
@@ -375,7 +377,7 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .onChange(of: showingColorPicker) { oldValue, newValue in
+        .onChange(of: showingColorPicker) { newValue in
             if newValue {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                     showingColorPicker = true

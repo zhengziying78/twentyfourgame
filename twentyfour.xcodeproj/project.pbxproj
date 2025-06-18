@@ -31,6 +31,7 @@
 		4EA3336D2DF394490029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EA334A72E028C800029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EA335442E0324150029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
+		4EA337202E0341620029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EAAEEF32DF3370D00919E6E /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EAAF0A12DF355AF00919E6E /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4ED9B6162DE0D50D00496C42 /* twentyfour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twentyfour.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +94,11 @@
 			sourceTree = "<group>";
 		};
 		4EA335462E0324150029642C /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4EA337222E0341620029642C /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -249,6 +255,10 @@
 				{
 					ProductGroup = 4EA335462E0324150029642C /* Products */;
 					ProjectRef = 4EA335442E0324150029642C /* twentyfour.xcodeproj */;
+				},
+				{
+					ProductGroup = 4EA337222E0341620029642C /* Products */;
+					ProjectRef = 4EA337202E0341620029642C /* twentyfour.xcodeproj */;
 				},
 				{
 					ProductGroup = 4EA3336F2DF394490029642C /* Products */;
@@ -487,7 +497,7 @@
 				PRODUCT_NAME = twentyfour;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 			};
 			name = Debug;
 		};
@@ -521,7 +531,7 @@
 				PRODUCT_NAME = twentyfour;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 			};
 			name = Release;
 		};
@@ -539,7 +549,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/twentyfour.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/twentyfour";
 			};
 			name = Debug;
@@ -558,7 +568,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/twentyfour.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/twentyfour";
 			};
 			name = Release;
@@ -575,7 +585,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_TARGET_NAME = twentyfour;
 			};
 			name = Debug;
@@ -592,7 +602,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_TARGET_NAME = twentyfour;
 			};
 			name = Release;

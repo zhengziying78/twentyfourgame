@@ -1,6 +1,6 @@
 # Privacy Policy for 24 Game
 
-**Last updated:** December 2024
+**Last updated:** June 2025
 
 ## Introduction
 

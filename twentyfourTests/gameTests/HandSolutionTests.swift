@@ -110,11 +110,46 @@ class HandSolutionTests: XCTestCase {
         return abs(result - 24) < 0.0001  // Allow for small floating-point errors
     }
     
+    // Extract numbers from a solution string
+    func extractNumbers(from solution: String) -> [Int] {
+        var numbers: [Int] = []
+        var currentNum = ""
+        
+        for char in solution {
+            if char.isNumber {
+                currentNum.append(char)
+            } else if !currentNum.isEmpty {
+                if let num = Int(currentNum) {
+                    numbers.append(num)
+                }
+                currentNum = ""
+            }
+        }
+        
+        // Don't forget the last number if there is one
+        if !currentNum.isEmpty, let num = Int(currentNum) {
+            numbers.append(num)
+        }
+        
+        return numbers.sorted()
+    }
+    
     func testAllHandSolutions() {
         for hand in HandDataset.shared.hands {
+            // Test if solution evaluates to 24
             XCTAssertTrue(
                 testSolution(hand.solution),
                 "Solution '\(hand.solution)' for hand \(hand.cards.map { String($0.value) }.joined(separator: ",")) does not evaluate to 24"
+            )
+            
+            // Test if numbers in solution match hand numbers
+            let solutionNumbers = extractNumbers(from: hand.solution)
+            let handNumbers = hand.cards.map { $0.value }.sorted()
+            
+            XCTAssertEqual(
+                solutionNumbers,
+                handNumbers,
+                "Numbers in solution '\(hand.solution)' do not match hand numbers \(handNumbers)"
             )
         }
     }

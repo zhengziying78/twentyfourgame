@@ -106,6 +106,7 @@ struct ContentView: View {
     @State private var playButtonTrigger = false
     @State private var solveButtonTrigger = false
     @State private var showingColorPicker = false
+    @State private var randomizedCards: [Card] = []
     
     private let columns = [
         GridItem(.flexible()),
@@ -181,7 +182,7 @@ struct ContentView: View {
                         LazyVGrid(columns: columns, spacing: ContentViewConstants.Layout.cardGridSpacing) {
                             ForEach(0..<4) { index in
                                 CardView(
-                                    card: gameManager.currentHand?.cards[safe: index],
+                                    card: randomizedCards[safe: index],
                                     isFaceUp: isCardsFaceUp
                                 )
                                 .frame(maxWidth: .infinity)
@@ -224,9 +225,10 @@ struct ContentView: View {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
                                     gameManager.getRandomHand()
                                     if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
+                                        randomizedCards = hand.cards.shuffled()
                                         historyManager.addEntry(
                                             handNumber: handNumber,
-                                            cards: hand.cards,
+                                            cards: randomizedCards,
                                             difficulty: hand.difficulty,
                                             solution: gameManager.formattedSolution
                                         )
@@ -242,9 +244,10 @@ struct ContentView: View {
                                 isFlipping = true
                                 gameManager.getRandomHand()
                                 if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
+                                    randomizedCards = hand.cards.shuffled()
                                     historyManager.addEntry(
                                         handNumber: handNumber,
-                                        cards: hand.cards,
+                                        cards: randomizedCards,
                                         difficulty: hand.difficulty,
                                         solution: gameManager.formattedSolution
                                     )

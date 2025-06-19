@@ -1,6 +1,10 @@
 ## Background
 
-This is an iOS app. The app hasn't been published in App Store yet. This repo is its code.
+This is an iOS app. It's [available](https://apps.apple.com/us/app/24-math-game/id6747409323) in App Store worldwide. This repo is its code.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1bde4aa1-0a81-407f-ac7e-0c651b7a1809" alt="appstore" width="70%" style="margin: 0 3%"/>
+</p>
 
 I built it because I couldn't find a good one in the App Store: simple, clean, and did exactly what it needed to do without any unnecessary bells and whistles. There used to be one that I enjoyed a few years, but it's gone since last year. So I decided to build one.
 

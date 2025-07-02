@@ -23,7 +23,7 @@ struct DynamicFontSize: ViewModifier {
         let finalSize = baseSize * scale
         
         content
-            .font(.custom("Menlo-Bold", size: max(finalSize, UIDevice.current.userInterfaceIdiom == .pad ? 24 : 20))) // Ensure minimum readable size
+            .font(.custom("Menlo-Bold", size: max(finalSize, DeviceScale.Font.solutionMinSize))) // Ensure minimum readable size
     }
 }
 
@@ -71,7 +71,7 @@ struct SolutionOverlay: View {
                                         .frame(width: 36, height: 36)
                                     Image(systemName: "xmark")
                                         .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
-                                        .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 18 : 16, weight: .bold))
+                                        .font(.system(size: DeviceScale.Font.closeButton, weight: .bold))
                                 }
                             }
                             .padding(.top, 16)

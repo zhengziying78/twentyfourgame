@@ -1,36 +1,22 @@
 import SwiftUI
 
 public enum SharedUIConstants {
-    public static var topBarHeight: CGFloat {
-        UIDevice.current.userInterfaceIdiom == .pad ? 120 : 92
-    }
+    public static let topBarHeight: CGFloat = DeviceScale.Layout.topBarHeight
     
     public enum Layout {
-        public static var elementSpacing: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
-        }
-        public static var buttonSpacing: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 30 : 24
-        }
-        public static var compactElementSpacing: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12
-        }
+        public static let elementSpacing: CGFloat = DeviceScale.Layout.elementSpacing
+        public static let buttonSpacing: CGFloat = DeviceScale.Layout.buttonSpacing
+        public static let compactElementSpacing: CGFloat = DeviceScale.Layout.compactSpacing
     }
     
     public enum Font {
-        public static var titleSize: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 24 : 20
-        }
-        public static var bodySize: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 18 : 16
-        }
+        public static let titleSize: CGFloat = DeviceScale.Font.title
+        public static let bodySize: CGFloat = DeviceScale.Font.body
     }
     
     public enum Card {
         public static let aspectRatio: CGFloat = 0.52
-        public static var cornerRadius: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 12 : 10
-        }
+        public static let cornerRadius: CGFloat = DeviceScale.Layout.cardCornerRadius
     }
     
     public enum Animation {

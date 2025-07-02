@@ -11,8 +11,12 @@ public enum DifficultyIndicatorConstants {
     }
     
     public enum Font {
-        public static let difficultyTextSize: CGFloat = 20
-        public static let starSize: CGFloat = 16
+        public static var difficultyTextSize: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 24 : 20
+        }
+        public static var starSize: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
+        }
     }
     
     public enum Opacity {

@@ -186,7 +186,7 @@ struct ContentView: View {
                                     isFaceUp: isCardsFaceUp
                                 )
                                 .frame(maxWidth: .infinity)
-                                .frame(height: UIScreen.main.bounds.width * SharedUIConstants.Card.aspectRatio)
+                                .frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 300 : UIScreen.main.bounds.width * SharedUIConstants.Card.aspectRatio * 1.0)
                             }
                         }
                         .padding(.horizontal, ContentViewConstants.Layout.cardGridPaddingHorizontal)
@@ -209,6 +209,7 @@ struct ContentView: View {
                     }
                     .frame(maxHeight: .infinity)
                     .background(Color.white)
+                    .clipped()
                     
                     // Bottom part - Action buttons
                     HStack(spacing: ContentViewConstants.Layout.actionButtonSeparator) {
@@ -260,13 +261,27 @@ struct ContentView: View {
                                 }
                             }
                         }) {
-                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
-                                Image(systemName: "arrow.clockwise")
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .scaleEffect(playButtonTrigger ? 1.2 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: playButtonTrigger)
-                                Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                            Group {
+                                if UIDevice.current.userInterfaceIdiom == .phone {
+                                    VStack(spacing: 4) {
+                                        Image(systemName: "arrow.clockwise")
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
+                                            .scaleEffect(playButtonTrigger ? 1.2 : 1.0)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: playButtonTrigger)
+                                        Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                                    }
+                                } else {
+                                    HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
+                                        Image(systemName: "arrow.clockwise")
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
+                                            .scaleEffect(playButtonTrigger ? 1.2 : 1.0)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: playButtonTrigger)
+                                        Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                                    }
+                                    .padding(.top, 4)
+                                }
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -279,13 +294,27 @@ struct ContentView: View {
                             solveButtonTrigger.toggle()
                             showingSolution = true
                         }) {
-                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
-                                Image(systemName: "lightbulb.fill")
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .scaleEffect(solveButtonTrigger ? 1.2 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: solveButtonTrigger)
-                                Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                            Group {
+                                if UIDevice.current.userInterfaceIdiom == .phone {
+                                    VStack(spacing: 4) {
+                                        Image(systemName: "lightbulb.fill")
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
+                                            .scaleEffect(solveButtonTrigger ? 1.2 : 1.0)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: solveButtonTrigger)
+                                        Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                                    }
+                                } else {
+                                    HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
+                                        Image(systemName: "lightbulb.fill")
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
+                                            .scaleEffect(solveButtonTrigger ? 1.2 : 1.0)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: solveButtonTrigger)
+                                        Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
+                                            .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
+                                    }
+                                    .padding(.top, 4)
+                                }
                             }
                             .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -297,7 +326,6 @@ struct ContentView: View {
                     }
                     .frame(height: ContentViewConstants.Layout.actionButtonHeight)
                 }
-                .ignoresSafeArea(edges: .bottom)
                 
                 // Solution overlay
                 if showingSolution {

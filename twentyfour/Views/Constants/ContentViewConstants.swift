@@ -2,25 +2,51 @@ import SwiftUI
 
 public enum ContentViewConstants {
     public enum Layout {
-        public static let navigationIconSpacing: CGFloat = 20      // Spacing between navigation icons
-        public static let navigationPaddingHorizontal: CGFloat = 20 // Horizontal padding in navigation bar
-        public static let navigationPaddingVertical: CGFloat = 16   // Vertical padding in navigation bar
+        public static var navigationIconSpacing: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 28 : 20
+        }
+        public static var navigationPaddingHorizontal: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 32 : 20
+        }
+        public static var navigationPaddingVertical: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
+        }
         
-        public static let cardGridSpacing: CGFloat = 16            // Spacing between cards in the grid
-        public static let cardGridPaddingHorizontal: CGFloat = 28  // Horizontal padding around card grid
-        public static let cardSectionTopSpacing: CGFloat = 20      // Space above card grid
-        public static let cardSectionBottomSpacing: CGFloat = 20   // Space below difficulty indicator
-        public static let difficultyIndicatorHeight: CGFloat = 40  // Height of difficulty indicator container
+        public static var cardGridSpacing: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 24 : 16
+        }
+        public static var cardGridPaddingHorizontal: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 40 : 28
+        }
+        public static var cardSectionTopSpacing: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 32 : 20
+        }
+        public static var cardSectionBottomSpacing: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 32 : 20
+        }
+        public static var difficultyIndicatorHeight: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 50 : 40
+        }
         
-        public static let actionButtonHeight: CGFloat = 160        // Height of action buttons section
+        public static var actionButtonHeight: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 180 : 160
+        }
         public static let actionButtonSeparator: CGFloat = 1       // Width of separator between action buttons
-        public static let actionButtonIconTextSpacing: CGFloat = 12 // Space between icon and text in buttons
+        public static var actionButtonIconTextSpacing: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12
+        }
     }
     
     public enum Font {
-        public static let navigationIcon: CGFloat = 22    // Size of navigation bar icons
-        public static let actionButtonIcon: CGFloat = 28  // Size of icons in action buttons
-        public static let actionButtonText: CGFloat = 24  // Size of text in action buttons
+        public static var navigationIcon: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 26 : 22
+        }
+        public static var actionButtonIcon: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 32 : 28
+        }
+        public static var actionButtonText: CGFloat {
+            UIDevice.current.userInterfaceIdiom == .pad ? 28 : 24
+        }
     }
     
     public enum Animation {

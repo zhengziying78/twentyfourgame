@@ -37,7 +37,7 @@ public enum DeviceScale {
     
     public enum Layout {
         public static let topBarHeight: CGFloat = DeviceScale.value(92)
-        public static let actionButtonHeight: CGFloat = DeviceScale.value(160)
+        public static let actionButtonHeight: CGFloat = DeviceScale.value(140)
         public static let elementSpacing: CGFloat = DeviceScale.value(16)
         public static let buttonSpacing: CGFloat = DeviceScale.value(24)
         public static let compactSpacing: CGFloat = DeviceScale.value(12)

@@ -9,15 +9,9 @@ public enum CardFrontConstants {
     }
     
     public enum Font {
-        public static var watermarkSize: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 180 : 140
-        }
-        public static var valueSize: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 68 : 56
-        }
-        public static var suitSize: CGFloat {
-            UIDevice.current.userInterfaceIdiom == .pad ? 58 : 48
-        }
+        public static let watermarkSize: CGFloat = DeviceScale.Font.cardWatermark
+        public static let valueSize: CGFloat = DeviceScale.Font.cardValue
+        public static let suitSize: CGFloat = DeviceScale.Font.cardSuit
     }
     
     public enum Colors {

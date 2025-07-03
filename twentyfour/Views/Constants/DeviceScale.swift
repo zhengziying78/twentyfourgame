@@ -37,7 +37,7 @@ public enum DeviceScale {
     
     public enum Layout {
         public static let topBarHeight: CGFloat = DeviceScale.value(92)
-        public static let actionButtonHeight: CGFloat = DeviceScale.value(140)
+        public static let actionButtonHeight: CGFloat = DeviceScale.value(160)
         public static let elementSpacing: CGFloat = DeviceScale.value(16)
         public static let buttonSpacing: CGFloat = DeviceScale.value(24)
         public static let compactSpacing: CGFloat = DeviceScale.value(12)
@@ -52,7 +52,7 @@ public enum DeviceScale {
         public static let cardGridSpacing: CGFloat = DeviceScale.value(16)
         public static let cardGridPaddingHorizontal: CGFloat = DeviceScale.value(28)
         public static let cardSectionTopSpacing: CGFloat = DeviceScale.value(20)
-        public static let cardSectionBottomSpacing: CGFloat = DeviceScale.value(20)
+        public static let cardSectionBottomSpacing: CGFloat = DeviceScale.value(0)
         public static let difficultyIndicatorHeight: CGFloat = DeviceScale.value(40)
         
         // Action Buttons

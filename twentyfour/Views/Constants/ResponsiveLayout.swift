@@ -17,6 +17,29 @@ public struct ResponsiveLayout {
         UIScreen.main.bounds.height
     }
     
+    /// Detect newer iPad models that benefit from larger cards
+    private static var isNewerIPad: Bool {
+        guard isIPad else { return false }
+        
+        // Use screen size to detect newer iPad models
+        // ACTUAL REPORTED DIMENSIONS (not native resolution):
+        // iPad Pro 13" M4: 1032×1376 points (compatibility mode)
+        // iPad Pro 11" M4: ~834×1194 points (estimated)
+        // iPad Air 13" M2: 1032×1376 points (same as Pro 13")
+        // iPad Air 11" M2: ~834×1194 points (estimated)
+        
+        let maxDimension = max(screenWidth, screenHeight)
+        let minDimension = min(screenWidth, screenHeight)
+        
+        // Updated thresholds based on actual reported dimensions
+        // iPad Pro/Air 13": 1376×1032 points
+        // iPad Pro/Air 11": ~1194×834 points
+        // Older iPads (iPad 10th gen, mini): typically < 1100 points max dimension
+        let isNewer = maxDimension >= 1300 || minDimension >= 1000
+        
+        return isNewer
+    }
+    
     // MARK: - Layout Dimensions
     
     /// Top navigation bar height - consistent across all devices
@@ -32,9 +55,15 @@ public struct ResponsiveLayout {
     /// Card height - unified calculation for all devices
     public static var cardHeight: CGFloat {
         if isIPad {
-            return 300
+            if isNewerIPad {
+                // Newer iPads get moderately bigger cards (25% increase)
+                return 375  // 300 * 1.25
+            } else {
+                // Older iPads keep the standard size
+                return 300
+            }
         } else {
-            // For iPhone, calculate based on screen width and aspect ratio
+            // For iPhone, calculate based on screen width and aspect ratio (unchanged)
             return screenWidth * SharedUIConstants.Card.aspectRatio
         }
     }
@@ -75,16 +104,26 @@ public struct ResponsiveLayout {
         DeviceScale.Layout.cardGridSpacing
     }
     
-    /// Card grid horizontal padding - unified for all devices
+    /// Card grid horizontal padding - device-specific for newer iPads
     public static var cardGridPadding: CGFloat {
-        DeviceScale.Layout.cardGridPaddingHorizontal
+        if isNewerIPad {
+            // Reduce horizontal padding significantly for newer iPads to allow bigger cards
+            return DeviceScale.Layout.cardGridPaddingHorizontal * 0.4  // 35 → 14 points
+        } else {
+            return DeviceScale.Layout.cardGridPaddingHorizontal
+        }
     }
     
     // MARK: - Content Spacing
     
-    /// Top spacing for card section
+    /// Top spacing for card section - device-specific for newer iPads
     public static var cardSectionTopSpacing: CGFloat {
-        DeviceScale.Layout.cardSectionTopSpacing
+        if isNewerIPad {
+            // Reduce top spacing for newer iPads to allow bigger cards
+            return DeviceScale.Layout.cardSectionTopSpacing * 0.6  // 25 → 15 points
+        } else {
+            return DeviceScale.Layout.cardSectionTopSpacing
+        }
     }
     
     /// Bottom spacing for card section
@@ -92,9 +131,14 @@ public struct ResponsiveLayout {
         DeviceScale.Layout.cardSectionBottomSpacing
     }
     
-    /// Difficulty indicator height
+    /// Difficulty indicator height - device-specific for newer iPads
     public static var difficultyIndicatorHeight: CGFloat {
-        DeviceScale.Layout.difficultyIndicatorHeight
+        if isNewerIPad {
+            // Reduce difficulty indicator height for newer iPads to allow bigger cards
+            return DeviceScale.Layout.difficultyIndicatorHeight * 0.8  // 50 → 40 points
+        } else {
+            return DeviceScale.Layout.difficultyIndicatorHeight
+        }
     }
     
     // MARK: - Navigation

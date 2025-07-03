@@ -122,7 +122,7 @@ struct ContentView: View {
                 
                 VStack(spacing: 0) {
                     // Top part - Navigation bar with primary background
-                    HStack(spacing: ContentViewConstants.Layout.navigationIconSpacing) {
+                    HStack(spacing: ResponsiveLayout.navigationIconSpacing) {
                         Spacer()
                         Button(action: {
                             showingFilter = true
@@ -169,27 +169,27 @@ struct ContentView: View {
                         }
                         .disabled(showingSolution)
                     }
-                    .padding(.horizontal, ContentViewConstants.Layout.navigationPaddingHorizontal)
-                    .padding(.vertical, ContentViewConstants.Layout.navigationPaddingVertical)
-                    .frame(height: SharedUIConstants.topBarHeight)
+                    .padding(.horizontal, ResponsiveLayout.navigationPaddingHorizontal)
+                    .padding(.vertical, ResponsiveLayout.navigationPaddingVertical)
+                    .frame(height: ResponsiveLayout.topBarHeight)
                     
                     // Middle part - Cards and difficulty indicator
                     VStack(spacing: SharedUIConstants.Layout.buttonSpacing) {
                         // Fixed spacing at top
                         Spacer()
-                            .frame(height: ContentViewConstants.Layout.cardSectionTopSpacing)
+                            .frame(height: ResponsiveLayout.cardSectionTopSpacing)
                         
-                        LazyVGrid(columns: columns, spacing: ContentViewConstants.Layout.cardGridSpacing) {
+                        LazyVGrid(columns: columns, spacing: ResponsiveLayout.cardGridSpacing) {
                             ForEach(0..<4) { index in
                                 CardView(
                                     card: randomizedCards[safe: index],
                                     isFaceUp: isCardsFaceUp
                                 )
                                 .frame(maxWidth: .infinity)
-                                .frame(height: UIScreen.main.bounds.width * SharedUIConstants.Card.aspectRatio)
+                                .frame(height: ResponsiveLayout.cardHeight)
                             }
                         }
-                        .padding(.horizontal, ContentViewConstants.Layout.cardGridPaddingHorizontal)
+                        .padding(.horizontal, ResponsiveLayout.cardGridPadding)
                         
                         // Fixed-height container for difficulty indicator
                         VStack {
@@ -201,28 +201,51 @@ struct ContentView: View {
                                 .animation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration), value: isCardsFaceUp)
                             }
                         }
-                        .frame(height: ContentViewConstants.Layout.difficultyIndicatorHeight)
+                        .frame(height: ResponsiveLayout.difficultyIndicatorHeight)
                         
                         // Fixed spacing at bottom
                         Spacer()
-                            .frame(height: ContentViewConstants.Layout.cardSectionBottomSpacing)
+                            .frame(height: ResponsiveLayout.cardSectionBottomSpacing)
                     }
                     .frame(maxHeight: .infinity)
                     .background(Color.white)
+                    .clipped()
                     
                     // Bottom part - Action buttons
-                    HStack(spacing: ContentViewConstants.Layout.actionButtonSeparator) {
+                    HStack(spacing: ResponsiveLayout.actionButtonSeparator) {
                         // Play button
-                        Button(action: {
-                            playButtonTrigger.toggle()
-                            
-                            if gameManager.currentHand != nil {
-                                isFlipping = true
-                                withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
-                                    isCardsFaceUp = false
-                                }
+                        ResponsiveActionButton(
+                            icon: "arrow.clockwise",
+                            text: LocalizationResource.string(for: .playButton, language: languageSettings.language),
+                            action: {
+                                playButtonTrigger.toggle()
                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
+                                if gameManager.currentHand != nil {
+                                    isFlipping = true
+                                    withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
+                                        isCardsFaceUp = false
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
+                                        gameManager.getRandomHand()
+                                        if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
+                                            randomizedCards = hand.cards.shuffled()
+                                            historyManager.addEntry(
+                                                handNumber: handNumber,
+                                                cards: randomizedCards,
+                                                difficulty: hand.difficulty,
+                                                solution: gameManager.formattedSolution
+                                            )
+                                        }
+                                        withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
+                                            isCardsFaceUp = true
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
+                                            isFlipping = false
+                                        }
+                                    }
+                                } else {
+                                    isFlipping = true
                                     gameManager.getRandomHand()
                                     if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
                                         randomizedCards = hand.cards.shuffled()
@@ -240,62 +263,30 @@ struct ContentView: View {
                                         isFlipping = false
                                     }
                                 }
-                            } else {
-                                isFlipping = true
-                                gameManager.getRandomHand()
-                                if let hand = gameManager.currentHand, let handNumber = gameManager.handNumber {
-                                    randomizedCards = hand.cards.shuffled()
-                                    historyManager.addEntry(
-                                        handNumber: handNumber,
-                                        cards: randomizedCards,
-                                        difficulty: hand.difficulty,
-                                        solution: gameManager.formattedSolution
-                                    )
-                                }
-                                withAnimation(.easeInOut(duration: ContentViewConstants.Animation.cardFlipDuration)) {
-                                    isCardsFaceUp = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + ContentViewConstants.Animation.cardFlipDelay) {
-                                    isFlipping = false
-                                }
-                            }
-                        }) {
-                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
-                                Image(systemName: "arrow.clockwise")
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .scaleEffect(playButtonTrigger ? 1.2 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: playButtonTrigger)
-                                Text(LocalizationResource.string(for: .playButton, language: languageSettings.language))
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
-                            }
-                            .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(colorSchemeManager.currentScheme.primary)
-                        }
-                        .disabled(isFlipping)
+                            },
+                            isEnabled: !isFlipping,
+                            backgroundColor: colorSchemeManager.currentScheme.primary,
+                            foregroundColor: colorSchemeManager.currentScheme.textAndIcon,
+                            trigger: playButtonTrigger
+                        )
                         
                         // Solve button
-                        Button(action: {
-                            solveButtonTrigger.toggle()
-                            showingSolution = true
-                        }) {
-                            HStack(spacing: ContentViewConstants.Layout.actionButtonIconTextSpacing) {
-                                Image(systemName: "lightbulb.fill")
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonIcon, weight: .medium))
-                                    .scaleEffect(solveButtonTrigger ? 1.2 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: solveButtonTrigger)
-                                Text(LocalizationResource.string(for: .solveButton, language: languageSettings.language))
-                                    .font(.system(size: ContentViewConstants.Font.actionButtonText, weight: .medium))
-                            }
-                            .foregroundColor(colorSchemeManager.currentScheme.textAndIcon)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(gameManager.currentHand != nil && !isFlipping ? 
+                        ResponsiveActionButton(
+                            icon: "lightbulb.fill",
+                            text: LocalizationResource.string(for: .solveButton, language: languageSettings.language),
+                            action: {
+                                solveButtonTrigger.toggle()
+                                showingSolution = true
+                            },
+                            isEnabled: gameManager.currentHand != nil && !isFlipping,
+                            backgroundColor: gameManager.currentHand != nil && !isFlipping ? 
                                 colorSchemeManager.currentScheme.secondary :
-                                colorSchemeManager.currentScheme.disabledBackground)
-                        }
-                        .disabled(gameManager.currentHand == nil || isFlipping)
+                                colorSchemeManager.currentScheme.disabledBackground,
+                            foregroundColor: colorSchemeManager.currentScheme.textAndIcon,
+                            trigger: solveButtonTrigger
+                        )
                     }
-                    .frame(height: ContentViewConstants.Layout.actionButtonHeight)
+                    .frame(height: ResponsiveLayout.bottomBarHeight)
                 }
                 .ignoresSafeArea(edges: .bottom)
                 

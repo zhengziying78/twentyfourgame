@@ -29,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		4E78353F2E157A6000CBB5BB /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
+		4E7836862E15832900CBB5BB /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EA3336D2DF394490029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EA334A72E028C800029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
 		4EA335442E0324150029642C /* twentyfour.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = twentyfour.xcodeproj; sourceTree = "<group>"; };
@@ -86,6 +87,11 @@
 
 /* Begin PBXGroup section */
 		4E7835412E157A6000CBB5BB /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4E7836882E15832900CBB5BB /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -273,12 +279,16 @@
 					ProjectRef = 4EAAF0A12DF355AF00919E6E /* twentyfour.xcodeproj */;
 				},
 				{
-					ProductGroup = 4EA335462E0324150029642C /* Products */;
-					ProjectRef = 4EA335442E0324150029642C /* twentyfour.xcodeproj */;
+					ProductGroup = 4E7836882E15832900CBB5BB /* Products */;
+					ProjectRef = 4E7836862E15832900CBB5BB /* twentyfour.xcodeproj */;
 				},
 				{
 					ProductGroup = 4EA337222E0341620029642C /* Products */;
 					ProjectRef = 4EA337202E0341620029642C /* twentyfour.xcodeproj */;
+				},
+				{
+					ProductGroup = 4EA335462E0324150029642C /* Products */;
+					ProjectRef = 4EA335442E0324150029642C /* twentyfour.xcodeproj */;
 				},
 				{
 					ProductGroup = 4EA3336F2DF394490029642C /* Products */;

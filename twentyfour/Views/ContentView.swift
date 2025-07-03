@@ -108,10 +108,22 @@ struct ContentView: View {
     @State private var showingColorPicker = false
     @State private var randomizedCards: [Card] = []
     
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    private var columns: [GridItem] {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // iPad: Use fixed-width columns to control spacing precisely
+            let cardWidth: CGFloat = 300  // Fixed card width
+            return [
+                GridItem(.fixed(cardWidth)),
+                GridItem(.fixed(cardWidth))
+            ]
+        } else {
+            // iPhone: Keep original flexible layout (works well)
+            return [
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ]
+        }
+    }
     
     var body: some View {
         NavigationView {

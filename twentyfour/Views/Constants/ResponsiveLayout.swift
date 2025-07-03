@@ -17,6 +17,7 @@ public struct ResponsiveLayout {
         UIScreen.main.bounds.height
     }
     
+    
     // MARK: - Layout Dimensions
     
     /// Top navigation bar height - consistent across all devices
